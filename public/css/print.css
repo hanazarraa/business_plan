@@ -1,0 +1,137 @@
+/*
+
+html, body, table, div {
+	overflow:visible !important;
+	float:none !important;
+}
+
+.fleft{
+
+ float: none !important;
+}
+
+body{
+	font-size: 15px !important;
+}
+
+.container {
+	width:100%;	
+}
+
+#corps-container {
+	padding:0px;	
+}
+
+#corps{
+	min-height: inherit !important;
+}
+
+input, td, th {
+	font-size: 15px !important;
+}
+
+#block-menu{
+	display: none;
+}
+
+.saisie-detaillee-link{
+	display: none;	
+}
+
+
+#export-imprimer, #export-excel {
+	display: none;
+}
+
+#header, .type-submit{
+	display: none;
+}
+
+.menu-business-plan-2{
+	display: none !important;
+	
+}
+
+.sous-menu-bp{
+	display: none;
+}
+
+.ariane{
+	display: none !important;
+}
+
+.dont-print {
+	display:none !important;	
+}
+
+.button{
+	display: none !important;
+}
+
+.ui-tooltip {
+	display:none !important;	
+}
+
+#footer {
+	display:none;	
+}
+
+.tableau {
+    max-width: 100% !important;
+    width: inherit !important;
+	
+}
+
+.liens-sociaux {
+		display:none !important;	
+}
+
+.tableau td.soustitre, .tableau td, .tableau th{
+	font-size: 15px !important;
+}
+
+input{
+	width: 100%;
+}
+
+
+
+.no_alert_a_sauvegarder{
+	display: none;
+}
+
+#commentaires{
+	background: none repeat scroll 0 0 #FFFFFF;
+    bottom: 0;
+    box-shadow: 0 0 0 0;
+    height: none;
+    overflow: auto;
+    padding: 0 10px;
+    position: static;
+  	right: none;
+    width: none;
+    z-index: 2003;
+	display: none;
+}
+
+#commentaires form{
+	display: none;
+}
+
+
+
+#notes {
+	background: none repeat scroll 0 0 #FFFFFF;
+    bottom: 0;
+    box-shadow: 0 0 0 0;
+    height: none;
+    overflow: auto;
+    padding: 0 10px;
+    position: static;
+  	right: none;
+    width: none;
+    z-index: 2003;
+	display: none;
+}
+
+*/
