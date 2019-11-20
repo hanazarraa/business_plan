@@ -1,3 +1,11 @@
 swiftmailer:
-    url: '%env(MAILER_URL)%'
+    transport:        gmail
+    username:         hanazarraa53@gmail.com
+    password:         wuwbsawbfekxvpau
+
+    host:             smtp.gmail.com
+    port:             465
+    encryption:       ssl
+    auth-mode:        login
     spool: { type: 'memory' }
+      

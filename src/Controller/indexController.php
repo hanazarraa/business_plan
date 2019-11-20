@@ -33,6 +33,12 @@ class indexController extends AbstractController
     public function dashboardAction(){
         return $this->render('dashboard.html.twig');
     }
+     /**
+     * @Route("/MonCompte", name="parametres")
+     */
+    public function ParametresAction(){
+        return $this->render('parametres.html.twig');
+    }
 
     
 }

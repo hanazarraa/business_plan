@@ -59,10 +59,31 @@ class User implements UserInterface
      */
     private $agreeTerms;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ConfirmationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $tokenpassword;
+
+    /**
+     * @ORM\Column(type="date",nullable=true)
+     */
+    private $createdtokenpassword;
+
     
     public function __construct()
     {
         $this->businessplans = new ArrayCollection();
+        $this->enabled=false;
     }
 
     public function getId(): ?int
@@ -194,6 +215,54 @@ class User implements UserInterface
     public function setAgreeTerms(?bool $agreeTerms): self
     {
         $this->agreeTerms = $agreeTerms;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->ConfirmationToken;
+    }
+
+    public function setConfirmationToken(string $ConfirmationToken): self
+    {
+        $this->ConfirmationToken = $ConfirmationToken;
+
+        return $this;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getTokenpassword(): ?string
+    {
+        return $this->tokenpassword;
+    }
+
+    public function setTokenpassword(string $tokenpassword): self
+    {
+        $this->tokenpassword = $tokenpassword;
+
+        return $this;
+    }
+
+    public function getCreatedtokenpassword(): ?\DateTimeInterface
+    {
+        return $this->createdtokenpassword;
+    }
+
+    public function setCreatedtokenpassword(\DateTimeInterface $createdtokenpassword): self
+    {
+        $this->createdtokenpassword = $createdtokenpassword;
 
         return $this;
     }
