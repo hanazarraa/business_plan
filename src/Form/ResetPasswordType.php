@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Validator\CurrentPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -23,6 +24,9 @@ class ResetPasswordType extends AbstractType
         ->add('current_password', PasswordType::class,array(
             'mapped'=>false,
             'required'=>false,
+            'constraints'=>[
+                new CurrentPassword()
+            ]
         ))
            
         ->add('password', PasswordType::class, [

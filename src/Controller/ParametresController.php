@@ -11,15 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-/**
- * @Route("/MonCompte",name="myaccount")
- */
+
 class ParametresController extends AbstractController
 {
 
 
     /**
-     * @Route("/", name="parametres")
+     * @Route("/MonCompte", name="parametres")
      */
     
     
@@ -27,7 +25,7 @@ class ParametresController extends AbstractController
         return $this->render('parametres.html.twig');
     }
      /**
-     * @Route("/change_password", name="change_password")
+     * @Route("/MonCompte/change_password", name="change_password")
      */
     public function changepassword(Request $request,  UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -46,12 +44,8 @@ class ParametresController extends AbstractController
            
            
         
-          /*  if($user === null) {
-                $this->addFlash('not-user-exist', 'utilisateur non trouvé');
-                return $this->redirectToRoute('app_register');
-            }
-            $user->setTokenpassword('');
-           
+            $user=$this->getUser();
+         
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
                         $user,
@@ -59,11 +53,11 @@ class ParametresController extends AbstractController
                     )
                 );
                 $em->flush();
-                return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('parametres');
             }
          
             
-            */
+            
        
        
     
@@ -71,11 +65,11 @@ class ParametresController extends AbstractController
 
     
 
-}
+
 
 return $this->render('change_password.html.twig', [
-    'form' => $form->createView(),
-    'url'=>$url
+    'form' => $form->createView()
+   
 ]);
     }
 }
