@@ -16,12 +16,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ResetPasswordType extends AbstractType
+class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-      
+        ->add('current_password', PasswordType::class,array(
+            'mapped'=>false,
+            'required'=>true,
+            'constraints'=>[
+                new CurrentPassword()
+            ]
+        ))
            
         ->add('password', PasswordType::class, [
             // instead of being set onto the object directly,

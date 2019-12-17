@@ -13,13 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Services\MailerService;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class RegistrationController extends AbstractController
 {
     
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/{_locale}/register", name="app_register")
      */
     public function register(AuthenticationUtils $authenticationUtils,Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailerService, \Swift_Mailer $mailer)
     {
@@ -29,6 +28,7 @@ class RegistrationController extends AbstractController
          $lastUsername = $authenticationUtils->getLastUsername();
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,10 +54,11 @@ class RegistrationController extends AbstractController
        // }
         }
       
-       
-        return $this->render('registration/inscription.html.twig',[
+       $locale=$request->getLocale();
+        return $this->render("registration/".$locale."/inscription.html.twig",[
             'form'=>$form->createView(),
-            'errors'=>$form->getErrors()
+            'errors'=>$form->getErrors(),
+           // 'captcha_html' => $captcha->Html()
         ]);
     
 

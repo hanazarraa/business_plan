@@ -6,15 +6,17 @@
  *     // code here
  * });
  */
-(function($,sr){
+(function($, sr) {
     // debouncing function from John Hann
     // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
-    var debounce = function (func, threshold, execAsap) {
-      var timeout;
+    var debounce = function(func, threshold, execAsap) {
+        var timeout;
 
-        return function debounced () {
-            var obj = this, args = arguments;
-            function delayed () {
+        return function debounced() {
+            var obj = this,
+                args = arguments;
+
+            function delayed() {
                 if (!execAsap)
                     func.apply(obj, args);
                 timeout = null;
@@ -30,9 +32,9 @@
     };
 
     // smartresize
-    jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+    jQuery.fn[sr] = function(fn) { return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
-})(jQuery,'smartresize');
+})(jQuery, 'smartresize');
 /**
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -52,7 +54,7 @@ var CURRENT_URL = window.location.href.split('?')[0],
 // Sidebar
 $(document).ready(function() {
     // TODO: This is some kind of easy fix, maybe we can improve this
-    var setContentHeight = function () {
+    var setContentHeight = function() {
         // reset height
         $RIGHT_COL.css('min-height', $(window).height());
 
@@ -108,14 +110,14 @@ $(document).ready(function() {
     // check active menu
     $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
 
-    $SIDEBAR_MENU.find('a').filter(function () {
+    $SIDEBAR_MENU.find('a').filter(function() {
         return this.href == CURRENT_URL;
     }).parent('li').addClass('current-page').parents('ul').slideDown(function() {
         setContentHeight();
     }).parent().addClass('active');
 
     // recompute content when resizing
-    $(window).smartresize(function(){
+    $(window).smartresize(function() {
         setContentHeight();
     });
 
@@ -126,7 +128,7 @@ $(document).ready(function() {
         $('.menu_fixed').mCustomScrollbar({
             autoHideScrollbar: true,
             theme: 'minimal',
-            mouseWheel:{ preventDefault: true }
+            mouseWheel: { preventDefault: true }
         });
     }
 });
@@ -141,7 +143,7 @@ $(document).ready(function() {
 
         // fix for some div with hardcoded fix class
         if ($BOX_PANEL.attr('style')) {
-            $BOX_CONTENT.slideToggle(200, function(){
+            $BOX_CONTENT.slideToggle(200, function() {
                 $BOX_PANEL.removeAttr('style');
             });
         } else {
@@ -152,7 +154,7 @@ $(document).ready(function() {
         $ICON.toggleClass('fa-chevron-up fa-chevron-down');
     });
 
-    $('.close-link').click(function () {
+    $('.close-link').click(function() {
         var $BOX_PANEL = $(this).closest('.x_panel');
 
         $BOX_PANEL.remove();
@@ -178,7 +180,7 @@ if ($(".progress .progress-bar")[0]) {
 $(document).ready(function() {
     if ($(".js-switch")[0]) {
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        elems.forEach(function (html) {
+        elems.forEach(function(html) {
             var switchery = new Switchery(html, {
                 color: '#26B99A'
             });
@@ -190,7 +192,7 @@ $(document).ready(function() {
 // iCheck
 $(document).ready(function() {
     if ($("input.flat")[0]) {
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('input.flat').iCheck({
                 checkboxClass: 'icheckbox_flat-green',
                 radioClass: 'iradio_flat-green'
@@ -201,12 +203,12 @@ $(document).ready(function() {
 // /iCheck
 
 // Table
-$('table input').on('ifChecked', function () {
+$('table input').on('ifChecked', function() {
     checkState = '';
     $(this).parent().parent().parent().addClass('selected');
     countChecked();
 });
-$('table input').on('ifUnchecked', function () {
+$('table input').on('ifUnchecked', function() {
     checkState = '';
     $(this).parent().parent().parent().removeClass('selected');
     countChecked();
@@ -214,21 +216,21 @@ $('table input').on('ifUnchecked', function () {
 
 var checkState = '';
 
-$('.bulk_action input').on('ifChecked', function () {
+$('.bulk_action input').on('ifChecked', function() {
     checkState = '';
     $(this).parent().parent().parent().addClass('selected');
     countChecked();
 });
-$('.bulk_action input').on('ifUnchecked', function () {
+$('.bulk_action input').on('ifUnchecked', function() {
     checkState = '';
     $(this).parent().parent().parent().removeClass('selected');
     countChecked();
 });
-$('.bulk_action input#check-all').on('ifChecked', function () {
+$('.bulk_action input#check-all').on('ifChecked', function() {
     checkState = 'all';
     countChecked();
 });
-$('.bulk_action input#check-all').on('ifUnchecked', function () {
+$('.bulk_action input#check-all').on('ifUnchecked', function() {
     checkState = 'none';
     countChecked();
 });
@@ -255,7 +257,7 @@ function countChecked() {
 
 // Accordion
 $(document).ready(function() {
-    $(".expand").on("click", function () {
+    $(".expand").on("click", function() {
         $(this).next().slideToggle(200);
         $expand = $(this).find(">:first-child");
 
@@ -269,11 +271,11 @@ $(document).ready(function() {
 
 // NProgress
 if (typeof NProgress != 'undefined') {
-    $(document).ready(function () {
+    $(document).ready(function() {
         NProgress.start();
     });
 
-    $(window).load(function () {
+    $(window).load(function() {
         NProgress.done();
     });
 }

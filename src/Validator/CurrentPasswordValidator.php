@@ -3,35 +3,35 @@
 namespace App\Validator;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 /**
  * @Annotation
  */
 class CurrentPasswordValidator extends ConstraintValidator
 {
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,TokenStorageInterface $tokenStorage)
     {
         $this->passwordEncoder=$passwordEncoder;
+        $this->tokenstorage=$tokenStorage;
+ 
         
     }
     public function validate($password, Constraint $constraint){
-        if($this->geUser()){
-         $pass=$this->passwordEncoder->encodePassword(
-        $this->getUser(),
-        $password);
-        var_dump($this->getUser());
-        var_dump($this->getUser()->getPassword());
-        var_dump($pass);
-        exit;
+        $user=$this->tokenstorage->getToken()->getUser();
+
+       
 
      
     
-        if ($pass !== $this->getUser()->getPassword()) {
+        if (!$this->passwordEncoder->isPasswordValid($user, $password)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('current_password')
                 ->addViolation();
         }
-    }
+   // }
 }
 }

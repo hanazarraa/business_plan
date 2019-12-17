@@ -39,15 +39,13 @@ class User implements UserInterface
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    
     /**
    * @CaptchaAssert\ValidCaptcha(
    *      message = "CAPTCHA validation failed, try again."
    * )
    */
-    private $captcha;
+    private $captchaCode;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Businessplan", mappedBy="user")
@@ -164,14 +162,14 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCaptcha(): ?string
+    public function getCaptchaCode(): ?string
     {
-        return $this->captcha;
+        return $this->captchaCode;
     }
 
-    public function setCaptcha(string $captcha): self
+    public function setCaptchaCode(string $captchaCode): self
     {
-        $this->captcha = $captcha;
+        $this->captchaCode = $captchaCode;
 
         return $this;
     }

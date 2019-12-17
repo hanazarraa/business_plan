@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,28 @@ class ParametresController extends AbstractController
     public function ParametresAction(){
         return $this->render('parametres.html.twig');
     }
+    /**
+     * @Route("/MonCompte/change_langue", name="change_langue")
+     */
+    
+    
+    public function Change_langue(Request $request){
+        if($request->getLocale()=='fr'){
+       
+            $this->container->get('request')->setLocale('en');
+        }else{
+            $this->container->get('request')->setLocale('fr');
+
+        }
+        
+     
+      
+        
+        return $this->redirectToRoute($request->getLocale());
+            
+        
+
+    }
      /**
      * @Route("/MonCompte/change_password", name="change_password")
      */
@@ -33,7 +56,7 @@ class ParametresController extends AbstractController
       
         $em = $this->getDoctrine()->getManager();
        
-        $form = $this->createForm(ResetPasswordType::class);
+        $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
         
       
@@ -72,4 +95,5 @@ return $this->render('change_password.html.twig', [
    
 ]);
     }
+
 }
