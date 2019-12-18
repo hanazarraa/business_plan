@@ -49,13 +49,14 @@ class RegistrationController extends AbstractController
            $this->addFlash('user-error', 'Votre inscription a été validée, vous aller recevoir un email de confirmation pour activer votre compte et pouvoir vous connecté');
 
             // do anything else you need here, like send an email
-
-            return $this->redirectToRoute("app_login");
+           return $this->render('confirm_account.html.twig');
+            //return $this->redirectToRoute("app_login");
        // }
         }
       
        $locale=$request->getLocale();
-        return $this->render("registration/".$locale."/inscription.html.twig",[
+     
+       return $this->render("registration/".$locale."/inscription.html.twig",[
             'form'=>$form->createView(),
             'errors'=>$form->getErrors(),
            // 'captcha_html' => $captcha->Html()
@@ -79,10 +80,9 @@ class RegistrationController extends AbstractController
            $user->setEnabled(true);
            $em->persist($user);
            $em->flush();
-           return $this->redirectToRoute('app_login');
-        } else {
-            //return $this->render('registration/token-expire.html.twig');
+           
         }
+        return $this->redirectToRoute('app_login');
     }
      /**
      * @Route("/send-token-confirmation", name="send_confirmation_token")

@@ -88,7 +88,7 @@
               <div class="left_col scroll-view">
                   <!--
                   <div class="navbar nav_title acenter" style="border: 0; height:auto;">
-                    <a ../mes-business-plan">
+                    <a href="../mes-business-plan">
                        <img src="https://www.montpellier-business-plan.com/images/design/header/logo-mmm-only-white.png" alt="" />
                     </a>
                   </div>
@@ -135,7 +135,7 @@
                   <a href="{{path('parametres')}}" data-toggle="tooltip" data-placement="top" title="Paramètres">
                       <i class="fa fa-cog"></i>
                   </a>
-                  <a ../espace_client/espace_client/ajax_commentremplir/bp" class="open-modal" data-toggle="tooltip" data-placement="top" title="Aide">
+                  <a href="../espace_client/espace_client/ajax_commentremplir/bp" class="open-modal" data-toggle="tooltip" data-placement="top" title="Aide">
                       <i class="fa fa-question-circle"></i>
                   </a>
                   <a href="{{path('app_logout')}}" data-toggle="tooltip" data-placement="top" title="Se déconnecter">
@@ -192,7 +192,7 @@
 
 <ul class="liste margeur-20">
 	<li>
-		<a ../mon-compte/modifier-email" title="Modifier mon e-mail">
+		<a href="../mon-compte/modifier-email" title="Modifier mon e-mail">
 			Modifier mon email		</a>
 	</li>
 	
@@ -208,7 +208,7 @@
 			langue		</td>
 		
 		<td>
-			Français 
+			{{app.session.get('_locale')}}
 			(<a href="{{path('change_langue')}}" title="Changer de langue">Changer</a>)
 
 		</td>
@@ -220,7 +220,7 @@
 		
 		<td>
 			Oui 
-			(<a ../espace_client/compte/changer_popup" title="Changer">Changer</a>)
+			(<a href="../espace_client/compte/changer_popup" title="Changer">Changer</a>)
 		</td>
 	</tr>
 	
@@ -229,7 +229,7 @@
 			Inclure les commentaires dans les exports Excel		</td>
 		
 		<td>
-			Oui			(<a ../espace_client/compte/export_commentaires" title="Changer">Changer</a>)
+			Oui			(<a href="../espace_client/compte/export_commentaires" title="Changer">Changer</a>)
 		</td>
 	</tr>
 	
@@ -238,7 +238,7 @@
 		Inclure les notes dans les exports Excel		</td>
 		
 		<td>
-			Oui			(<a ../espace_client/compte/export_notes" title="Changer">Changer</a>)
+			Oui			(<a href="../espace_client/compte/export_notes" title="Changer">Changer</a>)
 		</td>
 	</tr>
 </table>
@@ -249,11 +249,11 @@
             <footer>
               <div class="pull-left">
                   &copy; Montpellier Méditerranée Métropole 2019                  -
-                  <a title="" ../fr/conditions-generales-d-utilisation">Conditions générales d'utilisation</a>
+                  <a title="" href="../fr/conditions-generales-d-utilisation">Conditions générales d'utilisation</a>
                   -
-                  <a title="" ../fr/mentions-legales">Mentions légales</a>
+                  <a title="" href="../fr/mentions-legales">Mentions légales</a>
                   -
-                  <a title="" ../fr/credits">Crédits</a>
+                  <a title="" href="../fr/credits">Crédits</a>
               </div>
               <div class="clearfix"></div>
             </footer>

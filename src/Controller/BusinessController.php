@@ -11,7 +11,7 @@ use App\Form\BusinessFormType;
 class BusinessController extends AbstractController
 {
     /**
-     * @Route("/create", name="businessplan_create")
+     * @Route("dashboard/creer-business-plan", name="businessplan_create")
      */
     public function create(Request $request)
     {
@@ -22,20 +22,18 @@ class BusinessController extends AbstractController
           $user = $this->get('security.token_storage')->getToken()->getUser();
           
           if($form->isSubmitted() && $form->isValid()){
-             
-              $business=$form->getData();
-            
+   
+             $business=$form->getData();
              $business->setUser($user);
              $entityManager = $this->getDoctrine()->getManager();
              $entityManager->persist($business);
              $entityManager->flush();
- 
+
               return $this->redirectToRoute('dashboard');
               
           }
-          return $this->render('create.html.twig',[
-              'form'=>$form->createView(),
-          ]);
+         // dump($business);die();
+          return $this->render('business/create.html.twig',['form' => $form->createView()]);
      
     }
 }

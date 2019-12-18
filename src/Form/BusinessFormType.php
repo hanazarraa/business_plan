@@ -14,7 +14,7 @@ class BusinessFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('nb_periodes', ChoiceType::class,array(
+            ->add('numberofyears', ChoiceType::class,array(
                 'choices'=>array(
                     '2'=>'2',
                     '3'=>'3',
@@ -28,23 +28,18 @@ class BusinessFormType extends AbstractType
 
                 )
             ))
-            ->add('global_only',ChoiceType::class,array(
+            ->add('typeofbusiness',ChoiceType::class,array(
                 'choices'=>array(
                     'Classic (recommended)'=>'0',
                     'Global (for a quick draft)' =>'1'	
                 )
             ))
-            ->add('devise',TextType::class,array('label'=>'Currency'))
+            ->add('currency',TextType::class,array('label'=>'Currency'))
             
-            ->add('format',ChoiceType::class,array(
-                'choices'=>array(
-                    'FR'=>'FR',
-                    'US'=>'US',
-                )
-            ))
+            
          
-            ->add('annee_debut',TextType::class)
-            ->add('mois_debut',ChoiceType::class,array(
+            ->add('startyear',TextType::class)
+            ->add('startmonth',ChoiceType::class,array(
                 'choices'=>array(
                     'Jan.'=>'1',
                     'Feb.'=>'2',
@@ -61,14 +56,14 @@ class BusinessFormType extends AbstractType
 
                 )
             ))
-            ->add('societe_elements_anterieurs',ChoiceType::class,array(
+            ->add('includeitems',ChoiceType::class,array(
                 'choices'=>array(
                     'No'=>'0',
                     'Yes'=>'1',
                 )
             ))
-            ->add('tva',TextType::class)
-            ->add('nom_societe',TextType::class)
+            ->add('defaultVAT',TextType::class)
+            ->add('Companyname',TextType::class)
             ->add('OK', SubmitType::class)
         ;
     }

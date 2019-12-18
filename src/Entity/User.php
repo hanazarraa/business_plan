@@ -7,11 +7,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Regex;
 use Captcha\Bundle\CaptchaBundle\Validator\Constraints as CaptchaAssert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity("email")
  */
 
 class User implements UserInterface
@@ -22,10 +25,24 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     
+ /**
+     * @Assert\Regex(
+     *  pattern     = "/^[a-zA-Z]+[0-9]*@[a-zA-Z]+.[a-zA-Z]+$/i",
+     *     htmlPattern = "^[a-zA-Z]+[09]*@[a-zA-Z]+.[a-zA-Z]+$",
+     *     message="Your name cannot contain a number"
+     * )
      */
+    /**
+     * @Assert\Unique(message="The {{ value }} email is repeated.")
+     */
+    /**
+     * @ORM\Column(type="string", length=180,unique=true)
+     * 
+     */
+   
+    
+
     private $email;
 
     /**
@@ -39,13 +56,22 @@ class User implements UserInterface
      */
     private $password;
 
-    
-    /**
+  /**
    * @CaptchaAssert\ValidCaptcha(
-   *      message = "CAPTCHA validation failed, try again."
-   * )
-   */
-    private $captchaCode;
+   *   message = "captcha validation failed , try again"
+   * ) */  
+  protected $captchaCode;
+
+  public function getCaptchaCode()
+  {
+    return $this->captchaCode;
+  }
+
+  public function setCaptchaCode($captchaCode)
+  {
+    $this->captchaCode = $captchaCode;
+  }
+   
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Businessplan", mappedBy="user")
@@ -82,6 +108,7 @@ class User implements UserInterface
     {
         $this->businessplans = new ArrayCollection();
         $this->enabled=false;
+        $this->roles=['ROLE_ADMIN'];
     }
 
     public function getId(): ?int
@@ -118,7 +145,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+      //  $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -162,18 +189,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCaptchaCode(): ?string
-    {
-        return $this->captchaCode;
-    }
-
-    public function setCaptchaCode(string $captchaCode): self
-    {
-        $this->captchaCode = $captchaCode;
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection|Businessplan[]
      */

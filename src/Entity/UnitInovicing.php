@@ -49,7 +49,7 @@ class UnitInovicing
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="unitInovicing", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $product;
 

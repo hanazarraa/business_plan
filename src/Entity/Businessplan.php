@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,47 +17,6 @@ class Businessplan
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $nb_periodes;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $devise;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $format;
-
-    
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mois_debut;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $societe_elements_anterieurs;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
-     */
-    private $tva;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom_societe;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="businessplans")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -68,123 +25,51 @@ class Businessplan
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $global_only;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $annee_debut;
+    private $typeofbusiness;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="businessplan")
+     * @ORM\Column(type="string", length=255)
      */
-    private $products;
+    private $currency;
 
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $startyear;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $startmonth;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $includeitems;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $defaultVAT;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Companyname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numberofyears;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getNbPeriodes(): ?int
-    {
-        return $this->nb_periodes;
-    }
-
-    public function setNbPeriodes(int $nb_periodes): self
-    {
-        $this->nb_periodes = $nb_periodes;
-
-        return $this;
-    }
-
-    public function getDevise(): ?string
-    {
-        return $this->devise;
-    }
-
-    public function setDevise(string $devise): self
-    {
-        $this->devise = $devise;
-
-        return $this;
-    }
-
-    public function getFormat(): ?string
-    {
-        return $this->format;
-    }
-
-    public function setFormat(string $format): self
-    {
-        $this->format = $format;
-
-        return $this;
-    }
-
-  
-    public function getMoisDebut(): ?string
-    {
-        return $this->mois_debut;
-    }
-
-    public function setMoisDebut(string $mois_debut): self
-    {
-        $this->mois_debut = $mois_debut;
-
-        return $this;
-    }
-
-    public function getSocieteElementsAnterieurs(): ?string
-    {
-        return $this->societe_elements_anterieurs;
-    }
-
-    public function setSocieteElementsAnterieurs(string $societe_elements_anterieurs): self
-    {
-        $this->societe_elements_anterieurs = $societe_elements_anterieurs;
-
-        return $this;
-    }
-
-    public function getTva(): ?string
-    {
-        return $this->tva;
-    }
-
-    public function setTva(string $tva): self
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
-    public function getNomSociete(): ?string
-    {
-        return $this->nom_societe;
-    }
-
-    public function setNomSociete(string $nom_societe): self
-    {
-        $this->nom_societe = $nom_societe;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -199,57 +84,110 @@ class Businessplan
         return $this;
     }
 
-    public function getGlobalOnly(): ?string
+    public function getName(): ?string
     {
-        return $this->global_only;
+        return $this->name;
     }
 
-    public function setGlobalOnly(string $global_only): self
+    public function setName(string $name): self
     {
-        $this->global_only = $global_only;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getAnneeDebut(): ?string
+    public function getTypeofbusiness(): ?string
     {
-        return $this->annee_debut;
+        return $this->typeofbusiness;
     }
 
-    public function setAnneeDebut(string $annee_debut): self
+    public function setTypeofbusiness(string $typeofbusiness): self
     {
-        $this->annee_debut = $annee_debut;
+        $this->typeofbusiness = $typeofbusiness;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
+    public function getCurrency(): ?string
     {
-        return $this->products;
+        return $this->currency;
     }
 
-    public function addProduct(Product $product): self
+    public function setCurrency(string $currency): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setBusinessplan($this);
-        }
+        $this->currency = $currency;
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function getStartyear(): ?int
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getBusinessplan() === $this) {
-                $product->setBusinessplan(null);
-            }
-        }
+        return $this->startyear;
+    }
+
+    public function setStartyear(int $startyear): self
+    {
+        $this->startyear = $startyear;
+
+        return $this;
+    }
+
+    public function getStartmonth(): ?string
+    {
+        return $this->startmonth;
+    }
+
+    public function setStartmonth(string $startmonth): self
+    {
+        $this->startmonth = $startmonth;
+
+        return $this;
+    }
+
+    public function getIncludeitems(): ?bool
+    {
+        return $this->includeitems;
+    }
+
+    public function setIncludeitems(bool $includeitems): self
+    {
+        $this->includeitems = $includeitems;
+
+        return $this;
+    }
+
+    public function getDefaultVAT(): ?float
+    {
+        return $this->defaultVAT;
+    }
+
+    public function setDefaultVAT(float $defaultVAT): self
+    {
+        $this->defaultVAT = $defaultVAT;
+
+        return $this;
+    }
+
+    public function getCompanyname(): ?string
+    {
+        return $this->Companyname;
+    }
+
+    public function setCompanyname(?string $Companyname): self
+    {
+        $this->Companyname = $Companyname;
+
+        return $this;
+    }
+
+    public function getNumberofyears(): ?string
+    {
+        return $this->numberofyears;
+    }
+
+    public function setNumberofyears(string $numberofyears): self
+    {
+        $this->numberofyears = $numberofyears;
 
         return $this;
     }

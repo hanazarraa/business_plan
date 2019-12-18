@@ -32,7 +32,7 @@
 					</div>
 
 		<div class="fleft margeur-l20">
-			<a ../espace_client/compte/affiche_invite" title="Share" class="btn btn-lg btn-primary">
+			<a href="../espace_client/compte/affiche_invite" title="Share" class="btn btn-lg btn-primary">
 				<i class="fa fa-share-alt"></i> &nbsp;Share			</a>
 		</div>
 
@@ -59,20 +59,20 @@
 							<tr>
 					<td>
 						<p class="fs-18">
-							<a ../espace_client/bp/choix_bp/070739fb2d8820bcf444610a2d3da350">
+							<a href="../espace_client/bp/choix_bp/070739fb2d8820bcf444610a2d3da350">
 								{{ business.name }}							</a>
 						</p>
 					</td>
 
 					<td>
 						<p>
-							Business plan over 2 years, starting in July 2019							<br />
+							Business plan over {{business.numberofyears}} years, starting in {{business.startmonth}} {{ business.startyear}}						<br />
 							Created on 16/10/2019 at 15:57:36													</p>
 					</td>
 
 					<td style="width:260px">
 						<div class="fleft acenter fs-22">
-							<a ../espace_client/bp/choix_bp/070739fb2d8820bcf444610a2d3da350">
+							<a href="../espace_client/bp/choix_bp/070739fb2d8820bcf444610a2d3da350">
 								<i class="fa fa-pencil"></i>
 								<br />
 								<span class="fs-15">modify</span>
@@ -80,7 +80,7 @@
 						</div>
 
 													<div class="fleft acenter fs-22 margeur-l15">
-								<a ../espace_client/bp/duplicate_bp/070739fb2d8820bcf444610a2d3da350/0853db360679228d86f0c550e6025cc9" class="demande-confirmation">
+								<a href="../espace_client/bp/duplicate_bp/070739fb2d8820bcf444610a2d3da350/0853db360679228d86f0c550e6025cc9" class="demande-confirmation">
 									<i class="fa fa-files-o"></i>
 									<br />
 									<span class="fs-15">clone</span>
@@ -88,7 +88,7 @@
 							</div>
 						
 						<div class="fleft margeur-l15 acenter fs-22">
-							<a ../espace_client/bp/delete_bp/070739fb2d8820bcf444610a2d3da350/0853db360679228d86f0c550e6025cc9" class="demande-confirmation icone">
+							<a href="../espace_client/bp/delete_bp/070739fb2d8820bcf444610a2d3da350/0853db360679228d86f0c550e6025cc9" class="demande-confirmation icone">
 								<i class="fa fa-trash-o"></i>
 								<br />
 								<span class="fs-15">delete</span>
@@ -116,7 +116,7 @@
 
 				<p class="margeur-10">
 					<span class="fs-18">First time?</span>
-					&nbsp;<a id="commentremplir-bp" ../espace_client/espace_client/ajax_commentremplir/bp" class="btn btn-md btn-primary open-modal" title="Find out more">Click here</a>
+					&nbsp;<a id="commentremplir-bp" href="../espace_client/espace_client/ajax_commentremplir/bp" class="btn btn-md btn-primary open-modal" title="Find out more">Click here</a>
 					find out more				</p>
 			</div>
 		</div>

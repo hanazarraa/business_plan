@@ -1,0 +1,352 @@
+{% extends 'layout_dashboard.html.twig' %}
+{% block head %}
+{{ parent() }}
+{% endblock %}
+  {% block page_content %}  
+ <!-- page content -->
+        <div class="right_col" role="main">
+                           {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'/dashboard/creer-business-plan' }}) }}
+
+	<div class="entete entete-min">
+		<h1 class="fleft">
+							New business plan					</h1>
+
+		<div class="call-to-action fright">
+												<div class="fleft">
+						<a href="https://www.montpellier-business-plan.com/espace_client/bp/delete_bp/0" class="demande-confirmation btn btn-md btn-danger" title="ATTENTION : La suppression est définitive, vous ne pourrez plus revenir en arrière">
+							<i class="fa fa-trash-o"></i> &nbsp;Delete						</a>
+					</div>
+
+					<div class="fleft">
+                     {{form_row (form.OK, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'OK'}}) }}
+			
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="OK" />
+			</div>
+		
+		<div class="clearer"></div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="nom">
+					Name <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+									 {{ form_widget (form.name, {'attr': {'class': 'type-text','value':''}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+					<div class="form-element ">
+				<div class="fleft">
+					<label for="nb_periodes">
+						Number of years <span class="rouge">*</span>
+					</label>
+
+					<div class="champ">
+							 {{ form_widget (form.numberofyears, {'attr': {'class': 'type-text','value':''}}) }}
+					</div>
+
+					<div class="clearer"></div>
+				</div>
+
+				<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+											</div>
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="form-element ">
+				<div class="fleft">
+					<label for="global_only">
+						Type of business plan <span class="rouge">*</span> &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="You have two options:
+Classic:the first year or the first two years of the Business Plan (depending on the number of years chosen) are in Detailed entry  mode. Following years are in Global entry mode.
+Global: all years are in Global entry mode. Practical for writing an approximate version of your Business Plan quickly. You may switch to Detailed entry mode at any time without losing your work.
+"></i>					</label>
+
+					<div class="champ">
+							 {{ form_widget (form.typeofbusiness, {'attr': {'class': 'type-text','value':''}}) }}
+
+					</div>
+
+					<div class="clearer"></div>
+				</div>
+
+				<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+											</div>
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+		
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="devise">
+					Currency <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					 {{ form_widget (form.currency, {'attr': {'class': 'type-text','value':'€'}}) }}
+
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element">
+			<div class="fleft">
+				<label for="format">
+					Format <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					<select id="format" name="format">
+						<option value="FR" >FR</option>
+						<option value="US" >US</option>
+					</select>
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="form-element  margeur-b15">
+			<div class="fleft">
+				<label for="annee_debut">
+					Start year <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+                {{ form_widget (form.startyear, {'attr': {'class': 'type-text','value':''}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element  margeur-b15">
+			<div class="fleft">
+				<label for="mois_debut">
+					Start month <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					 {{ form_widget (form.startmonth, {'attr': {'class': 'type-text','value':''}}) }}
+
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="societe_elements_anterieurs">
+					Include items from previous exercises?				</label>
+
+				<div class="champ">
+ {{ form_widget (form.includeitems, {'attr': {'class': 'type-text','value':''}}) }}
+
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva">
+					Default VAT <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+ {{ form_widget (form.defaultVAT, {'attr': {'class': 'type-text','value':''}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<h2 class="margeur-20">Company information</h2>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="nom_societe">
+					Company name				</label>
+
+				<div class="champ">
+{{ form_widget (form.Companyname, {'attr': {'class': 'type-text','value':''}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+	 		</div>
+
+                    </div>
+                     	{{ form_row(form._token) }}
+                    {% endblock %}
+    
+
+{# 
+{% block title %}New business plan{% endblock %}
+
+{% block body %}
+
+ {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'/dashboard/creer-business-plan' }}) }}
+<label for="inputname">Name*</label>
+   <div class="champ">
+				 {{ form_widget (form.name, {'attr': {'class': 'type-text','value':''}}) }}
+				</div>
+
+<label for="inputnb_years">Number of years *</label>
+		 {{ form_widget (form.numberofyears, {'attr': {'class': 'type-text','value':''}}) }}
+
+<br>
+<label for="inputnb_years">Type of business plan *</label>
+	 {{ form_widget (form.typeofbusiness, {'attr': {'class': 'type-text','value':''}}) }}
+<br>
+<label for="inputcurrency">Currency *</label>
+ {{ form_widget (form.currency, {'attr': {'class': 'type-text','value':''}}) }}
+
+<br>
+
+
+<label for="inputstryears">Start year *</label>
+{{ form_widget (form.startyear, {'attr': {'class': 'type-text','value':''}}) }}
+<br>
+<label for="inputstrmounth">Start month *</label>
+ {{ form_widget (form.startmonth, {'attr': {'class': 'type-text','value':''}}) }}
+<br>
+<label for="inputincludes">Include items from previous exercises *</label>
+ {{ form_widget (form.includeitems, {'attr': {'class': 'type-text','value':''}}) }}
+
+<br>
+
+<label for="inputVAT">Default VAT *</label>
+
+ {{ form_widget (form.defaultVAT, {'attr': {'class': 'type-text','value':''}}) }}
+
+
+<br>
+<h3>Company information</h3>
+<label for="inputVAT">Company Name </label>
+ {{ form_widget (form.Companyname, {'attr': {'class': 'type-text','value':''}}) }}
+ <br>
+ {{form_row (form.OK, {'attr': {'class': 'bouton-unlimited','value':'Valider'}}) }}
+ 	{{ form_row(form._token) }}
+{{ form_errors(form) }}
+{% endblock %}
+#}

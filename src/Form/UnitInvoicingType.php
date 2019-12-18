@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Product;
 use App\Entity\User;
 use App\Validator\CurrentPassword;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType ;
 
@@ -24,13 +26,7 @@ class UnitInvoicingType extends AbstractType
         $builder
       
            
-        ->add('name', TextType::class, [
-            // instead of being set onto the object directly,
-            // this is read and encoded in the controller
-            'required' => true,
-            
-            
-        ])
+       ->add('product', ProductType::class)
         ->add('sellPrice', TextType::class,array(
             'mapped'=>false,
         ))

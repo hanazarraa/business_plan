@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,12 +25,16 @@ class indexController extends AbstractController
       //  return $this->render('index.html.twig');
     }
     /**
-     * @Route("/{_locale}",name="{_locale}")
+     * @Route("/{{_locale}}",name="{_locale}")
      */
     public function locale(Request $request){
         $locale=$request->getLocale();
-      
+        $locale=$this->get('session')->get('_locale');
+       if($locale!==null){
         return $this->render($locale.".html.twig");
+        }else{
+            return $this->render('fr.html.twig');
+        }
     }
     
       /**

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 class ParametresController extends AbstractController
 {
 
@@ -29,20 +29,28 @@ class ParametresController extends AbstractController
      * @Route("/MonCompte/change_langue", name="change_langue")
      */
     
-    
-    public function Change_langue(Request $request){
-        if($request->getLocale()=='fr'){
+    public function change_langue(Request $request){
+    if( $this->get('session')->get('_locale')=='fr'){
        
-            $this->container->get('request')->setLocale('en');
+        $this->get('session')->set('_locale', 'en');
+    
+         // var_dump($this->get('session')->get('_locale'));
+       
+    
+           
+        
         }else{
-            $this->container->get('request')->setLocale('fr');
+          
+            $this->get('session')->set('_locale', 'fr');
+
+            //$this->container->get('request')->setLocale('fr');
 
         }
-        
+       // print_r($request->getLocale());
      
-      
-        
-        return $this->redirectToRoute($request->getLocale());
+      return $this->redirectToRoute("{_locale}");
+     
+     
             
         
 

@@ -9,10 +9,10 @@ use App\Entity\Businessplan;
 use App\Entity\Product;
 use App\Entity\UnitInovicing;
 use App\Form\BusinessFormType;
+use App\Form\ProductType;
 use App\Form\UnitInvoicingType;
 use App\Form\UnitInvoicingTypeType;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
      * @Route("/products")
@@ -46,35 +46,18 @@ class ProductsController extends AbstractController
      * @Route("/create_product", name="unit_invoicing_create")
      */
     public function unit_invoicing_create(Request $request){
-       /* $product=new Product();
-        
-        $form = $this->createForm(UnitInvoicingType::class, $product);
-        
-        
-   */
-        $fields =json_decode( $request->getContent());
-        
- 
-        $unit_invoicing = $this->createUnitInvoicing(new UnitInovicing(), $fields);
- 
-        $this->productRepository->insert($unit_invoicing);
-       
- 
-        return new Response(null, Response::HTTP_CREATED);
-    }
-    private function createUnitInvoicing(Product $product, array $fields): Product
-    {
-        $product->setName($fields['name']);
-       
-        return $product;
-    }
-        
-          /*if($form->isSubmitted() && $form->isValid()){
-        
-              $product=$form->getData();
-            
+        $unitinvoicing=new UnitInovicing();
+        $form = $this->createForm(UnitInvoicingType::class, $unitinvoicing);
+          //$product->setName($request->request->get('name'));
+          $form->handleRequest($request);
+          
+          if($form->isSubmitted() && $form->isValid()){
+           
+              $unitinvoicing=$form->getData();
+             
+               
              $entityManager = $this->getDoctrine()->getManager();
-             $entityManager->persist($product);
+             $entityManager->persist($unitinvoicing);
              $entityManager->flush();
  
               return $this->redirectToRoute('products');
@@ -86,7 +69,7 @@ class ProductsController extends AbstractController
      
  
  
-     }*/
+     }
   /*  public function create(Request $request)
     {
         $business=new Businessplan();
