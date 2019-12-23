@@ -36,7 +36,7 @@ class SecurityController extends AbstractController
         //return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
      /**
-    * @Route("/admin/login", name="loginadmin")
+    * @Route("/{_locale}/admin/login", name="loginadmin")
     */
     public function loginAdmin(AuthenticationUtils $authenticationUtils): Response
       {  $error = $authenticationUtils->getLastAuthenticationError();
@@ -51,7 +51,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        return $this->redirectToRoute("{_locale}");
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
     }
 }

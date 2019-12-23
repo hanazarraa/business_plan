@@ -13,50 +13,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+/**
+ * @Route("{_locale}/MonCompte")
+ */
 class ParametresController extends AbstractController
 {
 
 
     /**
-     * @Route("/MonCompte", name="parametres")
+     * @Route("/", name="parametres")
      */
     
     
     public function ParametresAction(){
         return $this->render('parametres.html.twig');
     }
-    /**
-     * @Route("/MonCompte/change_langue", name="change_langue")
-     */
-    
-    public function change_langue(Request $request){
-    if( $this->get('session')->get('_locale')=='fr'){
-       
-        $this->get('session')->set('_locale', 'en');
-    
-         // var_dump($this->get('session')->get('_locale'));
-       
-    
-           
-        
-        }else{
-          
-            $this->get('session')->set('_locale', 'fr');
-
-            //$this->container->get('request')->setLocale('fr');
-
-        }
-       // print_r($request->getLocale());
-     
-      return $this->redirectToRoute("{_locale}");
-     
-     
-            
-        
-
-    }
+   
      /**
-     * @Route("/MonCompte/change_password", name="change_password")
+     * @Route("/change_password", name="change_password")
      */
     public function changepassword(Request $request,  UserPasswordEncoderInterface $passwordEncoder): Response
     {

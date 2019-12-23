@@ -15,7 +15,7 @@ use App\Form\UnitInvoicingTypeType;
 use App\Repository\ProductRepository;
 
 /**
-     * @Route("/products")
+     * @Route("/{_locale}/dashboard/products")
  */
 class ProductsController extends AbstractController
 {

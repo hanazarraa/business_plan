@@ -31,24 +31,24 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'agreeTerms.true',
                     ]),
                 ],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'passwords.match',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' =>'please enter a password',
+                        'message' =>'password.NotBlank',
                     ]),
                     new Length([
                         'min'=>6,
-                        'minMessage'=>'Your password should be at least {{ limit }} characters',
+                        'minMessage'=>'Password.minlength',
                         'max' => 4096,
                     ]),
                     ],
