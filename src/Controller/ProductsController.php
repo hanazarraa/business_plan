@@ -15,7 +15,7 @@ use App\Form\UnitInvoicingTypeType;
 use App\Repository\ProductRepository;
 
 /**
-     * @Route("/products")
+     * @Route("/{_locale}/dashboard/products")
  */
 class ProductsController extends AbstractController
 {
@@ -42,6 +42,8 @@ class ProductsController extends AbstractController
  
  
      }
+     
+
       /**
      * @Route("/create_product", name="unit_invoicing_create")
      */
@@ -54,7 +56,7 @@ class ProductsController extends AbstractController
           if($form->isSubmitted() && $form->isValid()){
            
               $unitinvoicing=$form->getData();
-             
+            
                
              $entityManager = $this->getDoctrine()->getManager();
              $entityManager->persist($unitinvoicing);

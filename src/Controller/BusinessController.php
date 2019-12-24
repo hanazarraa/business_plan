@@ -7,11 +7,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Businessplan;
 use App\Form\BusinessFormType;
-
+/**
+ * @Route("/{_locale}/dashboard")
+ */
 class BusinessController extends AbstractController
 {
     /**
-     * @Route("dashboard/creer-business-plan", name="businessplan_create")
+     * @Route("creer-business-plan", name="businessplan_create")
      */
     public function create(Request $request)
     {

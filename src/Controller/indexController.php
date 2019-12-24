@@ -24,50 +24,32 @@ class indexController extends AbstractController
         return $this->render("index.html.twig");
       //  return $this->render('index.html.twig');
     }
+   
     /**
-     * @Route("/{{_locale}}",name="{_locale}")
+     * @Route("/{_locale}",name="home", defaults={"_locale" = "en"}, requirements={"_locale" = "en|fr"})
      */
     public function locale(Request $request){
         $locale=$request->getLocale();
-        $locale=$this->get('session')->get('_locale');
-       if($locale!==null){
-        return $this->render($locale.".html.twig");
-        }else{
-            return $this->render('fr.html.twig');
-        }
+        return $this->render("fr.html.twig");
+      
     }
     
-      /**
-       * @Route("{_locale}/select_langue/{langue}",name="select_lang")
-       */
-      public function select_langue($langue=null){
-        if($langue != null)
-        {
-            $this->container->get('request')->setLocale($langue);
-        }
-     
-        $url = $this->container->get('request')->headers->get('referer');
-        if(empty($url)) {
-            $url = $this->container->get('router')->generate('index');
-        }
-        return new RedirectResponse($url);
-      }
    
   
      /**
-     * @Route("/dashboard", name="dashboard")
+     * @Route("/{_locale}/dashboard", name="dashboard")
      */
     public function dashboardAction(){
         return $this->render('dashboard.html.twig');
     }
      /**
-     * @Route("/admin", name="indexadmin")
+     * @Route("/{_locale}/admin", name="indexadmin")
      */
     public function IndexAdminAction(){
             return $this->render('admin/index_admin.html.twig');
         }
         /**
-         * @Route("/admin/dashboard", name="admin")
+         * @Route("/{_locale}/admin/dashboard", name="admin")
          */
         public function AdminAction(){
             return $this->render('admin/admin_dashboard.html.twig');

@@ -34,7 +34,7 @@ class User implements UserInterface
      * )
      */
     /**
-     * @Assert\Unique(message="The {{ value }} email is repeated.")
+     * @Assert\Unique(message="email.unique")
      */
     /**
      * @ORM\Column(type="string", length=180,unique=true)
@@ -58,7 +58,7 @@ class User implements UserInterface
 
   /**
    * @CaptchaAssert\ValidCaptcha(
-   *   message = "captcha validation failed , try again"
+   *   message = "captcha.invalid"
    * ) */  
   protected $captchaCode;
 
