@@ -1,7 +1,0 @@
-user.email.invalid: The email is invalid
-agreeTerms.true: You should agree to our terms.
-password.NotBlank: please enter a password
-Password.minlength: Your password should be at least {{ limit }} characters
-passwords.match: The password fields must match.
-email.unique: The {{ value }} email is repeated
-captcha.invalid: captcha validation failed , try again

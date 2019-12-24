@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
       
        $locale=$request->getLocale();
      
-       return $this->render("registration/fr/inscription.html.twig",[
+       return $this->render("registration/".$locale."/inscription.html.twig",[
             'form'=>$form->createView(),
             'errors'=>$form->getErrors(),
            // 'captcha_html' => $captcha->Html()
@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
 
 }
  /**
-     * @Route("/account/confirm/{token}", name="confirm_account")
+     * @Route("/account/confirm/{token}/{username}", name="confirm_account")
      * @param $token
      * @param $username
      * @return Response

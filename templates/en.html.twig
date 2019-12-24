@@ -1,5 +1,11 @@
 
 <!DOCTYPE HTML>
+{% if app.user %}
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('dashboard')}}"><TITLE>Page has moved</TITLE>
+<A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
+
+{% else %}
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -42,7 +48,7 @@
         </script>
 
         <!--[if IE 6]>
-        	<link rel="stylesheet" type="text/css" href="../css/ie6.css" media="screen" />
+        	<link rel="stylesheet" type="text/css" ../css/ie6.css" media="screen" />
         <![endif]-->
 
         <script type="text/javascript">
@@ -118,13 +124,13 @@
 
     		<div class="container relative" style="height:115px;">
     			<!-- <div class="margeur-30 fleft">
-    				<a href="../en">
+    				<a ../en">
     					<img src="https://www.montpellier-business-plan.com/images/design/header/logo-mmm.jpg" alt="" />
     				</a>
     			</div>
 
     			<div class="fleft hidden-xs hidden-sm">
-    				<a href="../en">
+    				<a ../en">
     					<img src="https://www.montpellier-business-plan.com/images/design/header/logo-mbp.jpg" alt="" />
     				</a>
     			</div>
@@ -146,16 +152,16 @@
 
     						<ul class="margeur-10">
     							<li>
-    								<a href="../en/login" class=""> Invitation code ?</a>
+    								<a ../en/login" class=""> Invitation code ?</a>
     							</li>
 
     							<li>
-    								<a href="../en/inscription" title="Create a new account">
+    								<a ../en/inscription" title="Create a new account">
     									Create a new account    								</a>
     							</li>
 
     							<li>
-    								<a href="../en/recuperation-mot-de-passe" title="Lost password">
+    								<a ../en/recuperation-mot-de-passe" title="Lost password">
     									Lost password    								</a>
     							</li>
     						</ul>
@@ -177,7 +183,7 @@
     					
     					<ul class="menu fright">
     						    						    						<li>
-    							<a href="../en/inscription" title="Inscription">
+    							<a ../en/inscription" title="Inscription">
     								Sign up    							</a>
     						</li>
     						
@@ -197,13 +203,13 @@
 
     				<ul class="fright margeur-8 margeur-r30">
     					    						<li class="fleft">
-    							<a href="../fr" class="blanc">
+    							<a ../fr" class="blanc">
     								FR
     							</a>
     						</li>
 
     						<li class="fleft margeur-l20">
-    							<a href="../en" class="blanc">
+    							<a ../en" class="blanc">
     								EN
     							</a>
     						</li>
@@ -448,7 +454,7 @@ Free application available via a regular Internet connection.<br />
 	
 	
 		
-		<div class=" fright">
+		<div class="fright">
 			<a href="http://www.entreprendre-montpellier.com/agenda" class="bouton-unlimited small" target="_blank">See all events</a>
 		</div>
 
@@ -489,15 +495,15 @@ Free application available via a regular Internet connection.<br />
                                             </li>
 
                     <li class="fleft">
-                        <a title="" href="../en/conditions-generales-d-utilisation">End-User Licence Agreement </a>
+                        <a title="../en/conditions-generales-d-utilisation">End-User Licence Agreement </a>
                     </li>
 
                     <li class="fleft">
-                        <a title="" href="../en/mentions-legales">Legal</a>
+                        <a title="" ../en/mentions-legales">Legal</a>
                     </li>
 
                     <li class="fleft">
-                        <a title="" href="../en/credits">Credits</a>
+                        <a title="" ../en/credits">Credits</a>
                     </li>
 
                     <li class="clearer"></li>
@@ -522,3 +528,5 @@ Free application available via a regular Internet connection.<br />
         </div>
     </body>
 </html>
+
+{% endif %}

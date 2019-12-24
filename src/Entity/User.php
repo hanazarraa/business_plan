@@ -34,7 +34,7 @@ class User implements UserInterface
      * )
      */
     /**
-     * @Assert\Unique(message="email.unique")
+     * @Assert\Unique(message="The {{ value }} email is repeated.")
      */
     /**
      * @ORM\Column(type="string", length=180,unique=true)
@@ -58,7 +58,8 @@ class User implements UserInterface
 
   /**
    * @CaptchaAssert\ValidCaptcha(
-   *   message = "captcha.invalid"
+   *   message = "validation failed , try again",
+   *   groups={"registration"}
    * ) */  
   protected $captchaCode;
 
@@ -108,7 +109,7 @@ class User implements UserInterface
     {
         $this->businessplans = new ArrayCollection();
         $this->enabled=false;
-        $this->roles=['ROLE_ADMIN'];
+       
     }
 
     public function getId(): ?int

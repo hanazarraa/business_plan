@@ -1,7 +1,0 @@
-user.email.invalid: L'adresse email est invalide
-agreeTerms.true: Tu dois accepter les conditions génerales 
-password.NotBlank: Entrer Votre Mot de passe s'il vous plait
-Password.minlength: Votre mot de passe doit contenir au moins {{ limit }} caracteres 
-passwords.match: Les champs passwords ne sont pas identiques.
-email.unique: Cet email {{ value }} est déjà utilisé
-captcha.invalid: Le code captcha est echoué  , ressayez encore

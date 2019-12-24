@@ -10,7 +10,7 @@
 
     <title>Products | business - Montpellier Business Plan</title>
 
-                                        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+                                        <link href="../../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/reset.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/generic.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/jquery-ui-1.9.0.custom.min.css" rel="stylesheet" type="text/css" />
@@ -20,7 +20,7 @@
                             <link href="../../../css/buttons.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/breadcrumbs.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/alertify.core.css" rel="stylesheet" type="text/css" />
-                            <link href="../css/alertify.default.css" rel="stylesheet" type="text/css" />
+                            <link href="../../../css/alertify.default.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/modal.css" rel="stylesheet" type="text/css" />
                             <link href="../../../css/styles.css" rel="stylesheet" type="text/css" />
@@ -30,8 +30,8 @@
                                     <link href="../../../css/print.css" rel="stylesheet" type="text/css" media="print" />
                         
             <script type="text/javascript">
-            var site_url = 'https://www.montpellier-business-plan.com/';
-            var base_url = 'https://www.montpellier-business-plan.com/';
+            var site_url = 'https://localhost:8000';
+            var base_url = 'https://localhost:8000';
             var lang_url = 'en';
             var current_url = 'https://www.montpellier-business-plan.com/mon-business-plan/produits';
         </script>
@@ -75,7 +75,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../../../images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="../../../images/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../../../images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="../images/favicon/manifest.json">
+    <link rel="manifest" href="../../../images/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="../../../images/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -237,7 +237,7 @@
                   <a ../espace_client/espace_client/ajax_commentremplir/produit" class="open-modal" data-toggle="tooltip" data-placement="top" title="Aide">
                       <i class="fa fa-question-circle"></i>
                   </a>
-                  <a ../frontoffice/deconnexion" data-toggle="tooltip" data-placement="top" title="Sign out">
+                  <a "../frontoffice/deconnexion" data-toggle="tooltip" data-placement="top" title="Sign out">
                       <i class="fa fa-power-off"></i>
                   </a>
                 </div>
@@ -260,16 +260,16 @@
                   <ul class="nav navbar-nav navbar-right">
                     <li class="">
                       <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        hanazarraa33@gmail.com                        <span class=" fa fa-angle-down"></span>
+                        {{app.user.username}}                       <span class=" fa fa-angle-down"></span>
                       </a>
                       <ul class="dropdown-menu dropdown-usermenu pull-right">
                                                         <li>
-                                  <a ../mes-business-plan" title="My business plans">
+                                  <a href="{{path('dashboard')}}" title="My business plans">
                                       My business plans                                  </a>
                               </li>
 
                               <li>
-                                  <a ../mon-compte" title="My account">
+                                  <a href="{{path('parametres')}}" title="My account">
                                       My account                                  </a>
                               </li>
                           

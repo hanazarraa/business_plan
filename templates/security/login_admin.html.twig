@@ -167,8 +167,7 @@
     						</div>
     					</form>
     				</div>
-    			
-    			<div style="position:absolute;top:0px;right:0px;">
+    			    			<div style="position:absolute;top:0px;right:0px;">
     				<div class="fright container-menu">
     					    						<div class="bloc-user-login fleft display-menu">
     							<h2 class="bloc-moncompte">
@@ -231,7 +230,8 @@
     {% endif %}
 	{% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('admin')}}"><TITLE>Page has moved</TITLE>
+     <A HREF="{{ path('admin')}}"><h3>you are aleardy logged in...</h3></A>
         </div>
 	{% else %}
 	<div class="form-element ">

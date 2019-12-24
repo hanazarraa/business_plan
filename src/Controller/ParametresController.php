@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Moncompteadmin;
 use App\Form\ChangePasswordType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordType;
@@ -13,24 +14,85 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-/**
- * @Route("{_locale}/MonCompte")
- */
+use Doctrine\ORM\EntityManagerInterface;
 class ParametresController extends AbstractController
 {
 
 
     /**
-     * @Route("/", name="parametres")
+     * @Route("/dashboard/MonCompte", name="parametres")
      */
-    
-    
     public function ParametresAction(){
         return $this->render('parametres.html.twig');
     }
-   
+    /**
+     * @Route("admin/dashboard/Profile", name="parametresadmin")
+     */
+    public function ParametresAdminAction(Request $request , EntityManagerInterface $em,UserPasswordEncoderInterface $passwordEncoder){
+        $user =new User();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $form = $this->createForm(Moncompteadmin::class, $user);
+         
+          $form->handleRequest($request);
+          
+
+          if($form->isSubmitted() && $form->isValid()){
+            
+            
+           
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    
+                    $form->get('password')->getData()
+                )
+            );
+            $user = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Admin updated!');
+            return $this->redirectToRoute('dashboard');
+           
+              
+          }
+         // dump($business);die();
+     
+        return $this->render('admin/parametresadmin.html.twig',['form' => $form->createView(),'user' => $user]);
+    }
+    /**
+     * @Route("/MonCompte/change_langue", name="change_langue")
+     */
+    
+    public function change_langue(Request $request){
+    if( $this->get('session')->get('_locale')=='fr'){
+       
+        $this->get('session')->set('_locale', 'en');
+    
+         // var_dump($this->get('session')->get('_locale'));
+       
+    
+           
+        
+        }else{
+          
+            $this->get('session')->set('_locale', 'fr');
+
+            //$this->container->get('request')->setLocale('fr');
+
+        }
+       // print_r($request->getLocale());
+     
+      return $this->redirectToRoute("{_locale}");
+     
+     
+            
+        
+
+
+    }
      /**
-     * @Route("/change_password", name="change_password")
+     * @Route("/MonCompte/change_password", name="change_password")
      */
     public function changepassword(Request $request,  UserPasswordEncoderInterface $passwordEncoder): Response
     {

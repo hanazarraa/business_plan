@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\InheritanceType("JOINED")
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
@@ -15,19 +14,23 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Businessplan", inversedBy="products")
      */
-    protected $businessplan;
+    private $businessplan;
 
-   
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UnitInovicing", mappedBy="product", cascade={"persist", "remove"})
+     */
+    private $unitInovicing;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,5 +60,20 @@ class Product
         return $this;
     }
 
-    
+    public function getUnitInovicing(): ?UnitInovicing
+    {
+        return $this->unitInovicing;
+    }
+
+    public function setUnitInovicing(UnitInovicing $unitInovicing): self
+    {
+        $this->unitInovicing = $unitInovicing;
+
+        // set the owning side of the relation if necessary
+        if ($unitInovicing->getProduct() !== $this) {
+            $unitInovicing->setProduct($this);
+        }
+
+        return $this;
+    }
 }

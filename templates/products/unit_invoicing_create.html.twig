@@ -327,7 +327,7 @@
 				</label>
 
 				<div class="champ">
-                          {{form_widget (form.name, {'attr': {'class': 'type-text','value':''}}) }}
+                          {{form_widget (form.product.name, {'attr': {'class': 'type-text','value':''}}) }}
 
 				<div class="clearer"></div>
 
@@ -358,12 +358,10 @@
 					</tr>
                    
 					<tr>
-                         {% for sellPrice in form.sellsPrice %}
-
+                     {% for i in 1..3 %}
                     <td class="aright">
-					             {{ form_widget(sellPrice, {'attr': {'class': 'type-text','value':'0'}}) }} 
-					 </td>
-				        {% endfor %}
+								<input type="text" class="type-text" id="sellprice[$i]" name="sellprice[0]" value="0" />													</td>
+					 {% endfor %}
                     </tr>
                    
 				</table>
@@ -377,7 +375,7 @@
 				</label>
 
 				<div class="champ">
-			 {{form_widget (form.vat, {'attr': {'class': 'type-text','value':'0.00'}}) }}
+					<input type="text" class="type-text" id="vat" name="vat" value="0.00" />				</div>
 
 				<div class="clearer"></div>
 
@@ -409,16 +407,16 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 						<th>90 days</th>
 						<th>120 days</th>
 					</tr>
-                    {% for i in 1..4 %}
+                    {% for i in 1..3 %}
                      <tr >
-					  {% for product_reciept_rule in form.products_reciept_rule %}
-						<td class="aright"></td>
-						<td class="aright duplicate">
-                        {{ form_widget(product_reciept_rule, {'attr': {'class': 'type-text','value':'0.00'}}) }}
-						</td>
-						{% endfor %}
-						</tr>
-						{% endfor %}
+						<td class="aright">Year {{i}}</td>
+						<td class="aright duplicate"><input type="text" class="type-text"  name="product_reciept_rule[cash][$i]" value="0.00"/></td>
+						<td class="aright duplicate"><input type="text" class="type-text"  name="product_reciept_rule[30][$i]" value="100.00"/></td>
+						<td class="aright duplicate"><input type="text" class="type-text"  name="product_reciept_rule[60][$i]" value="0.00"/></td>
+						<td class="aright duplicate"><input type="text" class="type-text" name="product_reciept_rule[90][$i]" value="0.00"/></td>
+						<td class="aright duplicate"><input type="text" class="type-text"  name="product_reciept_rule[120][$i]" value="0.00"/></td>
+					</tr>
+									{% endfor %}
 				</table>
 			</div>
 		</div>

@@ -33,16 +33,5 @@ class ProductType extends AbstractType
       
     
         }
-        /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefined(array(
-            'data_class' => 'App\Entity\Product',
-            'required' => false
-        ));
-    }
-
     
 }
