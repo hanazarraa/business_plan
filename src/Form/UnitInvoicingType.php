@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType ;
 
@@ -26,13 +27,15 @@ class UnitInvoicingType extends AbstractType
         $builder
       
            
-       ->add('product', ProductType::class)
-        ->add('sellPrice', TextType::class,array(
-            'mapped'=>false,
+       ->add('name', TextType::class)
+        ->add('sellsPrice', CollectionType::class,array(
+            'entry_type'=>TextType::class
         ))
         ->add('vat',TextType::class)
            
-        ->add('product_reciept_rule',TextType::class)
+        ->add('products_reciept_rule',CollectionType::class,array(
+            'entry_type'=>CollectionType::class
+        ))
         ->add('product_cost_sales',TextType::class)
         ->add('vat_purchases',TextType::class)
         ->add('purchase_disbursment_rule',TextType::class)

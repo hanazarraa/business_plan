@@ -30,7 +30,7 @@ class MailerService{
 
     $this->mailer =new \Swift_Mailer($transport);
     $message = new \Swift_Message('Activation compte');
-           $url="https://127.0.0.1:8000/account/confirm/".$token."/".$username;
+           $url="https://127.0.0.1:8000/account/confirm/".$token;
            $url1="https://127.0.0.1:8000/reset-password/".$token;
          $message->setFrom(array('hanazarraa53@gmail.com' => 'MyBusinessplan'))
          ->setContentType('text/html')
