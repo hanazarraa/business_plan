@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Businessplan;
+use App\Entity\Product;
 use App\Form\BusinessFormType;
 
 class BusinessController extends AbstractController
@@ -35,5 +36,17 @@ class BusinessController extends AbstractController
          // dump($business);die();
           return $this->render('business/create.html.twig',['form' => $form->createView()]);
      
+    }
+    /**
+     * @Route("dashboard/{id}", name="monbuisnessplan")
+     * 
+     */
+    public function show(Businessplan $business, Request $request)
+    {
+        
+        $product=new Product();
+       
+        return $this->render('business/monbuisness.html.twig');
+
     }
 }

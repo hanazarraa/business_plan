@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Moncompteadmin;
 use App\Form\ChangePasswordType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordType;
@@ -13,17 +14,51 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Doctrine\ORM\EntityManagerInterface;
 class ParametresController extends AbstractController
 {
 
 
     /**
-     * @Route("/MonCompte", name="parametres")
+     * @Route("/dashboard/MonCompte", name="parametres")
      */
-    
-    
     public function ParametresAction(){
         return $this->render('parametres.html.twig');
+    }
+    /**
+     * @Route("admin/dashboard/Profile", name="parametresadmin")
+     */
+    public function ParametresAdminAction(Request $request , EntityManagerInterface $em,UserPasswordEncoderInterface $passwordEncoder){
+        $user =new User();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $form = $this->createForm(Moncompteadmin::class, $user);
+         
+          $form->handleRequest($request);
+          
+
+          if($form->isSubmitted() && $form->isValid()){
+            
+            
+           
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    
+                    $form->get('password')->getData()
+                )
+            );
+            $user = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Admin updated!');
+            return $this->redirectToRoute('dashboard');
+           
+              
+          }
+         // dump($business);die();
+     
+        return $this->render('admin/parametresadmin.html.twig',['form' => $form->createView(),'user' => $user]);
     }
     /**
      * @Route("/MonCompte/change_langue", name="change_langue")
@@ -53,6 +88,7 @@ class ParametresController extends AbstractController
      
             
         
+
 
     }
      /**

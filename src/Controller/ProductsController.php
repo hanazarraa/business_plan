@@ -15,7 +15,7 @@ use App\Form\UnitInvoicingTypeType;
 use App\Repository\ProductRepository;
 
 /**
-     * @Route("/products")
+     * @Route("/dashboard/mon-business-plan/products")
  */
 class ProductsController extends AbstractController
 {
@@ -39,8 +39,6 @@ class ProductsController extends AbstractController
     public function choiceType(){
         return $this->render('products/choice_type_product.html.twig');
      
- 
- 
      }
       /**
      * @Route("/create_product", name="unit_invoicing_create")

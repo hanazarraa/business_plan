@@ -13,5 +13,5 @@ class CurrentPassword extends Constraint
      * Any public properties become valid options for the annotation.
      * Then, use these in your validator class.
      */
-    public $message = 'The current password "{{ value }}" is not valid.';
+    public $message = 'The current password is not valid.';
 }

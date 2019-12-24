@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Montpellier Business Plan</title>
-
-                                        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+                            {% block stylesheets %}
+                            <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
                             <link href="../css/reset.css" rel="stylesheet" type="text/css" />
                             <link href="../css/generic.css" rel="stylesheet" type="text/css" />
                             <link href="../css/jquery-ui-1.9.0.custom.min.css" rel="stylesheet" type="text/css" />
@@ -27,7 +27,7 @@
                             <link href="../css/dashboard-2.css" rel="stylesheet" type="text/css" />
                     
                                     <link href="../css/print.css" rel="stylesheet" type="text/css" media="print" />
-    
+                            {% endblock %}
                {% block js %}
             <script type="text/javascript">
             var site_url = 'https://www.montpellier-business-plan.com/';
@@ -183,11 +183,11 @@
                       <ul class="dropdown-menu dropdown-usermenu pull-right">
                                                         <li>
                                   <a href="{{path('dashboard')}}" title="Mes business plans">
-                                      Mes business plans                                  </a>
+                                      Dashboard  </a>
                               </li>
 
                               <li>
-                                  <a href="{{ path('parametres')}}" title="Mon compte">
+                                  <a href="{{ path('parametresadmin')}}" title="Mon compte">
                                       Mon compte                                  </a>
                               </li>
                           

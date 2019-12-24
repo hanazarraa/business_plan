@@ -134,19 +134,21 @@
 
     			    				<div class="menu-login-absolute display-menu">
     					<div class="top"></div>
-    					<form class="content" action="{{ path('app_register')}}" method="post">
+    					<form class="content" action="{{ path('app_login')}}" method="post">
     						<div class="margeur-l10">
-    							<label for="email">E-mail <span class="rouge">*</span></label><br />
-                                {{form_widget (form.email, {'attr': {'class': 'type-text margeur-3','value':''}}) }}
+    							<label for="inputEmail">E-mail <span class="rouge">*</span></label><br />
+    							<input type="text" class="form-control" required autofocus id="inputEmail" name="email" value="" />
 
     						</div>
 
     						<div class="margeur-10 margeur-l10">
     							<label for="password">Password <span class="rouge">*</span></label><br />
-                               {{form_widget (form.password.first, {'attr': {'class': 'type-text margeur-3','value':''}}) }}
-
+                                <input type="password" id="inputPassword" class="form-control" required name="password" value="" />
     						</div>
-
+                            <div class="margeur-10 margeur-l10">
+							 <input type="hidden" name="_csrf_token"
+                                value="{{ csrf_token('authenticate') }}">
+                            </div>
     						<ul class="margeur-10">
     							<li>
     								<a href="{{path('app_login')}}" class=""> Invitation code ?</a>
@@ -254,7 +256,8 @@
 				</div>
 				
 				<div class="erreurs">
-									</div>
+                {{ form_errors(form.email) }}
+				</div>
 			</div>
 			
 			<div class="clearer"></div>
@@ -280,6 +283,8 @@
 				</div>
 				
 				<div class="erreurs">
+					 {{ form_errors(form.password.first) }}
+
 									</div>
 			</div>
 			
@@ -289,7 +294,7 @@
 		<div class="form-element ">
 			<div class="fleft">
 				<label for="password">
-					Password <span class="rouge">*</span>
+					Confirm Password <span class="rouge">*</span>
 				</label>
 				
 				<div class="champ">
@@ -306,25 +311,31 @@
 				</div>
 				
 				<div class="erreurs">
-									</div>
+				{{ form_errors(form.password.second) }}
+				</div>
 			</div>
 			
 			<div class="clearer"></div>
 		</div>
-		<div class="form-element ">
-			        {{ form_widget (form.captchaCode) }}
-
+			<div class="form-element ">
+			<div class="fleft margeur-20" style="width:250px;">
+			
 			<div class="fleft champ" >
 				<p>
-					<label for="captcha" style="width:50%">
-													Please enter the characters from the image on the left.
-												<span class="rouge">*</span>
-					</label>
-				</p>
-				
-				<div class="clearer"></div>
+					
+                   <div class="champ">
+				 {{form_widget (form.captchaCode, {'attr': {'class': 'type-text','value':''}}) }}
 
-			</div>
+				</div>
+
+				</p>
+				<div class="erreurs">
+					 {{ form_errors(form.captchaCode) }}
+				</div>
+				<div class="clearer">
+			
+				</div>
+ 			</div>
 			
 			<div class="clearer"></div>
 		</div>
@@ -363,7 +374,7 @@
 		
 		<div class="form-element">
 			<div class="cvg fckeditor">
-													<p><strong>DEFINITION</strong></p>
+<p><strong>DEFINITION</strong></p>
 
 <p>The terms below used in this End-User License Agreement are defined as follows:</p>
 
@@ -537,9 +548,12 @@ Montpellier Méditerranée Métropole reserves the right to change all or part o
 		<div class="margeur-20"></div>	
 		
 		<div class="form-element" id="bouton_haut">
-			<input type="submit" class="bouton-unlimited" value="OK" />
+		 {{form_row (form.submit, {'attr': {'class': 'bouton-unlimited','value':'Valider'}}) }}
+
 			<input type="hidden" name="inscription" value="true" />
 		</div>
+							{{ form_row(form._token) }}
+
         </div>
         </div>
 	       		

@@ -70,6 +70,8 @@ class AdminFormAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+        if(!$user->getEnabled()){
+            throw new CustomUserMessageAuthenticationException('Check your mail to activate your account');}
 
         return $user;
     }

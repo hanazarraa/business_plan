@@ -1,5 +1,11 @@
 
 <!DOCTYPE HTML>
+{% if app.user %}
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('dashboard')}}"><TITLE>Page has moved</TITLE>
+<A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
+
+{% else %}
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -448,7 +454,7 @@ Free application available via a regular Internet connection.<br />
 	
 	
 		
-		<div class=" fright">
+		<div class="fright">
 			<a href="http://www.entreprendre-montpellier.com/agenda" class="bouton-unlimited small" target="_blank">See all events</a>
 		</div>
 
@@ -489,7 +495,7 @@ Free application available via a regular Internet connection.<br />
                                             </li>
 
                     <li class="fleft">
-                        <a title="" ../en/conditions-generales-d-utilisation">End-User Licence Agreement </a>
+                        <a title="../en/conditions-generales-d-utilisation">End-User Licence Agreement </a>
                     </li>
 
                     <li class="fleft">
@@ -522,3 +528,5 @@ Free application available via a regular Internet connection.<br />
         </div>
     </body>
 </html>
+
+{% endif %}

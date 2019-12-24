@@ -1,9 +1,7 @@
 {% extends 'admin/admin_layout_dashboard.html.twig' %}
 {% block js %}
  <script type="text/javascript">
-            jQuery(document).ready(function() {
-              
-                
+            jQuery(document).ready(function() {          
                                     alertify.success('Vous êtes désormais connecté en tant que '.{{ app.user.username }});
                     $('.alertify-log-success').prepend('<p class="fleft" style="margin-top:-1px; margin-right:10px;"><i class="fa fa-check-circle fs-26" style="color:#55B475"></i></p>');
                 

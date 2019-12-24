@@ -235,8 +235,8 @@
     {% endif %}
 	{% if app.user %}
         <div class="mb-3">
-        <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('{_locale}')}}"><TITLE>Page has moved</TITLE>
-     <A HREF="{{ path('{_locale}')}}"><h3>you are aleardy logged in...</h3></A>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('dashboard')}}"><TITLE>Page has moved</TITLE>
+     <A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
         {# 
             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a> #}
         </div>

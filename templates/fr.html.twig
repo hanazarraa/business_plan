@@ -1,4 +1,10 @@
 <!DOCTYPE HTML>
+{% if app.user %}
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('dashboard')}}"><TITLE>Page has moved</TITLE>
+<A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
+
+{% else %}
 <html>
     
 <!-- Mirrored from www.montpellier-business-plan.com/fr by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Oct 2019 08:52:59 GMT -->
@@ -185,7 +191,7 @@
     				<div class="fright container-menu">
     					    						<div class="bloc-user-login fleft display-menu">
     							<h2 class="bloc-moncompte">
-    								Connexion    							</h2>
+    							<a href="{{ path('app_login')}}">	Connexion </a>    							</h2>
     						</div>
     					
     					
@@ -543,3 +549,4 @@
 
 <!-- Mirrored from www.montpellier-business-plan.com/fr by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Oct 2019 08:53:41 GMT -->
 </html>
+{% endif %}

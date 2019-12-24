@@ -58,7 +58,8 @@ class User implements UserInterface
 
   /**
    * @CaptchaAssert\ValidCaptcha(
-   *   message = "captcha validation failed , try again"
+   *   message = "validation failed , try again",
+   *   groups={"registration"}
    * ) */  
   protected $captchaCode;
 
@@ -108,7 +109,7 @@ class User implements UserInterface
     {
         $this->businessplans = new ArrayCollection();
         $this->enabled=false;
-        $this->roles=['ROLE_ADMIN'];
+       
     }
 
     public function getId(): ?int
