@@ -1,4 +1,10 @@
-<!DOCTYPE HTML>
+
+{% if app.user %}
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"><META HTTP-EQUIV="Refresh" CONTENT="0; URL={{ path('dashboard')}}"><TITLE>Page has moved</TITLE>
+<A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
+
+{% else %}<!DOCTYPE HTML>
 <html>
     
 <!-- Mirrored from www.montpellier-business-plan.com/inscription by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Oct 2019 08:54:39 GMT -->
@@ -99,6 +105,26 @@
     
     <body>
     	<div id="header" class="header-content">
+		{% if app.request.getLocale() =='en' %}
+    				<ul class="fright margeur-8 margeur-r30">
+    					    <li class="fleft margeur-l20">
+    							<a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}">FR</a>
+    						</li>
+
+    						
+    					<li class="clearer"></li>
+    				</ul>
+					{% endif %}
+					 {% if app.request.getLocale() =='fr' %}
+    				<ul class="fright margeur-8 margeur-r30">
+    					   
+    						<li class="fleft margeur-l20" active>
+    							<a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}">EN</a>
+    						</li>
+    					
+    					<li class="clearer"></li>
+    				</ul>
+					{% endif %}
 
           <!--[if lt IE 9]>
           <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
@@ -131,20 +157,26 @@
     			</div>
 
     			<div class="clearer"></div> -->
-
+                                  
     			    				<div class="menu-login-absolute display-menu">
+									
     					<div class="top"></div>
+						
 						   
     					<form class="content" action="{{path('app_login')}}" method="post">
 					       
                            
+                       
+                         
+                      
+                      
     						<div class="margeur-l10">
     							<label for="inputEmail">E-mail <span class="rouge">*</span></label><br />
     							<input type="text" class="form-control" required autofocus id="inputEmail" name="email" value="" />
     						</div>
 
     						<div class="margeur-10 margeur-l10">
-    							<label for="inputPassword">Mot de passe <span class="rouge">*</span></label><br />
+    							<label for="inputPassword">{{'password'|trans}} <span class="rouge">*</span></label><br />
     							<input type="password" id="inputPassword" class="form-control" required name="password" value="" />
     						</div>
 
@@ -155,17 +187,17 @@
 
     						<ul class="margeur-10">
     							<li>
-    								<a href="{{'app_login'}}" class=""> Code invitation ?</a>
+    								<a href="{{'app_login'}}" class=""> {{'code'|trans}} ?</a>
     							</li>
 
     							<li>
     								<a href="{{path('app_register')}}" title="Créer un nouveau compte">
-    									Créer un nouveau compte    								</a>
+    									{{'nouveau'|trans}}   								</a>
     							</li>
 
     							<li>
     								<a href="{{ path('forgotten_password')}}" title="Mot de passe perdu">
-    									Mot de passe perdu    								</a>
+    									{{'lost_password'|trans}} 								</a>
     							</li>
     						</ul>
 
@@ -180,16 +212,14 @@
     				<div class="fright container-menu">
     					    						<div class="bloc-user-login fleft display-menu">
     							<h2 class="bloc-moncompte">
-    								<a href="{{path('app_login')}}" title="Login">
-    								Connexion </a>    	
-								</h2>
+    								{{'Connexion'|trans}}  							</h2>
     						</div>
     					
     					
     					<ul class="menu fright">
     						    						    						<li>
     							<a href="{{path('app_register')}}" title="Inscription">
-    								Inscription    							</a>
+    								{{'Inscription'|trans}}    							</a>
     						</li>
     						
     						<!--
@@ -206,21 +236,8 @@
     					<div class="clearer"></div>
     				</div>
 
-    				<ul class="fright margeur-8 margeur-r30">
-    					    						<li class="fleft">
-    							<a href="fr.html" >
-    								FR
-    							</a>
-    						</li>
+      
 
-    						<li class="fleft margeur-l20">
-    							<a href="en.html" >
-    								EN
-    							</a>
-    						</li>
-    					
-    					<li class="clearer"></li>
-    				</ul>
 
     				<div class="clearer"></div>
     			</div>
@@ -232,16 +249,13 @@
         <div id="corps">
         	<div class="container">
 		
- 
-        {# on affiche en premier les erreurs globales (cas classiques) #}
-        
-        {# ainsi que les erreurs concernant chaque champs #}
-       
-    </ul>
+
 	
 
          {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'' }}) }}
-          
+           {% for error in errors %}
+                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endfor %}	 
 
 	<h1>Inscription</h1>
 	
@@ -282,7 +296,7 @@
 		<div class="form-element ">
 			<div class="fleft">
 				<label for="password">
-					Mot de passe <span class="rouge">*</span>
+					{{'password'|trans}} <span class="rouge">*</span>
 				</label>
 				
 				<div class="champ">
@@ -309,7 +323,7 @@
 		<div class="form-element ">
 			<div class="fleft">
 				<label for="password2">
-					Confirmation du mot de passe <span class="rouge">*</span>
+					{{'confirm_password'|trans}} <span class="rouge">*</span>
 				</label>
 				
 				<div class="champ">
@@ -390,7 +404,7 @@
 		
 		<div class="form-element">
 			<div class="cvg fckeditor">
-								<h2>Conditions générales d'utilisation</h2>
+								<h2>{{'conditions'|trans}}</h2>
 				
 					<p><strong>DEFINITION</strong><br />
 Les termes employ&eacute;s ci-apr&egrave;s ont, dans les pr&eacute;sentes Conditions G&eacute;n&eacute;rales d&rsquo;Utilisation, la signification suivante&nbsp;:</p>
@@ -420,7 +434,7 @@ Depuis 1987, il a accompagn&eacute; plus de 500 entreprises vers une r&eacute;us
 Il est utilisable en mode Saas imm&eacute;diatement apr&egrave;s l&rsquo;ouverture d&rsquo;un compte sur le site <a href="index.html">http://www.montpellier-business-plan.com</a>.<br />
 En ouvrant un compte sur <a href="index.html">http://www.montpellier-business-plan.com</a>, l&rsquo;utilisateur peut cr&eacute;er jusqu&rsquo;&agrave; 5 business plans en ligne. Il peut donner acc&egrave;s, s&rsquo;il le d&eacute;cide, &agrave; un ou plusieurs invit&eacute;s (partenaires financiers, actionnaires, conseillers, etc.)</p>
 
-<p>Contact&nbsp;: <a href="mailto:bic@montpellier-agglo.com">bic@montpellier-agglo.com</a> - +33&nbsp;467&nbsp;130&nbsp;000</p>
+<p>Contact&nbsp;: <a href="mailto:bic@montpellier-agglo.com"> bic@montpellier-agglo.com</a> - +33&nbsp;467&nbsp;130&nbsp;000</p>
 
 <p><strong>MISE A DISPOSITION D&rsquo;INFORMATION </strong><br />
 Toutes les informations pr&eacute;sentes ne le sont qu&rsquo;&agrave; titre purement informatif. Les informations pr&eacute;sentes sur le site ne constituent en aucun cas des conseils personnalis&eacute;s et ne peuvent pas &ecirc;tre utilis&eacute;es l&eacute;galement devant des tribunaux.<br />
@@ -492,7 +506,8 @@ Montpellier Méditerranée Métropole se r&eacute;serve le droit de modifier tou
 
 			
 			<label for="cvg" class="fleft margeur-l15" style="margin-top:0px; width:70%">
-									J'ai lu et j'accepte les conditions générales d'utilisation ci-dessus.
+
+									{{'accept'|trans}}
 							</label>
 			
 			<div class="clearer"></div>
@@ -530,15 +545,15 @@ Montpellier Méditerranée Métropole se r&eacute;serve le droit de modifier tou
                                             </li>
 
                     <li class="fleft">
-                        <a title="" href="fr/conditions-generales-d-utilisation.html">Conditions générales d'utilisation</a>
+                        <a title="" href="fr/conditions-generales-d-utilisation.html">{{'conditions'|trans}}</a>
                     </li>
 
                     <li class="fleft">
-                        <a title="" href="fr/mentions-legales.html">Mentions légales</a>
+                        <a title="" href="fr/mentions-legales.html">{{'mentions'|trans}}</a>
                     </li>
 
                     <li class="fleft">
-                        <a title="" href="fr/credits.html">Crédits</a>
+                        <a title="" href="fr/credits.html">{{'credits'|trans}}</a>
                     </li>
 
                     <li class="clearer"></li>
@@ -565,3 +580,4 @@ Montpellier Méditerranée Métropole se r&eacute;serve le droit de modifier tou
 
 <!-- Mirrored from www.montpellier-business-plan.com/inscription by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Oct 2019 08:54:40 GMT -->
 </html>
+{% endif %}

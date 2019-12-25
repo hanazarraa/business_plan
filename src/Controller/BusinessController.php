@@ -12,7 +12,7 @@ use App\Form\BusinessFormType;
 class BusinessController extends AbstractController
 {
     /**
-     * @Route("dashboard/creer-business-plan", name="businessplan_create")
+     * @Route("/{_locale}/dashboard/creer-business-plan", name="businessplan_create")
      */
     public function create(Request $request)
     {
@@ -38,7 +38,7 @@ class BusinessController extends AbstractController
      
     }
     /**
-     * @Route("dashboard/{id}", name="monbuisnessplan")
+     * @Route("/{_locale}/dashboard/{id}", name="monbuisnessplan")
      * 
      */
     public function show(Businessplan $business, Request $request)

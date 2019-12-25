@@ -5,6 +5,7 @@
 <A HREF="{{ path('dashboard')}}"><h3>you are aleardy logged in...</h3></A>
 
 {% else %}
+<!DOCTYPE HTML>
 <html>
     
 <!-- Mirrored from www.montpellier-business-plan.com/fr by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 15 Oct 2019 08:52:59 GMT -->
@@ -106,6 +107,26 @@
     
     <body>
     	<div id="header" class="header-content">
+			{% if app.request.getLocale() =='en' %}
+    				<ul class="fright margeur-8 margeur-r30">
+    					    <li class="fleft margeur-l20">
+    							<a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}">FR</a>
+    						</li>
+
+    						
+    					<li class="clearer"></li>
+    				</ul>
+					{% endif %}
+					 {% if app.request.getLocale() =='fr' %}
+    				<ul class="fright margeur-8 margeur-r30">
+    					   
+    						<li class="fleft margeur-l20" active>
+    							<a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}">EN</a>
+    						</li>
+    					
+    					<li class="clearer"></li>
+    				</ul>
+					{% endif %}
 
           <!--[if lt IE 9]>
           <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
@@ -155,7 +176,7 @@
     						</div>
 
     						<div class="margeur-10 margeur-l10">
-    							<label for="inputPassword">Mot de passe <span class="rouge">*</span></label><br />
+    							<label for="inputPassword">{{'password'|trans}} <span class="rouge">*</span></label><br />
     							<input type="password" id="inputPassword" class="form-control" required name="password" value="" />
     						</div>
 
@@ -166,23 +187,23 @@
 
     						<ul class="margeur-10">
     							<li>
-    								<a href="{{path('app_login')}}" class=""> Code invitation ?</a>
+    								<a href="{{path('app_login')}}" class=""> {{'Code'|trans}} ?</a>
     							</li>
 
     							<li>
     								<a href="{{path('app_register')}}" title="Créer un nouveau compte">
-    									Créer un nouveau compte    								</a>
+    								  {{ 'nouveau'|trans }}								</a>
     							</li>
 
     							<li>
     								<a href="{{path('forgotten_password')}}" title="Mot de passe perdu">
-    									Mot de passe perdu    								</a>
+    									{{ 'lost_password'|trans }} 								</a>
     							</li>
     						</ul>
 
     						<div class="margeur-10 margeur-l10">
     							<input type="hidden" name="login-form" value="post" />
-    							<input type="submit" class="type-submit" value="Connexion" />
+    							<input type="submit" class="type-submit" value="{{'Connection'|trans}}" />
     						</div>
     					</form>
     				</div>
@@ -191,14 +212,15 @@
     				<div class="fright container-menu">
     					    						<div class="bloc-user-login fleft display-menu">
     							<h2 class="bloc-moncompte">
-    							<a href="{{ path('app_login')}}">	Connexion </a>    							</h2>
+    							<a href="{{path('app_login')}}">{{ 'Connexion'|trans }}</a>
+	   							</h2>
     						</div>
     					
     					
     					<ul class="menu fright">
     						    						    						<li>
     							<a href="{{ path('app_register')}}" title="Inscription">
-    								Inscription    							</a>
+    								{{ 'Inscription'|trans}}    							</a>
     						</li>
     						
     						<!--
@@ -214,23 +236,7 @@
 
     					<div class="clearer"></div>
     				</div>
-
-    				<ul class="fright margeur-8 margeur-r30">
-    					    						<li class="fleft">
-    							<a href="fr.html" class="blanc">
-    								FR
-    							</a>
-    						</li>
-
-    						<li class="fleft margeur-l20">
-    							<a href="en.html" class="blanc">
-    								EN
-    							</a>
-    						</li>
-    					
-    					<li class="clearer"></li>
-    				</ul>
-
+                   
     				<div class="clearer"></div>
     			</div>
     		</div>
@@ -254,7 +260,7 @@
 			
 			<div class="col-sm-7">
 				<div class="texte">
-					<p>Vous cr&eacute;ez une entreprise innovante ? Vos interlocuteurs financiers vous demandent un business plan mais vous ne savez pas par o&ugrave; commencer&nbsp;?</p>
+					<p>{{'commencer'|trans }}?</p>
 
 <p>Utilisez la nouvelle version en ligne du logiciel Montpellier Business Plan et cr&eacute;dibilisez votre projet aupr&egrave;s de vos futurs partenaires.</p>
 

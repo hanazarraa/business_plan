@@ -70,9 +70,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
-        if(!$user->getEnabled()){
-    throw new CustomUserMessageAuthenticationException('Check your mail to activate your account');}
-    
+	if(!$user->getEnabled()){
+		            throw new CustomUserMessageAuthenticationException('Check your mail to activate your account');
+
+		
+	}
+
         return $user;
     }
 
@@ -87,7 +90,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $list["0"]["email"]]);
       
        // dump($user->getRoles());die();
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey) && $user->getEnabled()==true) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)  ) {
             return new RedirectResponse($this->urlGenerator->generate('dashboard'));
         }
            return new RedirectResponse($this->urlGenerator->generate('dashboard'));

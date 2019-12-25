@@ -36,8 +36,7 @@ class SecurityController extends AbstractController
         //return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
      /**
-    * @Route("/admin/login", name="loginadmin")
-    */
+      *@Route("/{_locale}/admin/login", name="loginadmin")    */
     public function loginAdmin(AuthenticationUtils $authenticationUtils): Response
       {  $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

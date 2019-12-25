@@ -8,19 +8,19 @@ use App\Entity\Product;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnitInovicingRepository")
  */
-class UnitInovicing 
+class UnitInovicing extends Product
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="json",nullable=true)
      */
-    private $sellprice = [];
+    private $sellsprice = [0,0,0];
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -30,7 +30,11 @@ class UnitInovicing
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $product_reciept_rule = [];
+    private $products_reciept_rule = [
+     ['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0]
+    ,['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0],
+    ['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0]
+];
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -47,25 +51,21 @@ class UnitInovicing
      */
     private $purchase_disbursment_rule = [];
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="unitInovicing", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $product;
+   
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSellprice(): ?array
+    public function getSellsprice(): ?array
     {
-        return $this->sellprice;
+        return $this->sellsprice;
     }
 
-    public function setSellprice(array $sellprice): self
+    public function setSellsprice(array $sellsprice): self
     {
-        $this->sellprice = $sellprice;
+        $this->sellsprice = $sellsprice;
 
         return $this;
     }
@@ -82,14 +82,14 @@ class UnitInovicing
         return $this;
     }
 
-    public function getProductRecieptRule(): ?array
+    public function getProductsRecieptRule(): ?array
     {
-        return $this->product_reciept_rule;
+        return $this->products_reciept_rule;
     }
 
-    public function setProductRecieptRule(?array $product_reciept_rule): self
+    public function setProductRecieptRule(?array $products_reciept_rule): self
     {
-        $this->product_reciept_rule = $product_reciept_rule;
+        $this->products_reciept_rule = $products_reciept_rule;
 
         return $this;
     }
@@ -130,15 +130,5 @@ class UnitInovicing
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
+   
 }

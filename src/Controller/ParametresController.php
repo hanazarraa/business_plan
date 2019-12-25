@@ -20,13 +20,13 @@ class ParametresController extends AbstractController
 
 
     /**
-     * @Route("/dashboard/MonCompte", name="parametres")
+     * @Route("/{_locale}/dashboard/Profile", name="parametres")
      */
     public function ParametresAction(){
         return $this->render('parametres.html.twig');
     }
     /**
-     * @Route("admin/dashboard/Profile", name="parametresadmin")
+     * @Route("/{_locale}/admin/dashboard/Profile", name="parametresadmin")
      */
     public function ParametresAdminAction(Request $request , EntityManagerInterface $em,UserPasswordEncoderInterface $passwordEncoder){
         $user =new User();

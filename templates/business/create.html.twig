@@ -1,11 +1,11 @@
-{% extends 'layout_dashboard.html.twig' %}
+{% extends 'business/layout.html.twig' %}
 {% block head %}
 {{ parent() }}
 {% endblock %}
   {% block page_content %}  
  <!-- page content -->
         <div class="right_col" role="main">
-                           {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'/dashboard/creer-business-plan' }}) }}
+                           {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'' }}) }}
 
 	<div class="entete entete-min">
 		<h1 class="dblock fleft">
