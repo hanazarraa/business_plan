@@ -31,9 +31,7 @@ class UnitInovicing extends Product
      * @ORM\Column(type="json", nullable=true)
      */
     private $products_reciept_rule = [
-     ['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0]
-    ,['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0],
-    ['Cash'=>0,'30 days'=>0,'90 days'=>0,'120 days'=>0]
+    
 ];
 
     /**

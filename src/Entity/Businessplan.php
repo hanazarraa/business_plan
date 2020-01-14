@@ -67,6 +67,11 @@ class Businessplan
      */
     private $numberofyears;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +193,18 @@ class Businessplan
     public function setNumberofyears(string $numberofyears): self
     {
         $this->numberofyears = $numberofyears;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $Code): self
+    {
+        $this->code = $Code;
 
         return $this;
     }

@@ -11,11 +11,10 @@ use App\Entity\UnitInovicing;
 use App\Form\BusinessFormType;
 use App\Form\ProductType;
 use App\Form\UnitInvoicingType;
-use App\Form\UnitInvoicingTypeType;
 use App\Repository\ProductRepository;
 
 /**
-     * @Route("/{_locale}/dashboard/mon-business-plan/products")
+     * @Route("/{_locale}/dashboard/my-business-plan/products")
  */
 class ProductsController extends AbstractController
 {
@@ -23,12 +22,12 @@ class ProductsController extends AbstractController
      * @Route("/", name="products")
      */
     public function index(ProductRepository $productRepository){
-        
+       $businessSession =$this->container->get('session')->get('business');
        $products=$productRepository->findAll();
        if($products==null){
-           return $this->render('products/products_index_vide.html.twig');
+           return $this->render('products/products_index_vide.html.twig',['business' => $businessSession]);
        }else{
-           return $this->render('products/products_index.html.twig',array('products'=>$products));
+           return $this->render('products/products_index.html.twig',['products'=>$products,'business' => $businessSession]);
        }
 
 
@@ -37,7 +36,8 @@ class ProductsController extends AbstractController
      * @Route("/choice_type_product", name="choice_type_product")
      */
     public function choiceType(){
-        return $this->render('products/choice_type_product.html.twig');
+        $businessSession =$this->container->get('session')->get('business');
+        return $this->render('products/choice_type_product.html.twig',['business' => $businessSession]);
      
      }
       /**
