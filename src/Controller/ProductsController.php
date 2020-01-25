@@ -45,6 +45,7 @@ class ProductsController extends AbstractController
      */
     public function unit_invoicing_create(Request $request){
         $unitinvoicing=new UnitInovicing();
+        $businessSession =$this->container->get('session')->get('business');
         $form = $this->createForm(UnitInvoicingType::class, $unitinvoicing);
           //$product->setName($request->request->get('name'));
           $form->handleRequest($request);
@@ -61,7 +62,7 @@ class ProductsController extends AbstractController
               return $this->redirectToRoute('products');
               
           }
-          return $this->render('products/unit_invoicing_create.html.twig',[
+          return $this->render('products/unit_invoicing_create.html.twig',['business' => $businessSession,
               'form'=>$form->createView(),
           ]);
      
