@@ -67,7 +67,7 @@
 					<td>
 						<p>
 							Business plan over {{business.numberofyears}} years, starting in {{business.startmonth}} {{ business.startyear}}						<br />
-							Created on 16/10/2019 at 15:57:36													</p>
+							Created on {{business.CreatedAt|date("d/m/Y")}}  at {{business.CreatedAt|date("H:i:s","Europe/Paris")}}													</p>
 					</td>
 
 					<td style="width:260px">

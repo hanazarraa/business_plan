@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\BusinessplanRepository")
  */
 class Businessplan
@@ -53,6 +55,7 @@ class Businessplan
     private $includeitems;
 
     /**
+     * @Assert\Range(min =0 , max = 100)
      * @ORM\Column(type="float")
      */
     private $defaultVAT;
@@ -72,6 +75,26 @@ class Businessplan
      */
     private $code;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $CreatedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $UpdatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Sales", cascade={"persist", "remove"})
+     */
+    private $sales;
+
+   
+
+    function __construct() {
+   
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -208,4 +231,52 @@ class Businessplan
 
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->UpdatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $UpdatedAt): self
+    {
+        $this->UpdatedAt = $UpdatedAt;
+
+        return $this;
+    }
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+public function updatedTimestamps(): void
+{
+    $this->setUpdatedAt(new \DateTime('now'));    
+    if ($this->getCreatedAt() === null) {
+        $this->setCreatedAt(new \DateTime('now'));
+    }
+}
+
+public function getSales(): ?sales
+{
+    return $this->sales;
+}
+
+public function setSales(?sales $sales): self
+{
+    $this->sales = $sales;
+
+    return $this;
+}
+
 }

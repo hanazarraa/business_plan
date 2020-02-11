@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Businessplan;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Sales;
 use App\Form\BusinessFormType;
 
 class BusinessController extends AbstractController
@@ -19,6 +20,7 @@ class BusinessController extends AbstractController
     public function create(Request $request)
     {
         $business=new Businessplan();
+        $sales= new Sales();
         $form = $this->createForm(BusinessFormType::class, $business);
 
           $form->handleRequest($request);
@@ -28,6 +30,7 @@ class BusinessController extends AbstractController
    
              $business=$form->getData();
              $business->setUser($user);
+             $business->setSales($sales);
              $business->setCode("".strtoupper(bin2hex(openssl_random_pseudo_bytes(32))));
              $entityManager = $this->getDoctrine()->getManager();
              $entityManager->persist($business);
@@ -47,7 +50,7 @@ class BusinessController extends AbstractController
     public function show(Request $request,$code)
     {
         $business = new Businessplan();
-        
+        $sales = new Sales();   
         $em = $this->getDoctrine()->getManager();
         $user = $this->get('security.token_storage')->getToken()->getUser();
         

@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType ;
-
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 class UnitInvoicingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,14 +31,19 @@ class UnitInvoicingType extends AbstractType
         ->add('sellsPrice', CollectionType::class,array(
             'entry_type'=>TextType::class
         ))
-        ->add('vat',TextType::class)
+        ->add('vat',NumberType::class)
            
         ->add('products_reciept_rule',CollectionType::class,array(
             'entry_type'=>CollectionType::class
         ))
-        ->add('product_cost_sales',TextType::class)
-        ->add('vat_purchases',TextType::class)
-        ->add('purchase_disbursment_rule',TextType::class)
+        ->add('product_cost_sales',CollectionType::class,array(
+            'entry_type' => NumberType::class
+        ))
+        ->add('vat_purchases',NumberType::class)
+        ->add('purchase_disbursment_rule',CollectionType::class,array(
+            'entry_type'=>CollectionType::class
+
+        ))
         ->add('submit',SubmitType::class)
         
 
