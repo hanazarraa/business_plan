@@ -22,11 +22,32 @@ class SalesController extends AbstractController
      */
     public function sales(ProductRepository $productRepository,SalesRepository $SalesRepository)
     {
-        $sales=new Sales();
-        
+        $entityManager = $this->getDoctrine()->getManager();
+        $Sale = new Sales();   
+        $sales=new Salesdetailled();
+        $listofsales =[] ;
+        $listofCA=[];
         $businessSession =$this->container->get('session')->get('business');
-       /* $sales = $SalesRepository->findBybusinessplan($businessSession);
-      
+        $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
+        foreach($sales as  $key=>$value){
+           
+            $listofsale[$key] = $value->getdetailled();
+        }
+        
+        foreach($listofsale as  $year=>$value){
+            foreach($value as $productname=>$CA){
+         
+            $listofCA[$year][$productname] = array_sum($CA); 
+             
+           // array_push($listofCA,array_sum($CA));      
+                   // dump(array_sum($CA));die();
+                   // $i += $value[$j];     
+        }
+        }
+      //  dump($listofCA);die();
+        //$sales = $SalesRepository->findBybusinessplan($businessSession);
+        
+      /*
         foreach($sales as $sale){
         if($sale->getYear()==1){
             $CA = $sale->getSalesdetailled();
@@ -35,9 +56,8 @@ class SalesController extends AbstractController
         }*/
         
         
-     
         $products=$productRepository->findBybusinessplan($businessSession);
-        return $this->render('sales/index.html.twig',[
+        return $this->render('sales/index.html.twig',['listofCA'=> $listofCA ,
            'business' => $businessSession  ,  'products' => $products
         ]);
     }
@@ -115,12 +135,22 @@ class SalesController extends AbstractController
         $sales=new Salesdetailled();
         $businessSession =$this->container->get('session')->get('business');
         $listoftype  =[];
+        $listofprice =[];
+        $listofreccuring= [];
+        $listofname=[];
         $products=$productRepository->findBybusinessplan($businessSession);
         $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId() , 'year' => $id+1 ]);
         foreach($products as $product){
             $listoftype[$product->getName()] = [$product->__toString()];
+            array_push($listofname , $product->getName());
+            if($product->__toString()=='Unit Invoicing'){
+                $listofprice[$product->getName()] = [$product->getSellsprice()];
+            }
+            if($product->__toString()=='Reccuring Invoicing'){
+                $listofreccuring[$product->getName()] = [$product->getSaleprice()];
+            }   
         }
-        
+      //  dump($sales);die();
         $form = $this->createForm(SalesdetailledFormType::class, $sales[0]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -132,7 +162,57 @@ class SalesController extends AbstractController
     
             return $this->redirectToRoute('sales');
             }
-        return $this->render('sales/test.html.twig' , ['form' => $form->createView(),
-         'business' => $businessSession ,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype ]);
+        return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,
+         'business' => $businessSession ,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype , 'listofname' => $listofname ]);
     }
+
+     /**
+     * @Route("/salesreceipt", name="salesreceipt")
+     */
+    public function receipt(ProductRepository $productRepository){
+      
+        $businessSession =$this->container->get('session')->get('business');
+        $products=$productRepository->findBybusinessplan($businessSession);
+        
+        return $this->render('sales/salesreceipt.html.twig' , ['business' => $businessSession ]) ;
+    }
+         /**
+     * @Route("/salesreceipt-year-{id}", name="salesreceiptyear")
+     */
+    public function receiptyear(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,SalesRepository $SalesRepository){
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        $businessSession =$this->container->get('session')->get('business');
+        $salesdetailled = $SalesdetailledRepository->findBy(['sales'=> $businessSession->getSales()->getId() , 'year' => $id+1 ]);
+        $listofCA = [];
+        $loidencaissement = [] ;
+        $Cash = [] ;
+        $After30 =[] ;
+        $listofCA = $salesdetailled[0]->getDetailled(); // liste des CA  par année
+        
+        $products=$productRepository->findBybusinessplan($businessSession);
+        
+        foreach($products as $product){
+            foreach ($listofCA as $key => $value) {
+                if($key == $product->getName()){
+                    if($product->__toString() == 'Unit Invoicing'){
+                        $loidencaissement =  $product->getProductsRecieptRule(); // loi d'encaissement des vente 
+                          
+                    }
+                    
+                }
+                
+            }
+             
+        }
+       foreach($loidencaissement as $key => $value){
+            $Cash  =  floatval($value[$id])* 50; 
+                
+       }
+      // dump($listofCA);die();
+
+        return $this->render('sales/salesreceiptyear.html.twig');
+    }
+
 }

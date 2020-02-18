@@ -206,19 +206,48 @@ class ProductsController extends AbstractController
        /**
      * @Route("/create_product_reccuring", name="reccuring_invoicing_create")
      */
-    public function reccuring_invoicing_create(Request $request){
+    public function reccuring_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository){
         $reccuringinvoicing=new ReccuringInvoicing();
+        $Sale = new Sales();
+        $Sales = new Sales();
+        $SaleDetailled = new Salesdetailled();
+        $SaleDetailled1 = new Salesdetailled();
         $businessSession =$this->container->get('session')->get('business');
+        $numberofyears = $businessSession->getNumberofyears();
+        $Sale = $businessSession->getSales();
+        $Sales = $SalesRepository->findByid($Sale->getId());
+        $SaleDetailled1 = $SalesdetailledRepository->findBysales($Sales);
+        $SaleDetailled->setSales($Sales[0]);
         $form = $this->createForm(ReccuringInvoicingType::class, $reccuringinvoicing);
         //$reccuringinvoicing->setBusinessplan($businessSession);
         $product = new Product();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
              
-            $reccuringinvoicing=$form->getData();
+           $reccuringinvoicing=$form->getData();
            
            $reccuringinvoicing->setBusinessplan($businessSession);  
            $entityManager = $this->getDoctrine()->getManager();
+           if($SaleDetailled1 ==[]){
+
+              
+            $SaleDetailled->setDetailled([$form->getData()->getName()=>['0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00']]);
+            for($i = 1 ; $i<=$numberofyears; $i++){
+               $SaleDetailled->setYear($i);
+               $entityManager->merge($SaleDetailled);
+            }
+           } else {
+            for($i = 1 ; $i<=$numberofyears; $i++){
+                
+                $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['year' => $i ,'sales' =>$SaleDetailled1[0]->getSales()->getId() ]);
+                
+                $list =  $sales[0]->getDetailled()  ;            
+                $list[$form->getData()->getName()] = ['0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00'] ;   
+                $sales[0]->setDetailled($list);
+                //$sales[0]->setDetailled([array_push($sales[0]->getDetailled(),$form->getData()->getName() => ['0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00']])); 
+                //dump($list);die();
+            }
+         }
            $entityManager->merge($reccuringinvoicing);
            $entityManager->flush();
 
