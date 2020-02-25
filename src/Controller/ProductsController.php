@@ -32,10 +32,12 @@ class ProductsController extends AbstractController
      */
     public function index(ProductRepository $productRepository){
        $businessSession =$this->container->get('session')->get('business');
+       
        $products=$productRepository->findBybusinessplan($businessSession);
        if($products==null){
            return $this->render('products/products_index_vide.html.twig',['business' => $businessSession]);
        }else{
+       
            return $this->render('products/products_index.html.twig',['products'=>$products,'business' => $businessSession]);
        }
 
@@ -197,7 +199,7 @@ class ProductsController extends AbstractController
            $entityManager->merge($unitinvoicing);
            $entityManager->flush();
 
-            return $this->redirectToRoute('Variable_invoicing');
+            return $this->redirectToRoute('products');
             
         }
         return $this->render('products/variable_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession]);
@@ -251,13 +253,93 @@ class ProductsController extends AbstractController
            $entityManager->merge($reccuringinvoicing);
            $entityManager->flush();
 
-            return $this->redirectToRoute('reccuring_invoicing_create');
+            return $this->redirectToRoute('products');
             
         }
         return $this->render('products/reccuring_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession]);
 
 
     }
+    /**
+    * @Route("/edit/{id}", name="editproduct")
+    */
+  public function edit($id,Request $request){
+    $variableinvoicing=new VariableInvoicing();
+    $Sales = new Sales();
+    $SaleDetailled = new Salesdetailled();
+    $businessSession =$this->container->get('session')->get('business');
+    $entityManager = $this->getDoctrine()->getManager();
+    $SaleDetailled = $entityManager->getRepository(Salesdetailled::class)->findBysales($businessSession->getSales());
+    $numberofyears = $businessSession->getNumberofyears();
+    $key ='';
+    //dump($SaleDetailled->length);die();
+    $product = $entityManager->getRepository(Product::class)->find($id);
+    //$product->setName('ddfd');
+    //dump($product->__toString());die();
+    if($product->__toString() == 'Variable Invoicing'){
+    $variableinvoicing = $entityManager->getRepository(VariableInvoicing::class)->find($id);
+    $form = $this->createForm(VariableInvoicingType::class, $variableinvoicing);
+    $key = $variableinvoicing->getName(); 
+
+     }
+    else if($product->__toString() == 'Reccuring Invoicing'){
+        $reccuringinvoicing = $entityManager->getRepository(ReccuringInvoicing::class)->find($id);
+        $form = $this->createForm(ReccuringInvoicingType::class, $reccuringinvoicing);
+        $key = $reccuringinvoicing->getName(); 
+    } 
+    else if($product->__toString() == 'Unit Invoicing'){
+        $unitsinvoicing = $entityManager->getRepository(UnitInovicing::class)->find($id);
+        $form = $this->createForm(UnitInvoicingType::class, $unitsinvoicing);
+        $key = $unitsinvoicing->getName(); 
+    }
+   
+    $form->handleRequest($request);
+
+    if($form->isSubmitted() && $form->isValid()){
+        $newKey =$form->getData()->getName(); 
+        foreach($SaleDetailled as $value){
+            $tags = $value->getdetailled();
+           // dump($tags);die();
+           if($newKey != $key){
+            $tags[$newKey] = $tags[$key];
+            unset($tags[$key]);
+            ksort($tags);  
+            $value->setDetailled($tags);
+           }
+            
+           //dump($tags);die();       
+           //dump($value);
+        }
+        //die();  
+        $entityManager->flush();
+     return $this->redirectToRoute('products');
+    
+    }
+    else if($form->isSubmitted() && !$form->isValid()){
+        return $this->redirectToRoute('products');
+    }
+    
+    
+     return $this->render('products/edit.html.twig',['form'=>$form->createView(),'product' => $product ,'business' => $businessSession]);
+  }
+   /**
+    * @Route("/delete/{id}", name="deleteproduct")
+    */
+     public function delete($id,Request $request){
+        $businessSession =$this->container->get('session')->get('business');
+        $entityManager = $this->getDoctrine()->getManager();
+        $SaleDetailled = $entityManager->getRepository(Salesdetailled::class)->findBysales($businessSession->getSales());
+        $product = $entityManager->getRepository(Product::class)->find($id);
+        $key  = $product->getName();
+        foreach($SaleDetailled as $value){
+            $tags = $value->getdetailled();
+            unset($tags[$key]);
+            $value->setDetailled($tags);
+        }
+        $entityManager->remove($product);
+        $entityManager->flush();
+        return $this->redirectToRoute('products');
+     }
 
   /*  public function create(Request $request)
     {

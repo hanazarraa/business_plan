@@ -1,0 +1,690 @@
+
+{% if product.__toString() == 'Variable Invoicing' %}
+    {% block page_content %}  
+{{ form_start(form, {'attr': {'class': 'formulaire','method': 'POST','action':path('editproduct',{'id':product.id}) }}) }}
+
+	<div class="entete entete-min">
+		<h1 class="fleft">
+							Modifier Produit					</h1>
+
+
+		<div class="call-to-action fright">
+												
+					<div class="fleft">
+          
+						{{form_widget (form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print'}}) }}
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+		<input type="hidden" name="type" value="prestation" />
+		
+					<div class="form-element absolute" id="validation_mouvante">
+				
+			</div>
+		
+		<p>
+							<strong>Product with variable invoicing</strong>
+					</p>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="description">
+					Name <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+
+                          {{form_widget (form.name, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+
+			
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+
+		</div>
+
+		
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva">
+					VAT (in %) <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+			 {{form_widget (form.vat, {'attr': {'class': 'type-text'  }}) }}
+				</div>
+
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+					&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 20% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div  class="onglet_table">
+			<h2 class="margeur-30 onglet-encaissement">Product receipt rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The receipt rule enables you to fill in the Sales Receipts table, which itself is used to fill in the cashflow plan.  For each product, determine the portion that is received at the time of sale (= cash), then month-by-month as applicable. Make sure that the total is 100%.
+BIC advice: clients rarely pay the totality of their orders when invoiced. To estimate payment times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. It's always easier to manage early payment!"></i></h2>
+
+			<div>
+			<div class="margeur-10 rouge fs-14">
+			
+			{{form_errors(form.productreceipt)}}
+		
+           					</div>
+								<table class="tableau margeur-15">
+					<tr>
+						<th></th>
+						<th>Cash</th>
+						<th>30 days</th>
+						<th>60 days</th>
+						<th>90 days</th>
+						<th>120 days</th>
+					</tr>
+
+						
+					
+					{% for i in 0..business.numberofyears - 1 %}
+					<tr >
+					<td> Year {{ i + 1 }}</td>
+                  			                 
+					{% for productreceipt in form.productreceipt %}
+					 
+                    <td class="aright duplicate">{{ form_widget (productreceipt[i], {'attr': {'type':'text','class':'type-text'}}) }}</td>
+				
+					{% endfor %}
+					</tr>
+					{% endfor %}
+					
+				</table>
+			</div>
+		</div>
+
+		<div  class="onglet_table">
+			<h2 class="margeur-30">Purchase cost of sales (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Fill in the cost of raw materials, merchandise, services, intermediary wages, or other purchases directly required to manufacture, implement, or sell your product. For trade or wholesale activities, this price corresponds to the purchase price of the merchandise being sold. For a service activity, it represents systematic outsourcing or related costs. You must estimate this as a percentage of the sale price. This purchase cost is assigned at the moment of sale."></i></h2>
+			<div>
+				<table class="tableau margeur-15">
+				    <tr>
+                     {% for i in 1..business.numberofyears %}
+                     <th>Year {{i}}</th>
+					 {% endfor %}
+												
+					</tr>
+
+					<tr>
+                           {% for b in form.purchasecostofsales %}
+					<td class="aright">								
+							{{ form_widget (b, {'attr': {'type':'text','class':'type-text'}}) }}		</td>
+								{% endfor %}				
+				</table>
+			</div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva_achat">
+					VAT on purchases (in %) <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+                {{ form_widget (form.vatonpurchase, {'attr': {'type':'text','class':'type-text'}}) }}				</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+					&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 20% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="onglet_table">
+			<h2 class="margeur-30 onglet-decaissement">Purchase disbursement rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The disbursement rule enables you to fill in the Purchasing Disbursements table, which itself fills in the cashflow plan.  For purchases that correspond to a specific product, determine the percentage that is disbursed at the moment of sale (= cash), then on a month-by-month basis as applicable. Make sure that the total is 100%.
+BIC advice: disbursement always seems too soon! To estimate average times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. By default, the application proposes 100% of the disbursements as cash.
+"></i></h2>
+			<div>
+		
+								<table class="tableau margeur-15">
+					<tr>
+						<th></th>
+						<th>Cash</th>
+						<th>30 days</th>
+						<th>60 days</th>
+						<th>90 days</th>
+						<th>120 days</th>
+					</tr>
+				
+	{% for i in 0..business.numberofyears - 1 %}
+	
+  <tr >
+  <td> Year {{i +1}} </td>
+			 	
+			{% for purchasedisbursement in form.purchasedisbursement %}
+			<td class="aright duplicate">{{ form_widget (purchasedisbursement[i], {'attr': {'type':'text','class':'type-text'}}) }}</td>
+             
+			{% endfor %}
+					</tr>
+					
+	{% endfor %}	
+  				
+				</table>
+        
+			</div>
+		</div>
+
+			</div>
+
+	
+{{form_end(form)}}
+                           
+
+		
+                 		
+{% endblock %}
+{% elseif product.__toString() == 'Reccuring Invoicing' %}
+<div class="right_col" role="main">
+{{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':path('editproduct',{'id':product.id})  }}) }}
+	<div class="entete entete-min">
+		<h1 class="fleft">
+							Modifier product					</h1>
+
+		<div class="call-to-action fright">
+												
+					<div class="fleft">
+		{{form_widget (form.submit, {'attr': {'class': 'btn btn-lg btn-success submit-note','value':'OK'}}) }}
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="OK" />
+			</div>
+		
+		<p>
+			<strong>Produit à prix récurrent (type abonnement) :</strong> renseignez les champs qui suivent. Vous pouvez varier le type de récurrence et décaler la date du premier versement par rapport à la date de vente. Vous saisirez les quantités vendues pour ce produit directement dans la section <a href="https://www.montpellier-business-plan.com/mon-business-plan/ventes">VENTE</a>.
+		</p>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="description">
+					Name <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+                {{form_widget (form.name, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="prix_vente">
+					Sale price <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{form_widget (form.saleprice, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva">
+					VAT <span class="rouge">*</span> &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 50% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</label>
+
+				<div class="champ">
+                {{form_widget (form.vat, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="cout_achat">
+					Purchase cost of sales <span class="rouge">*</span> &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Fill in the cost of raw materials, merchandise, services, intermediary wages, or other purchases directly required to manufacture, implement, or sell your product. For trade or wholesale activities, this price corresponds to the purchase price of the merchandise being sold. For a service activity, it represents systematic outsourcing or related costs. You must estimate this as a percentage of the sale price. This purchase cost is assigned at the moment of sale.
+"></i>				</label>
+
+				<div class="champ">
+			{{form_widget (form.purchasecostofsales, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva">
+					VAT on purchases <span class="rouge">*</span> &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 50% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</label>
+
+				<div class="champ">
+                {{form_widget (form.vatonpurchases, {'attr': {'class': 'type-text'}}) }}</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="frequence">
+					Periodicity <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{ form_widget (form.periodicity, {'attr': {'class': 'type-text'}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="premiere_occurrence">
+					 First occurrence <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+									{{ form_widget (form.firstoccurence, {'attr': {'class': 'type-text'}}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="permanent">
+					Permanent <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{ form_widget (form.permanent, {'attr': {'name': '','id':'','onclick':'myFunction()'}}) }}
+
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element " id="occurrences" style="display: none;">
+			<div class="fleft">
+				<label for="nb_occurrences">
+					Number of occurrences <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{ form_widget (form.numberofoccurences, {'attr': {'class': 'type-text'}}) }}
+				</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+	</div>
+    {{ form_row(form._token) }}
+</form>
+                    </div>
+
+{% elseif product.__toString() == 'Unit Invoicing' %}
+ <div class="right_col" role="main">
+                            <script type="text/javascript">
+	
+	</script>
+       {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':path('editproduct',{'id':product.id}) }}) }}
+
+	<div class="entete entete-min">
+		<h1 class="fleft">
+							Create a product					</h1>
+
+
+		<div class="call-to-action fright">
+												
+					<div class="fleft">
+                                            {{form_widget (form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'OK'}}) }}
+
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+		<input type="hidden" name="type" value="unitaire" />
+		
+					<div class="form-element absolute" id="validation_mouvante">
+                 {{form_widget (form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'OK'}}) }}
+
+			</div>
+		
+		<p>
+							<strong>Product with unit invoicing</strong>
+					</p>
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="description">
+					Name <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+                          {{form_widget (form.name, {'attr': {'class': 'type-text'}}) }}</div>
+
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+
+				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+
+		</div>
+
+		<div class="onglet_table ">
+			<h2 class="margeur-30">Sell price (in {{ business.currency }} HT)</h2>
+			<div>
+				<table class="tableau margeur-15">
+                  
+				    <tr>
+               {% for i in 1..business.numberofyears %}
+			<th> Year {{i }}</th>
+												
+					 {% endfor %}	
+					</tr>
+                    
+					<tr>
+                         {% for sellPrice in form.sellsPrice %}
+                    <td class="aright">
+					             {{ form_widget(sellPrice, {'attr': {'class': 'type-text','type':'text','size':'1','style':'background-color: rgb(250, 250, 250);'}}) }} 
+					  
+					 </td>
+					   
+				        {% endfor %}
+					
+                    </tr>
+                
+				</table>
+			</div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva">
+					VAT (in %) <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+			 {{form_widget (form.vat, {'attr': {'class': 'type-text','value':product.vat}}) }}</div>
+
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+					&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 20% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+		<div  class="onglet_table">
+			<h2 class="margeur-30 onglet-encaissement">Product receipt rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The receipt rule enables you to fill in the Sales Receipts table, which itself is used to fill in the cashflow plan.  For each product, determine the portion that is received at the time of sale (= cash), then month-by-month as applicable. Make sure that the total is 100%.
+BIC advice: clients rarely pay the totality of their orders when invoiced. To estimate payment times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. It's always easier to manage early payment!
+"></i></h2>
+
+			<div>
+								<table class="tableau margeur-15">
+					<tr>
+						<th></th>
+						<th>Cash</th>
+						<th>30 days</th>
+						<th>60 days</th>
+						<th>90 days</th>
+						<th>120 days</th>
+					</tr>
+                    
+					
+					{% for i in 0..business.numberofyears - 1 %}
+					<tr >
+					<td> Year {{ i + 1 }}</td>
+                  			                 
+					{% for productreceipt in form.products_reciept_rule %}
+					 
+                    <td class="aright duplicate">{{ form_widget (productreceipt[i], {'attr': {'type':'text','class':'type-text'}}) }}</td>
+				
+					{% endfor %}
+					</tr>
+					{% endfor %}
+
+				</table>
+			</div>
+		</div>
+
+		<div  class="onglet_table">
+			<h2 class="margeur-30">Purchase cost of sales (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Fill in the cost of raw materials, merchandise, services, intermediary wages, or other purchases directly required to manufacture, implement, or sell your product. For trade or wholesale activities, this price corresponds to the purchase price of the merchandise being sold. For a service activity, it represents systematic outsourcing or related costs. You must estimate this as a percentage of the sale price. This purchase cost is assigned at the moment of sale.
+"></i></h2>
+			<div>
+				<table class="tableau margeur-15">
+                <tr>
+                     {% for i in 1..business.numberofyears %}
+                     <th>Year {{i}}</th>
+					 {% endfor %}
+												
+					</tr>
+
+					<tr>
+                           {% for b in form.product_cost_sales %}
+					<td class="aright">								
+							{{ form_widget (b, {'attr': {'type':'text','class':'type-text'}}) }}													</td>
+								{% endfor %}				    
+				</table>
+			</div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="tva_achat">
+					VAT on purchases (in %) <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{ form_widget (form.vat_purchases, {'attr': {'type':'text','class':'type-text','value':product.vatpurchases}}) }}	</div>
+				<div class="clearer"></div>
+
+			</div>
+			<div class="fleft aide">
+				<div class="infos">
+					&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The class rate of 20% provided by default may be modified (depending on your business sector or sales territory). You may also enter a zero tax rate if applicable (0%).
+"></i>				</div>
+
+				<div class="erreurs">
+									</div>
+			</div>
+
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="onglet_table">
+			<h2 class="margeur-30 onglet-decaissement">Purchase disbursement rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The disbursement rule enables you to fill in the Purchasing Disbursements table, which itself fills in the cashflow plan.  For purchases that correspond to a specific product, determine the percentage that is disbursed at the moment of sale (= cash), then on a month-by-month basis as applicable. Make sure that the total is 100%.
+BIC advice: disbursement always seems too soon! To estimate average times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. By default, the application proposes 100% of the disbursements as cash.
+"></i></h2>
+			<div>
+								<table class="tableau margeur-15">
+					<tr>
+						<th></th>
+						<th>Cash</th>
+						<th>30 days</th>
+						<th>60 days</th>
+						<th>90 days</th>
+						<th>120 days</th>
+					</tr>
+                    {% for i in 0..business.numberofyears - 1 %}
+	
+  <tr >
+  <td> Year {{i +1}} </td>
+			 	
+			{% for purchasedisbursement in form.purchase_disbursment_rule %}
+			<td class="aright duplicate">{{ form_widget (purchasedisbursement[i], {'attr': {'type':'text','class':'type-text'}}) }}</td>
+             
+			{% endfor %}
+					</tr>
+					
+	{% endfor %}			
+				</table>
+			</div>
+		</div>
+
+			</div>
+            {{form_row (form._token)}}
+</form>
+                        
+						
+{% endif %}

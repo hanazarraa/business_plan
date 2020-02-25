@@ -75,5 +75,26 @@ class BusinessController extends AbstractController
        
         return $this->render('business/monbuisness.html.twig',['business' => $businessSession]);
     }
+     /**
+     * @Route("/{_locale}/dashboard/my-business-plan/parametre", name="businessparametre")
+     * 
+     */
+    public function parametre(Request $request){
+        $businessSession =$this->container->get('session')->get('business');
+        $entityManager = $this->getDoctrine()->getManager();
+        $business = $entityManager->getRepository(Businessplan::class)->find($businessSession->getId());
+        
+      
+        $form = $this->createForm(BusinessFormType::class, $business);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $business->setNumberofyears($business->getNumberofyears());
+            $entityManager->flush();
+            return $this->redirectToRoute('dashboard');
+
+        }
+         return $this->render('business/parametre.html.twig',['form' => $form->createView()]);
+     }
 
 }

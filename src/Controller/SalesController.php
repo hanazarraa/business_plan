@@ -57,6 +57,7 @@ class SalesController extends AbstractController
         
         
         $products=$productRepository->findBybusinessplan($businessSession);
+        
         return $this->render('sales/index.html.twig',['listofCA'=> $listofCA ,
            'business' => $businessSession  ,  'products' => $products
         ]);
@@ -138,6 +139,7 @@ class SalesController extends AbstractController
         $listofprice =[];
         $listofreccuring= [];
         $listofname=[];
+        $listofparametre=[];
         $products=$productRepository->findBybusinessplan($businessSession);
         $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId() , 'year' => $id+1 ]);
         foreach($products as $product){
@@ -148,13 +150,14 @@ class SalesController extends AbstractController
             }
             if($product->__toString()=='Reccuring Invoicing'){
                 $listofreccuring[$product->getName()] = [$product->getSaleprice()];
+                $listofparametre[$product->getName()] = [$product->getSaleprice(),$product->getPeriodicity(),$product->getFirstoccurence(),$product->getPermanent(),$product->getNumberofoccurences()];
             }   
         }
-      //  dump($sales);die();
+        //dump($listofparametre);die();
         $form = $this->createForm(SalesdetailledFormType::class, $sales[0]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-             
+
             $sales=$form->getData();     
             
             //$entityManager->merge($sales);
@@ -163,7 +166,7 @@ class SalesController extends AbstractController
             return $this->redirectToRoute('sales');
             }
         return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,
-         'business' => $businessSession ,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype , 'listofname' => $listofname ]);
+         'business' => $businessSession ,'listofparametre' => $listofparametre,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype , 'listofname' => $listofname ]);
     }
 
      /**
