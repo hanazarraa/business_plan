@@ -83,7 +83,7 @@
 				<div class="clearer"></div>
 			</div>
 
-			<div class="form-element ">
+			<div class="form-element dnone">
 				<div class="fleft">
 					<label for="global_only">
 						Type of business plan <span class="rouge">*</span> &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="You have two options:
@@ -92,7 +92,7 @@ Global: all years are in Global entry mode. Practical for writing an approximate
 "></i>					</label>
 
 					<div class="champ">
-							 {{ form_widget (form.typeofbusiness, {'attr': {'class': 'type-text','value':''}}) }}
+							 {{ form_widget (form.typeofbusiness, {'attr': {'class': 'type-text'}}) }}
 
 					</div>
 
@@ -217,13 +217,13 @@ Global: all years are in Global entry mode. Practical for writing an approximate
 			<div class="clearer"></div>
 		</div>
 
-		<div class="form-element ">
+		<div class="form-element dnone">
 			<div class="fleft">
 				<label for="societe_elements_anterieurs">
 					Include items from previous exercises?				</label>
 
 				<div class="champ">
- {{ form_widget (form.includeitems, {'attr': {'class': 'type-text','value':''}}) }}
+ {{ form_widget (form.includeitems, {'attr': {'class': 'type-text'}}) }}
 
 				</div>
 

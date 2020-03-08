@@ -9,6 +9,7 @@ use App\Entity\Businessplan;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Entity\Sales;
+use App\Entity\Salesdetailled;
 use App\Form\BusinessFormType;
 
 class BusinessController extends AbstractController
@@ -74,6 +75,28 @@ class BusinessController extends AbstractController
        $businessSession =$this->container->get('session')->get('business');
        
         return $this->render('business/monbuisness.html.twig',['business' => $businessSession]);
+    }
+         /**
+     * @Route("/{_locale}/dashboard/my-business-plan/delete/{code}", name="businessdelete")
+     * 
+     */
+    public function delete(Request $request,$code){
+        $entityManager = $this->getDoctrine()->getManager();//Salesdetailled
+        $business = $entityManager->getRepository(Businessplan::class)->findByCode($code);
+        $product = $entityManager->getRepository(Product::class)->findByBusinessplan($business[0]);
+        $sales = $entityManager->getRepository(Sales::class)->find($business[0]->getSales());
+        $salesdetailled = $entityManager->getRepository(Salesdetailled::class)->findBySales($sales);
+        //dump(count($product));die();
+        for($i = 0 ; $i<count($salesdetailled); $i++){
+            $entityManager->remove($salesdetailled[$i]);
+        }
+        for($i = 0 ; $i<count($product); $i++){
+            $entityManager->remove($product[$i]);
+        }
+        $entityManager->remove($business[0]);
+        $entityManager->remove($sales);
+        $entityManager->flush();
+        return $this->redirectToRoute('dashboard');
     }
      /**
      * @Route("/{_locale}/dashboard/my-business-plan/parametre", name="businessparametre")

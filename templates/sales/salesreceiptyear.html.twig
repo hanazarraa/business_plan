@@ -291,17 +291,13 @@
 
 			<div class="fleft margeur-l15">
 				<div class="pagination-periode">
-		
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/encaissement-des-ventes-annee-0" class="btn btn-primary btn-md btn-success" title="Year 1">
-				Year 1			</a>
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/encaissement-des-ventes-annee-1" class="btn btn-primary btn-md " title="Year 2">
-				Year 2			</a>
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/encaissement-des-ventes-annee-2" class="btn btn-primary btn-md " title="Year 3">
-				Year 3			</a>
-		
-				<!--<a href="https://www.montpellier-business-plan.com/mon-business-plan/encaissement-des-ventes-annee-1" class="btn btn-md">
-			&raquo;
-		</a>-->
+		{% for i in 1..business.numberofyears %}
+        <a href="{{path('salesreceiptyear',{id:i -1})}}" class="btn btn-primary btn-md btn-success" title="Year {{i}}">
+				Year {{i}}			
+		</a>
+
+        {% endfor %}
+				
 		
 
 	</div>
@@ -349,152 +345,53 @@
 					</tr>
 
 				<tr>
+		
 			<td class="soustitre">
-				Cash			</td>
-
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-					</tr>
-				<tr>
+			Cash
+			</td>
+			{% for key,ca in Cash[id] %}
+				<td class="aright">
+				{#ca[key]#}{{ca}}</td>
+			{% endfor %} 
+				</tr>
+			 	 
+		    
 			<td class="soustitre">
 				30 days			</td>
 
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-					</tr>
+            {% for key,ca in After30[id] %}
+			<td class="aright">
+					{{ca}} </td>
+					
+			{% endfor %}		
 				<tr>
 			<td class="soustitre">
 				60 days			</td>
 
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-					</tr>
+            {% for key,ca in After60[id] %}
+			<td class="aright">
+					{{ca}} </td>
+					
+			{% endfor %}		
 				<tr>
 			<td class="soustitre">
 				90 days			</td>
 
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-					</tr>
+            {% for key,ca in After90[id] %}
+			<td class="aright">
+					{{ca}} </td>
+					
+			{% endfor %}		
 				<tr>
 			<td class="soustitre">
 				120 days			</td>
 
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-					</tr>
-		
-		<tr>
+            {% for key,ca in After120[id] %}
+			<td class="aright">
+					{{ca}} </td>
+					
+			{% endfor %}		
+				<tr>
 			<td class="soustitre">
 				Associated revenue			</td>
 
@@ -527,61 +424,19 @@
 		<tr>
 			<td class="soustitre">
 				Amount of VAT			</td>
-
+                   {% for d in TVA[id] %}
 							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
+							{{d}}		</td>
+					{% endfor %}
 					</tr>
 
 		<tr>
 			<td class="total">
 				Total received			</td>
-
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
-							<td class="total aright">
-					0.00				</td>
+                {% for t in total[id] %}
+				<td class="total aright">
+					{{t}}				</td>
+				{% endfor %}
 					</tr>
 	</table>
 </div>
