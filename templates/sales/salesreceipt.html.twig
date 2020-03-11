@@ -303,7 +303,7 @@
 	<table class="tableau">
 		<tr>
        
-			<th>Sales receipts (in € TTC)</th>
+			<th>Sales receipts (in {{business.currency}} TTC)</th>
             {% for i in 1..business.numberofyears %}
             <th>
             year {{i}} <br />
@@ -318,7 +318,7 @@
 			<td class="total">Total</td>
             {% for i in 1..business.numberofyears %}
                <td class="total aright">
-				0.00 </td>
+				{{receipt[i -1]}} </td>
 			{%  endfor %}	
 					</tr>
 	</table>

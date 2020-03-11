@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Purchases | {{ business.name }} - Montpellier Business Plan</title>
- <link href="../../../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+                                       <link href="../../../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
                             <link href="../../../../css/reset.css" rel="stylesheet" type="text/css" />
                             <link href="../../../../css/generic.css" rel="stylesheet" type="text/css" />
                             <link href="../../../../css/jquery-ui-1.9.0.custom.min.css" rel="stylesheet" type="text/css" />
@@ -285,28 +286,42 @@
         <!-- page content -->
         <div class="right_col" role="main">
                             <div class="entete entete-min">
-	<h1 class="fleft">
+	<h1 class="dblock fleft">
 		Purchase cost of sales	</h1>
+			<div class="fleft margeur-l20">
+				<div class="pagination-periode">
+		{% for i in 1..business.numberofyears %}
+					<a href="{{path('purchasedet',{id:i -1})}}" class="btn btn-primary btn-md btn-success" title="Year 1">
+				Year {{i}}			</a>
+				{% endfor %}
+		
+				<!--<a href="https://www.montpellier-business-plan.com/mon-business-plan/cout-d-achat-des-ventes-annee-1" class="btn btn-md">
+			&raquo;
+		</a>-->
+		
 
+	</div>
+		</div>
+	
 	<div class="call-to-action fright">
 					<div class="fleft">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/decaissement-des-achats-annee-0" title="Purchase disbursements" class="btn btn-md btn-primary">
-					Purchase disbursements				</a>
-			</div>
-
-			<div class="fleft">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/approvisionnement-annee-0" title="Supply" class="btn btn-md btn-primary">
+				<a href="https://www.montpellier-business-plan.com/mon-business-plan/approvisionnement-annee-0" title="Supply" class="btn btn-md btn-primary dont-print">
 					Supply				</a>
 			</div>
 
+			<div class="fleft">
+				<a href="https://www.montpellier-business-plan.com/mon-business-plan/decaissement-des-achats-annee-0" title="Purchase disbursements" class="btn btn-md btn-primary dont-print">
+				 	Purchase disbursements				</a>
+			</div>
+
 				<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?achat[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?achat[]=0" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
 
 			<div class="fleft">
-				<a href="https://www.montpellier-business-plan.com/espace_client/achat/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+				<a href="https://www.montpellier-business-plan.com/espace_client/achat/exportExcelDetail/0" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
 					<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
 				</a>
 			</div>
@@ -316,50 +331,61 @@
 	<div class="clearer"></div>
 </div>
 
+
 <div class="x_panel">
 	<table class="tableau no-highlight">
-    
 		<tr>
-			<th colspan="2"></th>
-            {% for i in 1..business.numberofyears %}
-						<th>
-				Year {{i}}								<br />
-				<span class="saisie-detaillee-link">
-					<a href="{{path('purchasedet',{id:i -1})}}" title="Detailed entry">
-						Detailed entry					</a>
-				</span>
-							</th>
-						 {% endfor %}
-
+		   <th colspan="2">Products</th>
+		   		   <th>Jan.</th>
+		   		   <th>Feb.</th>
+		   		   <th>March</th>
+		   		   <th>April</th>
+		   		   <th>May</th>
+		   		   <th>June</th>
+		   		   <th>July</th>
+		   		   <th>Aug.</th>
+		   		   <th>Sept.</th>
+		   		   <th>Oct.</th>
+		   		   <th>Nov.</th>
+		   		   <th>Dec.</th>
+		   		</tr>
 			<tr>
-            {% for product in products %}
+			{% for product in products %}
 			<td rowspan="1" class="soustitre">
 				<a href="https://www.montpellier-business-plan.com/espace_client/produit/modal_produit/262086" title="Modify" class="tool-tip open-modal">
 					{{product.name}} <i class="fa fa-pencil"></i>
 				</a>
-		  	</td>   
-            
+		  	</td>
+
 		  				  	<td class="soustitre">
-			  		Purchase cost of sales (in {{business.currency}})
-			  	</td>
-                                   {% for i in Somme[product.name] %} 
-			  				  		<td class="aright">
-				 		{{i}}</td>{% endfor %}
-                         <tr>
-			{% endfor %}
+			  		Total purchases (excl. tax)			  	</td>
+			  {% for i in list[product.name ~ id] %}
+				  	<td class="aright">
+				  		{{i}}				  	</td>
+			  	{% endfor %}
+			  			  			</tr>
+
+		{% endfor %}
+			
 		<tr>
 			<td class="total" colspan="2">
 				Total purchases (in {{business.currency}})
 			</td>
-       {% for x in total %}
-						<td class="total aright">
-				{{x}}			</td>
-			  {% endfor %}			
-						
-					</tr>
+        {% for x in Somme[id] %}
+					  	<td class="total aright">
+		  		{{x}}		  	</td>
+		{% endfor %}  			 
+		  			</tr>
 	</table>
 </div>
-                            <input type="hidden" id="id_tableau" name="id_tableau" value="6" />
+
+<div class="margeur-20">
+
+
+
+	<div class="clearer"></div>
+</div>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="7-0" />
 
 <div class="bloc-commentaires margeur-50" id="notes">
 	<h2 class="fleft">Notes</h2>

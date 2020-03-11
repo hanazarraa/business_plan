@@ -170,16 +170,18 @@ class SalesController extends AbstractController
         return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,
          'business' => $businessSession ,'listofparametre' => $listofparametre,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype , 'listofname' => $listofname ]);
     }
-
+    public $receipt ;
      /**
      * @Route("/salesreceipt", name="salesreceipt")
      */
-    public function receipt(ProductRepository $productRepository){
-      
+    public function receipt(ProductRepository $productRepository,SalesdetailledRepository $SalesdetailledRepository,SalesRepository $SalesRepository){
+        
         $businessSession =$this->container->get('session')->get('business');
         $products=$productRepository->findBybusinessplan($businessSession);
-        
-        return $this->render('sales/salesreceipt.html.twig' , ['business' => $businessSession ]) ;
+        $id =0 ;
+        $this->receiptyears($SalesdetailledRepository,$productRepository,$id,$SalesRepository);
+        //dump($this->receipt);die();
+        return $this->render('sales/salesreceipt.html.twig' , ['business' => $businessSession , 'receipt' => $this->receipt , 'products'=> $products ]) ;
     }
     private $arr =[];
          /**
@@ -659,7 +661,11 @@ class SalesController extends AbstractController
    $After120[$q]= $final4[$q];
    
    }
-   //dump($Sum);die();
+   for($n=0 ;$n<$years ;$n++ ){
+    $this->receipt[$n] =  array_sum($Sum[$n]) ;
+   }
+    
+   //dump(array_sum($Sum[0]));die();
       return $this->render('sales/salesreceiptyear.html.twig',['id' => $id ,'total' => $Sum,"business" => $businessSession , "product" => $product , "Cash" => $Cash , "After30" => $After30 ,"After60" => $After60
       , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA]);
     }
