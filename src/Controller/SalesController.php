@@ -471,6 +471,7 @@ class SalesController extends AbstractController
       }
 
     }
+    
     for($t=0 ; $t<$years+1 ; $t++ ){
       for($s =0 ; $s < 5; $s++){
         $Sum[$t] =  ['0','0','0','0','0','0','0','0','0','0','0','0'];//variable pour calculer la somme d'encaissment pour chaque colonne
@@ -485,7 +486,7 @@ class SalesController extends AbstractController
         $dontTVA=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'];   
         
         $products=$productRepository->findBybusinessplan($businessSession);
-
+       
         foreach($products as $product){
           for($i=0 ; $i<$years ; $i++){
           foreach (${'listofCA'.$i} as $key => $value) {

@@ -4,10 +4,10 @@ jQuery(document).ready(function() {
         var no_format_zero = $('#no_format_zero').length;
 
         if (!no_format_zero) {
-            $(this).val(number_format($(this).val().replace(",", "."), 2, '.', ' '));
+            $(this).val(number_format($(this).val().replace(",", "."), 2, '.', ''));
         } else {
             if (parseInt($(this).val()) != 0) {
-                $(this).val(number_format($(this).val().replace(",", "."), 2, '.', ' '));
+                $(this).val(number_format($(this).val().replace(",", "."), 2, '.', ''));
             } else {
                 $(this).val('');
             }

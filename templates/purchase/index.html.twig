@@ -101,7 +101,7 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                   <div class="menu_section">
-                    <h3>Business plans</h3>
+                    <h3><img alt="Logo" src="{{asset('images/logo-white.png') }}" height="50px"></h3>
                     <ul class="nav side-menu">
                       <li>
                           <a href="https://www.montpellier-business-plan.com/mes-business-plan"><i class="fa fa-list"></i> Tous </a>
@@ -290,7 +290,7 @@
 
 	<div class="call-to-action fright">
 					<div class="fleft">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/decaissement-des-achats-annee-0" title="Purchase disbursements" class="btn btn-md btn-primary">
+				<a href="{{path('purchasedisbursement',{id:0})}}" title="Purchase disbursements" class="btn btn-md btn-primary">
 					Purchase disbursements				</a>
 			</div>
 
@@ -300,7 +300,7 @@
 			</div>
 
 				<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?achat[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="{{path('purchase-pdf')}}" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
