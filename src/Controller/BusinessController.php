@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Businessplan;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Sales;
+use App\Entity\Salesdetailled;
 use App\Form\BusinessFormType;
 
 class BusinessController extends AbstractController
@@ -19,6 +21,7 @@ class BusinessController extends AbstractController
     public function create(Request $request)
     {
         $business=new Businessplan();
+        $sales= new Sales();
         $form = $this->createForm(BusinessFormType::class, $business);
 
           $form->handleRequest($request);
@@ -28,6 +31,7 @@ class BusinessController extends AbstractController
    
              $business=$form->getData();
              $business->setUser($user);
+             $business->setSales($sales);
              $business->setCode("".strtoupper(bin2hex(openssl_random_pseudo_bytes(32))));
              $entityManager = $this->getDoctrine()->getManager();
              $entityManager->persist($business);
@@ -47,7 +51,7 @@ class BusinessController extends AbstractController
     public function show(Request $request,$code)
     {
         $business = new Businessplan();
-        
+        $sales = new Sales();   
         $em = $this->getDoctrine()->getManager();
         $user = $this->get('security.token_storage')->getToken()->getUser();
         
@@ -72,5 +76,48 @@ class BusinessController extends AbstractController
        
         return $this->render('business/monbuisness.html.twig',['business' => $businessSession]);
     }
+         /**
+     * @Route("/{_locale}/dashboard/my-business-plan/delete/{code}", name="businessdelete")
+     * 
+     */
+    public function delete(Request $request,$code){
+        $entityManager = $this->getDoctrine()->getManager();//Salesdetailled
+        $business = $entityManager->getRepository(Businessplan::class)->findByCode($code);
+        $product = $entityManager->getRepository(Product::class)->findByBusinessplan($business[0]);
+        $sales = $entityManager->getRepository(Sales::class)->find($business[0]->getSales());
+        $salesdetailled = $entityManager->getRepository(Salesdetailled::class)->findBySales($sales);
+        //dump(count($product));die();
+        for($i = 0 ; $i<count($salesdetailled); $i++){
+            $entityManager->remove($salesdetailled[$i]);
+        }
+        for($i = 0 ; $i<count($product); $i++){
+            $entityManager->remove($product[$i]);
+        }
+        $entityManager->remove($business[0]);
+        $entityManager->remove($sales);
+        $entityManager->flush();
+        return $this->redirectToRoute('dashboard');
+    }
+     /**
+     * @Route("/{_locale}/dashboard/my-business-plan/parametre", name="businessparametre")
+     * 
+     */
+    public function parametre(Request $request){
+        $businessSession =$this->container->get('session')->get('business');
+        $entityManager = $this->getDoctrine()->getManager();
+        $business = $entityManager->getRepository(Businessplan::class)->find($businessSession->getId());
+        
+      
+        $form = $this->createForm(BusinessFormType::class, $business);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $business->setNumberofyears($business->getNumberofyears());
+            $entityManager->flush();
+            return $this->redirectToRoute('dashboard');
+
+        }
+         return $this->render('business/parametre.html.twig',['form' => $form->createView()]);
+     }
 
 }

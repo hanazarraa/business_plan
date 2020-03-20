@@ -13,3 +13,51 @@ credits: Crédits
 Name: Nom
 number_years: Nombre d'années
 type_business: Type de busiess plan
+MyBusinessPlan: Mes business plans
+New: Nouveau 
+Share: Partager
+Modify: modifier
+clone : dupliquer
+delete : supprimer
+bpover: Business plan sur
+starting: ans, débutant en
+creation: Créé le
+at :  à 
+All : Tous
+startyear: Année de début 
+startmonth: Mois de début
+DefaultVAT: TVA par défaut
+Companyinformation: Informations sur la société
+Companyname: Raison sociale
+Currency: Devise
+over: sur 
+youmayfill: Vous pouvez remplir, dans l'ordre souhaité, les sections ci-dessous 
+company: Société 
+products: Produits
+product: Produit
+sales: Ventes 
+purchase : Achat
+STAFF : Personnel
+generalexpenses: Frais généraux			
+investement: Investissements 
+deprication: Amortissements
+Loans: Emprunts
+compteresultat:  Compte de resultat
+profitandloss: Profit and Loss
+Prioritems: Prior items
+VAT: TVA
+Corporatetax: IS
+WCR: BFR
+planfinancement: Plan de financement
+cashflow: cash flow
+Receipts: encaissement
+settings: Paramètres
+Create : Créer
+a : un
+typeofproduct: Type de produit à créer
+unitsfac: Facturation à l'unité
+unitsvar: Facturation variable
+unitsrecu: Facturation récurrente		
+Reccuring Invoicing: Facturation récurrente
+Variable Invoicing: Facturation variable
+Unit Invoicing:  Facturation à l'unité

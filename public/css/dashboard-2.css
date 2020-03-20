@@ -17,7 +17,7 @@ h1 {
 }
 
 .left_col {
-    background: #252525;
+    background: #1a1a27;
 }
 
 .nav_title {
@@ -70,10 +70,14 @@ h1 {
 }
 
 .btn-primary {
-    background-color: #E31E29;
-    border-color: #E31E29;
+    background-color: #0abb87;
+    border-color: #0abb87;
 }
-
+.btn-second{
+ color:#fff;
+ background-color:#5d78ff;
+ border-color:#5d78ff;
+}
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus,
@@ -86,13 +90,13 @@ h1 {
 .open>.dropdown-toggle.btn-primary.focus,
 .open>.dropdown-toggle.btn-primary:focus,
 .open>.dropdown-toggle.btn-primary:hover {
-    background-color: #592A7D;
-    border-color: #592A7D;
+    background-color: #08976d;
+    border-color: #08976d;
 }
 
 .btn-success {
-    background-color: #97c11e;
-    border-color: #97c11e;
+    background-color: #0abb87;
+    border-color: #0abb87;
 }
 
 .btn-success:hover,
@@ -114,8 +118,8 @@ h1 {
 }
 
 .tableau th {
-    background: #E31E29;
-    border-color: #E46C03;
+    background: #5867dd;
+    border-color: #1a1a27;
 }
 
 .tableau td {
@@ -127,7 +131,7 @@ h1 {
 .top_nav .nav .open>a,
 .top_nav .nav .open>a:focus,
 .top_nav .nav .open>a:hover {
-    background: rgba(245, 130, 32, 0.75);
+    background: #6c757d;
     color: #FFFFFF!important;
 }
 

@@ -20,6 +20,7 @@ class VariableInvoicing extends Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min =0 , max = 100)
      */
     protected $vat;
 
@@ -36,6 +37,7 @@ class VariableInvoicing extends Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min =0 , max = 100)
      */
     protected $vatonpurchase;
 

@@ -13,3 +13,20 @@ credits: Credits
 Name: Name
 number_years: Number of years
 type_business: Type of business plan
+MyBusinessPlan: My Business Plan
+New: New 
+Share: Share
+Modify: modify
+clone : clone
+delete : delete
+bpover: Business plan over
+starting:  years, starting in
+creation: Created on
+at :  at
+All: All 
+startyear: Start year 
+startmonth: Start Month
+DefaultVAT: Default VAT
+Companyinformation: Company information
+Companyname: Company name
+Currency : Currency

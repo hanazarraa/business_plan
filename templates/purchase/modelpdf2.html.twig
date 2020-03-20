@@ -1,0 +1,78 @@
+<html>
+<head>
+<link rel="stylesheet" href="{{ base_dir ~ asset('css/bootstrap.css') }}">      					
+    <link href="{{ base_dir ~ asset('css/styles.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ base_dir ~ asset('css/print.css') }}" rel="stylesheet" type="text/css" media="print" />
+<link href="{{ base_dir ~ asset('css/reset.css') }}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/generic.css') }}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/jquery-ui-1.9.0.custom.min.css') }}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/jquery.gritter.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/jquery.lightbox-0.5.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/jquery.jqzoom.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/buttons.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/breadcrumbs.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/alertify.core.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/alertify.default.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/font-awesome.min.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/modal.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/styles.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/dashboard.css')}}" rel="stylesheet" type="text/css" />
+                            <link href="{{ base_dir ~ asset('css/dashboard-2.css')}}" rel="stylesheet" type="text/css" />
+<style>
+body {background-color: white;}
+
+</style>
+</head>
+<body>
+<img src="{{ base_dir ~ asset('images/logo-white.png')}}" alt="Dotit" >
+<h1>{{business.name}}</h1>
+<br>
+<h2>Couts d’achat sur Ventes / Année {{id +1 }}</h2>
+<div class="x_panel">
+	<table class="tableau no-highlight">
+		<tr>
+		   <th colspan="2">Produits</th>
+		   		  <th>Janv</th>
+		   		   <th>Fév</th>
+		   		   <th>Mars</th>
+		   		   <th>Avril</th>
+		   		   <th>Mai</th>
+		   		   <th>Juin</th>
+		   		   <th>Juil</th>
+		   		   <th>Aout</th>
+		   		   <th>Sept</th>
+		   		   <th>Oct</th>
+		   		   <th>Nov</th>
+		   		   <th>Déc</th>
+		   		</tr>
+			<tr>
+			{% for product in products %}
+			<td rowspan="1" class="soustitre">
+				<a href="https://www.montpellier-business-plan.com/espace_client/produit/modal_produit/262086" title="Modify" class="tool-tip open-modal">
+					{{product.name}} <i class="fa fa-pencil"></i>
+				</a>
+		  	</td>
+
+		  				  	<td class="soustitre">
+			  		Coûts d'achats HT			  	</td>
+			  {% for i in list[product.name ~ id] %}
+				  	<td class="aright">
+				  		{{i}}				  	</td>
+			  	{% endfor %}
+			  			  			</tr>
+
+		{% endfor %}
+			
+		<tr>
+			<td class="total" colspan="2">
+				Coûts d'achats total  (en {{business.currency}})
+			</td>
+        {% for x in Somme[id] %}
+					  	<td class="total aright">
+		  		{{x}}		  	</td>
+		{% endfor %}  			 
+		  			</tr>
+	</table>
+</div>
+</body>
+</html>

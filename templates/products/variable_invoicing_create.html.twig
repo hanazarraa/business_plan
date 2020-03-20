@@ -60,19 +60,19 @@
                     
         
             
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../images/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="../../../../images/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="../../../../images/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="../../../../images/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="../../../../images/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="../../../../images/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="../../../../images/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="../../../../images/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="../../../../images/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../../../../images/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon.png">
     <link rel="manifest" href="../../../../images/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="../../../../images/favicon/ms-icon-144x144.png">
@@ -102,7 +102,7 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                   <div class="menu_section">
-                    <h3>Business plans</h3>
+                    <h3><img alt="Logo" src="{{asset('images/logo-white.png') }}" height="50px"></h3>
                     <ul class="nav side-menu">
                       <li>
                           <a href="https://www.montpellier-business-plan.com/mes-business-plan"><i class="fa fa-list"></i> Tous </a>
@@ -112,7 +112,7 @@
                               <a href="https://www.montpellier-business-plan.com/creer-business-plan"><i class="fa fa-plus"></i> Nouveau </a>
                           </li>
                       
-                                                <li class="active"><a><i class="fa fa-table"></i> test <span class="fa fa-chevron-down"></span></a>
+                                                <li class="active"><a><i class="fa fa-table"></i> FREE <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu" style="display:block">
                                 <li class="current-page">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/produits" title="Products">
@@ -293,7 +293,8 @@
 
 	<div class="entete entete-min">
 		<h1 class="fleft">
-							Create a product					</h1>
+							Créer un produit
+					</h1>
 
 
 		<div class="call-to-action fright">
@@ -315,13 +316,13 @@
 			</div>
 		
 		<p>
-							<strong>Product with variable invoicing</strong>
+							<strong>Produit à facturation variable</strong>
 					</p>
 
 		<div class="form-element ">
 			<div class="fleft">
 				<label for="description">
-					Name <span class="rouge">*</span>
+					Nom <span class="rouge">*</span>
 				</label>
 
 				<div class="champ">
@@ -346,7 +347,7 @@
 		</div>
 
 		<div class="onglet_table dnone">
-			<h2 class="margeur-30">Sell price (in sds HT)</h2>
+			<h2 class="margeur-30">Sell price (in {{ business.currency }} HT)</h2>
 			<div>
 				<table class="tableau margeur-15">
 				    <tr>
@@ -384,7 +385,7 @@
 		<div class="form-element ">
 			<div class="fleft">
 				<label for="tva">
-					VAT (in %) <span class="rouge">*</span>
+					TVA (en %)  <span class="rouge">*</span>
 				</label>
 
 				<div class="champ">
@@ -407,7 +408,7 @@
 		</div>
 
 		<div  class="onglet_table">
-			<h2 class="margeur-30 onglet-encaissement">Product receipt rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The receipt rule enables you to fill in the Sales Receipts table, which itself is used to fill in the cashflow plan.  For each product, determine the portion that is received at the time of sale (= cash), then month-by-month as applicable. Make sure that the total is 100%.
+			<h2 class="margeur-30 onglet-encaissement">Loi d'encaissement des produits (en %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The receipt rule enables you to fill in the Sales Receipts table, which itself is used to fill in the cashflow plan.  For each product, determine the portion that is received at the time of sale (= cash), then month-by-month as applicable. Make sure that the total is 100%.
 BIC advice: clients rarely pay the totality of their orders when invoiced. To estimate payment times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. It's always easier to manage early payment!"></i></h2>
 
 			<div>
@@ -419,18 +420,18 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 								<table class="tableau margeur-15">
 					<tr>
 						<th></th>
-						<th>Cash</th>
-						<th>30 days</th>
-						<th>60 days</th>
-						<th>90 days</th>
-						<th>120 days</th>
+						<th>Comptant</th>
+						<th>30 jours </th>
+						<th>60 jours </th>
+						<th>90 jours </th>
+						<th>120 jours</th>
 					</tr>
 
 						
 					
 					{% for i in 0..business.numberofyears - 1 %}
 					<tr >
-					<td> Year {{ i + 1 }}</td>
+					<td> Année {{ i + 1 }}</td>
                   			                 
 					{% for productreceipt in form.productreceipt %}
 					 
@@ -450,7 +451,7 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 				<table class="tableau margeur-15">
 				    <tr>
                      {% for i in 1..business.numberofyears %}
-                     <th>Year {{i}}</th>
+                     <th>Année {{i}}</th>
 					 {% endfor %}
 												
 					</tr>
@@ -489,7 +490,7 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 
 
 		<div class="onglet_table">
-			<h2 class="margeur-30 onglet-decaissement">Purchase disbursement rule (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The disbursement rule enables you to fill in the Purchasing Disbursements table, which itself fills in the cashflow plan.  For purchases that correspond to a specific product, determine the percentage that is disbursed at the moment of sale (= cash), then on a month-by-month basis as applicable. Make sure that the total is 100%.
+			<h2 class="margeur-30 onglet-decaissement">Loi de décaissement des achats (en %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="The disbursement rule enables you to fill in the Purchasing Disbursements table, which itself fills in the cashflow plan.  For purchases that correspond to a specific product, determine the percentage that is disbursed at the moment of sale (= cash), then on a month-by-month basis as applicable. Make sure that the total is 100%.
 BIC advice: disbursement always seems too soon! To estimate average times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. By default, the application proposes 100% of the disbursements as cash.
 "></i></h2>
 			<div>
@@ -497,17 +498,17 @@ BIC advice: disbursement always seems too soon! To estimate average times, exami
 								<table class="tableau margeur-15">
 					<tr>
 						<th></th>
-						<th>Cash</th>
-						<th>30 days</th>
-						<th>60 days</th>
-						<th>90 days</th>
-						<th>120 days</th>
+						<th>Comptant</th>
+						<th>30 jours </th>
+						<th>60 jours </th>
+						<th>90 jours </th>
+						<th>120 jours </th>
 					</tr>
 				
 	{% for i in 0..business.numberofyears - 1 %}
 	
   <tr >
-  <td> Year {{i +1}} </td>
+  <td> Année {{i +1}} </td>
 			 	
 			{% for purchasedisbursement in form.purchasedisbursement %}
 			<td class="aright duplicate">{{ form_widget (purchasedisbursement[i], {'attr': {'type':'text','class':'type-text','value':'0.00'}}) }}</td>

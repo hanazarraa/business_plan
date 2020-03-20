@@ -36,28 +36,28 @@ class ReccuringInvoicingType extends AbstractType
         ->add('vatonpurchases',NumberType::class)
         ->add('periodicity',ChoiceType::class,array(
             'choices'=>array(
-                'Mounthly'=>'1',
-                'Quarterly'=>'3',
-                'Half-Yearly'=>'6',
-                'Yearly'=>'12'
+                'Mensuel'=>'1',
+                'Trimestriel'=>'3',
+                'Semestriel'=>'6',
+                'Annuel'=>'12'
                 )
 
         ))
         ->add('firstoccurence',ChoiceType::class,array(
             'choices'=>array(
-                'Immediate'=>'0',
-                'In 1 month(s)'=>'1',
-                'In 2 month(s)'=>'2',
-                'In 3 month(s)'=>'3',
-                'In 4 month(s)'=>'4',
-                'In 5 month(s)'=>'5',
-                'In 6 month(s)'=>'6',
-                'In 7 month(s)'=>'7',
-                'In 8 month(s)'=>'8',
-                'In 9 month(s)'=>'9',
-                'In 10 month(s)'=>'10',
-                'In 11 month(s)'=>'11',
-                'In 12 month(s)'=>'12',
+                'Immédiate'=>'0',
+                'Dans 1 mois'=>'1',
+                'Dans 2 mois'=>'2',
+                'Dans 3 mois'=>'3',
+                'Dans 4 mois'=>'4',
+                'Dans 5 mois'=>'5',
+                'Dans 6 mois'=>'6',
+                'Dans 7 mois'=>'7',
+                'Dans 8 mois'=>'8',
+                'Dans 9 mois'=>'9',
+                'Dans 10 mois'=>'10',
+                'Dans 11 mois'=>'11',
+                'Dans 12 mois'=>'12',
                 )
 
 

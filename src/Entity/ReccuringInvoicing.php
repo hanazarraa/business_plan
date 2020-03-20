@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Product;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReccuringInvoicingRepository")
  */
@@ -25,6 +25,7 @@ class ReccuringInvoicing extends Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min =0 , max = 100)
      */
     protected $vat;
 
