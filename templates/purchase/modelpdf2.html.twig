@@ -27,23 +27,23 @@ body {background-color: white;}
 <img src="{{ base_dir ~ asset('images/logo-white.png')}}" alt="Dotit" >
 <h1>{{business.name}}</h1>
 <br>
-<h2>Purchase cost of sales / Year {{id +1 }}</h2>
+<h2>Couts d’achat sur Ventes / Année {{id +1 }}</h2>
 <div class="x_panel">
 	<table class="tableau no-highlight">
 		<tr>
-		   <th colspan="2">Products</th>
-		   		   <th>Jan.</th>
-		   		   <th>Feb.</th>
-		   		   <th>March</th>
-		   		   <th>April</th>
-		   		   <th>May</th>
-		   		   <th>June</th>
-		   		   <th>July</th>
-		   		   <th>Aug.</th>
-		   		   <th>Sept.</th>
-		   		   <th>Oct.</th>
-		   		   <th>Nov.</th>
-		   		   <th>Dec.</th>
+		   <th colspan="2">Produits</th>
+		   		  <th>Janv</th>
+		   		   <th>Fév</th>
+		   		   <th>Mars</th>
+		   		   <th>Avril</th>
+		   		   <th>Mai</th>
+		   		   <th>Juin</th>
+		   		   <th>Juil</th>
+		   		   <th>Aout</th>
+		   		   <th>Sept</th>
+		   		   <th>Oct</th>
+		   		   <th>Nov</th>
+		   		   <th>Déc</th>
 		   		</tr>
 			<tr>
 			{% for product in products %}
@@ -54,7 +54,7 @@ body {background-color: white;}
 		  	</td>
 
 		  				  	<td class="soustitre">
-			  		Total purchases (excl. tax)			  	</td>
+			  		Coûts d'achats HT			  	</td>
 			  {% for i in list[product.name ~ id] %}
 				  	<td class="aright">
 				  		{{i}}				  	</td>
@@ -65,7 +65,7 @@ body {background-color: white;}
 			
 		<tr>
 			<td class="total" colspan="2">
-				Total purchases (in {{business.currency}})
+				Coûts d'achats total  (en {{business.currency}})
 			</td>
         {% for x in Somme[id] %}
 					  	<td class="total aright">

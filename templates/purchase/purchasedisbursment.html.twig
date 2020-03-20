@@ -60,19 +60,19 @@
                     
         
             
-    <link rel="apple-touch-icon" sizes="57x57" href="../../../../images/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="../../../../images/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="../../../../images/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="../../../../images/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="../../../../images/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="../../../../images/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="../../../../images/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="../../../../images/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="../../../../images/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../../../../images/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../../../images/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../../../images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon.png">
     <link rel="manifest" href="../../../../images/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="../../../../images/favicon/ms-icon-144x144.png">
@@ -102,87 +102,88 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                   <div class="menu_section">
+				  
                     <h3><img alt="Logo" src="{{asset('images/logo-white.png') }}" height="50px"></h3>
                     <ul class="nav side-menu">
                       <li>
-                          <a href="https://www.montpellier-business-plan.com/mes-business-plan"><i class="fa fa-list"></i> Tous </a>
+                          <a href="{{path('dashboard')}}"><i class="fa fa-list"></i> {{'All'|trans}} </a>
                       </li>
 
                                                 <li>
-                              <a href="https://www.montpellier-business-plan.com/creer-business-plan"><i class="fa fa-plus"></i> Nouveau </a>
+                              <a href="{{path('businessplan_create')}}"><i class="fa fa-plus"></i> {{'New'|trans}} </a>
                           </li>
                       
-                                                <li class="active"><a><i class="fa fa-table"></i> zeze <span class="fa fa-chevron-down"></span></a>
+                                                <li class="active"><a><i class="fa fa-table"></i> {{ business.name }} <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu" style="display:block">
                                 <li class="">
-                    				<a href="https://www.montpellier-business-plan.com/mon-business-plan/produits" title="Products">
-                    					Products                    				</a>
+                    				<a href="{{path('products')}}" title="Products">
+                    					{{'products'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
-                    				<a href="https://www.montpellier-business-plan.com/mon-business-plan/ventes" title="Sales">
-                    					Sales                    				</a>
+                    				<a href="{{path('sales')}}" title="Sales">
+                    					{{'sales'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/encaissement-des-ventes" title="Encaissement des ventes">
-                    						Receipts                    				</a>
+                    						{{'Receipts'|trans}}                    				</a>
                     			</li>
 
-                    			<li class="current-page">
+                    			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/cout-d-achat-des-ventes" title="Purchases">
-                    					Purchases                    				</a>
+                    					{{'purchase'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/frais-generaux" title="General expenses">
-                    					General expenses                    				</a>
+                    					{{'generalexpenses'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/investissements" title="Investments">
-                    					Investments                    				</a>
+                    					{{'investement'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/amortissements" title="Depreciation">
-                    					Depreciation                    				</a>
+                    					{{'deprication'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/emprunts" title="Loans">
-                    					Loans                    				</a>
+                    					{{'Loans'|trans}}                    				</a>
                     			</li>
 
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/personnel" title="Staff">
-                    					Staff                    				</a>
+                    					{{'STAFF'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/compte-resultat" title="Compte de résultat">
-                    					Compte de résultat                    				</a>
+                    					{{'compteresultat'|trans}}                    				</a>
                     			</li>
 
                     			                    				<li class="">
                     					<a>
-                    						Prior items                    					</a>
+                    						{{'Prioritems'|trans}}                    					</a>
                     				</li>
                     			
                     			                    				<li class="">
                     					<a href="https://www.montpellier-business-plan.com/mon-business-plan/tva-annee-0" title="VAT">
-                    						VAT                    					</a>
+                    						{{'VAT'|trans}}                    					</a>
                     				</li>
                     			
                     			                    				<li class="">
                     					<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-0" title="Corporate tax">
-                    						Corporate tax                    					</a>
+                    						{{'Corporatetax'|trans}}                    					</a>
                     				</li>
                     			
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/bfr" title="WCR">
-                    					WCR                    				</a>
+                    					{{'WCR'|trans}}                    				</a>
                     			</li>
 
                     			                    				<li class="">
@@ -192,18 +193,18 @@
                     			
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/plan-financement" title="Plan de financement">
-                    					Plan de financement                    				</a>
+                    					{{'planfinancement'|trans}}                    				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/income-statement" title="Profit and Loss">
-                    					Profit and Loss
+                    					{{'profitandloss'|trans}}
                     				</a>
                     			</li>
 
                     			<li class="">
                     				<a href="https://www.montpellier-business-plan.com/mon-business-plan/cash-flow" title="Cash flow">
-                    					Cash flow
+                    					{{'cashflow'|trans}}
                     				</a>
                     			</li>
 
@@ -294,7 +295,7 @@
 				<div class="pagination-periode">
 		              {% for i in 1..business.numberofyears %}
 					<a href="{{path('purchasedisbursement',{id:i -1})}}" class="btn btn-primary btn-md btn-success" title="Year 1">
-				Year {{i}}			</a>
+				Année {{i}}			</a>
                 {% endfor %}
 			
 		
@@ -309,12 +310,12 @@
 	<div class="call-to-action fright">
 					<div class="fleft">
 				<a href="https://www.montpellier-business-plan.com/mon-business-plan/cout-d-achat-des-ventes-annee-0" title="Purchase cost of sales" class="btn btn-md btn-primary">
-					Purchase cost of sales				</a>
+					Couts d’achat sur Ventes				</a>
 			</div>
 
 			<div class="fleft">
 				<a href="https://www.montpellier-business-plan.com/mon-business-plan/approvisionnement-annee-0" title="Supply" class="btn btn-md btn-primary">
-					Supply				</a>
+					Approvisionnement				</a>
 			</div>
 			</div>
 
@@ -326,35 +327,23 @@
 		<tr>
 			<th></th>
 
-							<th>
-					Jan.				</th>
-							<th>
-					Feb.				</th>
-							<th>
-					March				</th>
-							<th>
-					April				</th>
-							<th>
-					May				</th>
-							<th>
-					June				</th>
-							<th>
-					July				</th>
-							<th>
-					Aug.				</th>
-							<th>
-					Sept.				</th>
-							<th>
-					Oct.				</th>
-							<th>
-					Nov.				</th>
-							<th>
-					Dec.				</th>
+						<th>Janv</th>
+		   		   <th>Fév</th>
+		   		   <th>Mars</th>
+		   		   <th>Avril</th>
+		   		   <th>Mai</th>
+		   		   <th>Juin</th>
+		   		   <th>Juil</th>
+		   		   <th>Aout</th>
+		   		   <th>Sept</th>
+		   		   <th>Oct</th>
+		   		   <th>Nov</th>
+		   		   <th>Déc</th>
 					</tr>
 
 				<tr>
 		<td class="soustitre">
-			Cash
+			Comptant
 			</td>
 			{% for key,ca in Cash[id] %}
 				<td class="aright">
@@ -364,7 +353,7 @@
 			 	 
 		    
 			<td class="soustitre">
-				30 days			</td>
+				30 jours			</td>
 
             {% for key,ca in After30[id] %}
 			<td class="aright">
@@ -373,7 +362,7 @@
 			{% endfor %}		
 				<tr>
 			<td class="soustitre">
-				60 days			</td>
+				60 jours			</td>
 
             {% for key,ca in After60[id] %}
 			<td class="aright">
@@ -382,7 +371,7 @@
 			{% endfor %}		
 				<tr>
 			<td class="soustitre">
-				90 days			</td>
+				90 jours			</td>
 
             {% for key,ca in After90[id] %}
 			<td class="aright">
@@ -391,7 +380,7 @@
 			{% endfor %}		
 				<tr>
 			<td class="soustitre">
-				120 days			</td>
+				120 jours			</td>
 
             {% for key,ca in After120[id] %}
 			<td class="aright">
@@ -400,37 +389,16 @@
 			{% endfor %}		
 				<tr>
 			<td class="soustitre">
-				Associated revenue			</td>
-
+				Revenus associés			</td>
+                    {% for re in revenue[id] %}
 							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
-							<td class="aright">
-					0.00				</td>
+					{{re}}				</td>
+				    {% endfor %}
 					</tr>
 
 		<tr>
 			<td class="soustitre">
-				Amount of VAT			</td>
+				Dont TVA			</td>
                    {% for d in TVA[id] %}
 							<td class="aright">
 							{{d}}		</td>
@@ -439,7 +407,7 @@
 
 		<tr>
 			<td class="total">
-				Total received			</td>
+				Total Décaissé			</td>
                 {% for t in total[id] %}
 				<td class="total aright">
 					{{t}}				</td>

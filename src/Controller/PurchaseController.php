@@ -7,11 +7,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProductRepository;
 use App\Repository\SalesdetailledRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use App\Repository\SalesRepository;
+use App\Controller\SalesController;
 /**
 * @Route("/{_locale}/dashboard/my-business-plan/purchase")
  */
 class PurchaseController extends AbstractController
 {
+   private $fianlCA;
     private $Sum;
     private  $Somme; 
     private  $total;
@@ -25,14 +28,15 @@ class PurchaseController extends AbstractController
     /**
      * @Route("/", name="purchase")
      */
-    public function index(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository)
+    public function index(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,Request $request,SalesRepository $SalesRepository)
     {
         $this->businessSession =$this->container->get('session')->get('business');
         $this->products=$productRepository->findBybusinessplan($this->businessSession);
         $id=0;
-        $this->detail($SalesdetailledRepository,$productRepository,$id);
-        
-        //dump($this->Somme);die();
+        $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
+       
+     
+        //dump($SalesController->sales($request,$productRepository,$SalesRepository));die();
         return $this->render('purchase/index.html.twig', [
             'business' => $this->businessSession ,'products' => $this->products , 'Somme' => $this->Somme ,'total'=> $this->total 
         ]);
@@ -40,16 +44,22 @@ class PurchaseController extends AbstractController
         /**
      * @Route("/purchasedetailled-{id}", name="purchasedet")
      */
-    public function detail(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id)
+    public function detail(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,Request $request,SalesRepository $SalesRepository)
     {
         $this->businessSession =$this->container->get('session')->get('business');
         $this->products=$productRepository->findBybusinessplan($this->businessSession);
         $years = $this->businessSession->getNumberofyears();
         $salesdetailled = $SalesdetailledRepository->findBy(['sales'=> $this->businessSession->getSales()->getId()]);
-        
+        $response = $this->forward('App\Controller\SalesController::sales', [
+          'request'  => $request,
+          'productRepository' => $productRepository,
+          'SalesRepository' => $SalesRepository,
+      ]);
+      $finalCA = SalesController::getfinalca();
+      
         // initialisation de liste 
         //---------------------------------------------------
-       
+        //$this->list =["Nodata0"=> ['0']];
         
         //---------------------------------------------------
         $TVA = 0;
@@ -103,11 +113,12 @@ class PurchaseController extends AbstractController
        if($product->__toString()=='Reccuring Invoicing'){
         $Costofsales = $product->getPurchasecostofsales();
         for($i=0 ; $i<$years ; $i++){
-          foreach (${'listofCA'.$i} as $key => $value){
+          foreach ($finalCA as $key => $value){
               if($key == $product->getName()){
              for($t=0 ;$t<12 ;$t++){
-                // dump($value[$t]);die();
-                 ${''.$key}[$i][$t] = (($value[$t] * $Costofsales[$i])/100);
+             // dump($Costofsales);die();
+                 
+                 ${''.$key}[$i][$t] = (($value[$i][$t] * $Costofsales)/100);
                  ${''.$key.$i} =  ${''.$key}[$i];
                  $this->list[''.$key.$i] =  ${''.$key.$i};
                  $this->Sum[$i][$t] = $this->Sum[$i][$t] + ${''.$key}[$i][$t] ;
@@ -122,8 +133,9 @@ class PurchaseController extends AbstractController
 
 
     }
+     //dump($this->list);die();
     $index = 0 ;
-    
+    if($this->list!=null){
         foreach ($this->list as $key => $value){
           
      $this->Somme[substr($key,0,strlen($key)-1)][$index] = array_sum($value);
@@ -140,7 +152,7 @@ class PurchaseController extends AbstractController
       $this->total[$x] = floatval($this->total[$x]) +  floatval($value[$x]);
        
     }}
-    
+  }
     //dump($this->Somme,$total);die();
     //$this->knpSnappy->generate('http://127.0.0.1:8000/fr/dashboard/my-business-plan/purchase/purchasedetailled-0', 'C:/Users/ahmed/XXX.pdf');
        //dump($this->Somme); die();
@@ -185,10 +197,10 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
             /**
      * @Route("/purchasedisbursement-{id}", name="purchasedisbursement")
      */
-    public function disbursement(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id){
+    public function disbursement(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,Request $request,SalesRepository $SalesRepository){
         $this->businessSession =$this->container->get('session')->get('business');
         $this->products=$productRepository->findBybusinessplan($this->businessSession);
-        $this->detail($SalesdetailledRepository,$productRepository,$id);
+        $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
         $years = $this->businessSession->getNumberofyears();
         $prof ;
         foreach($this->list as $key => $listofpurchase){
@@ -196,11 +208,13 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
         $prof[substr($key,0,strlen($key)-1)][substr($key,strlen($key)-1,strlen($key))]= $listofpurchase ;
         
     }
+   
     for($i=0 ; $i<$years ; $i++ ){
     foreach($prof as $key => $listofPur){
       
          ${'listOfPu'.$i}[$key] =$listofPur[$i];  
     }}
+    //dump($listOfPu0);die();
    // dump($listOfPu0,$listOfPu1,$listOfPu2,$listOfPu3);die();
     for($i=0 ; $i<$years ; $i++ ){
       
@@ -210,7 +224,9 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
         ${'After60'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
         ${'After90'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
         ${'After120'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
+        ${'Revenue'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
         
+        $TVAreccurente[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
         //${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
         ${'SumofTVA'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
 
@@ -339,13 +355,21 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
 
 
                 } 
+                if($product->__toString() == 'Reccuring Invoicing'){
+                  $TVA = $product->getVatonpurchases();
+                  for($p=0;$p<12;$p++){
+                  $Revenue[$i][$p] = $Revenue[$i][$p] + $value[$p] + (($value[$p] *$TVA)/100);
+                  $TVAreccurente[$i][$p] = $TVAreccurente[$i][$p] + (($value[$p] *$TVA)/100);
+                }
+                
+                }
             }
             
         }
       }
     
     }
-
+    //dump($TVAreccurente);die();
     //-------------------------------------------------------------------------------
     $p=0;
       $M = 11*$years;
@@ -357,8 +381,8 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
       $final2[$p][$i] = $final2[$p][$i] + ${'result2-'.$p}[$i];
       $final3[$p][$i] = $final3[$p][$i] + ${'result3-'.$p}[$i];
       $final4[$p][$i] = $final4[$p][$i] + ${'result4-'.$p}[$i];
-      $TVAfinal[$p][$i] = $TVAfinal0[$p][$i]+$TVAfinal1[$p][$i] + $TVAfinal2[$p][$i] + $TVAfinal3[$p][$i] + $TVAfinal4[$p][$i];
-      $Sum[$p][$i]=$Sum[$p][$i] +${'total'.$p}[$i];
+      $TVAfinal[$p][$i] = $TVAfinal0[$p][$i]+$TVAfinal1[$p][$i] + $TVAfinal2[$p][$i] + $TVAfinal3[$p][$i] + $TVAfinal4[$p][$i] + $TVAreccurente[$p][$i];
+      $Sum[$p][$i]=$Sum[$p][$i] +${'total'.$p}[$i]  +$Revenue[$p][$i];
      }
      else {
        
@@ -404,7 +428,7 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
    //dump($SumofTVA);die();
                return $this->render('purchase/purchasedisbursment.html.twig',[
            'id' => $id , 'business' => $this->businessSession , 'products' => $this->products ,"Cash" => $Cash , "After30" => $After30 ,"After60" => $After60
-           ,'total' => $Sum , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA
+           ,'total' => $Sum , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA  ,'revenue' => $Revenue
         ]);
 
     }

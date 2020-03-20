@@ -21,7 +21,7 @@ class SalesController extends AbstractController
     /**
      * @Route("/", name="sales")
      */
-    public function sales(ProductRepository $productRepository,SalesRepository $SalesRepository)
+    public function sales(Request $request,ProductRepository $productRepository,SalesRepository $SalesRepository)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $Sale = new Sales();   
@@ -29,13 +29,21 @@ class SalesController extends AbstractController
         $listofsales =[] ;
         $listofCA=[];
         $businessSession =$this->container->get('session')->get('business');
+        $this->test($request, 0,$productRepository);
         $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
         foreach($sales as  $key=>$value){
-           
+          
             $listofsale[$key] = $value->getdetailled();
         }
-        
-        foreach($listofsale as  $year=>$value){
+       
+        foreach($this->finalCA as  $key=>$value){
+          foreach($value as  $year=>$valeur){
+          
+            $listofCA[$year][$key] = array_sum($valeur);
+      }  }
+      self::$staticlist = $this->finalCA;
+      
+       /* foreach($listofsale as  $year=>$value){
             foreach($value as $productname=>$CA){
          
             $listofCA[$year][$productname] = array_sum($CA); 
@@ -44,8 +52,9 @@ class SalesController extends AbstractController
                    // dump(array_sum($CA));die();
                    // $i += $value[$j];     
         }
-        }
-      //  dump($listofCA);die();
+        }*/
+        //dump($listofsale1);die();
+        //dump($listofCA);die();
         //$sales = $SalesRepository->findBybusinessplan($businessSession);
         
       /*
@@ -128,22 +137,43 @@ class SalesController extends AbstractController
         ));    
     
     }
-     /**
+    static $staticlist ;
+    private $total;
+    private $reccuring;
+    private $salesT; // n'est pas utilisabe 
+    private $finalCA; //valeur final a afficher des CA
+    private $sales; 
+    private $listofparametre; // une liste pour les attribue des produit recurrente
+    private $years;
+    private $CA;
+    private $intersect;  //un tableau pour faire la diffirence entre un type reccurente avec les autre
+    private $reste; // tableau contient les produit de type Units and Variable
+    private $reste2; // tableau contient les produit de typee reccurente 
+    public function getfinalca(){
+    
+      return self::$staticlist;
+    }
+    /**
      * @Route("/sale-year-{id}", name="saleyears")
      */
     public function test(Request $request, $id, ProductRepository $productRepository){
         $entityManager = $this->getDoctrine()->getManager();
         $Sale = new Sales();   
-        $sales=new Salesdetailled();
+        $this->sales=new Salesdetailled();
+        $this->salesT= new Salesdetailled();
         $businessSession =$this->container->get('session')->get('business');
-        $years = $businessSession->getNumberofyears();
+        $this->years = $businessSession->getNumberofyears();
         $listoftype  =[];
         $listofprice =[];
         $listofreccuring= [];
         $listofname=[];
-        $listofparametre=[];
+        $this->listofparametre=[];
+        $this->reste =[];
+        $this->reste2=[];
+        $this->finalCA=[];
         $products=$productRepository->findBybusinessplan($businessSession);
-        $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId() , 'year' => $id+1 ]);
+        $this->sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
+        
         foreach($products as $product){
             $listoftype[$product->getName()] = [$product->__toString()];
             array_push($listofname , $product->getName());
@@ -151,35 +181,172 @@ class SalesController extends AbstractController
                 $listofprice[$product->getName()] = [$product->getSellsprice()];
             }
             if($product->__toString()=='Reccuring Invoicing'){
-                $listofreccuring[$product->getName()] = [$product->getSaleprice()];
-                $listofparametre[$product->getName()] = [$product->getSaleprice(),$product->getPeriodicity(),$product->getFirstoccurence(),$product->getPermanent(),$product->getNumberofoccurences()];
+              //$this->sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
+             /* dump($this->salesT);die();
+              foreach($this->salesT[$id]->getdetailled() as $key => $value){
+                if($product->getName() == $key ){
+                  $this->reccuring[$product->getName()] =$this->salesT[$id]->getdetailled()[$product->getName()] ;
+                }
+              }
+              */
+              //dump($reccuring);
+              
+              $listofreccuring[$product->getName()] = [$product->getSaleprice()];
+                $this->listofparametre[$product->getName()] = [$product->getSaleprice(),$product->getPeriodicity(),$product->getFirstoccurence(),$product->getPermanent(),$product->getNumberofoccurences()];
+                for($i=0 ; $i<12*($this->years+1);$i++){
+                //  $finalCA[$product->getName()][$i] =['0','0','0','0','0','0','0','0','0','0','0','0'] ;
+                
+                $this->CA[$product->getName()][$i] =0;
+              }
+              for($i=0 ; $i<($this->years)+2;$i++){
+                $this->finalCA[$product->getName()][$i] =['0','0','0','0','0','0','0','0','0','0','0','0'] ;
+              }
+             
+              
             }   
+           
+            
+            //dump($this->sales,$this->finalCA);die();
         }
-        //dump($listofparametre);die();
-        $form = $this->createForm(SalesdetailledFormType::class, $sales[0]);
+        //dump($this->reccuring);die();
+        for($i=0 ; $i<$this->years;$i++){
+         
+          $this->reccuringcalcul($i);    
+         } 
+         for($i=0 ; $i<($this->years)+2;$i++){
+           
+          $this->total[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'];
+         }
+         $this->intersect= array_diff_key($this->reste,$this->reste2);//ce tableau faire differe les type de produit recurrent de les autre type
+                                                                       //elle retourne seulement les tableau de type recurrent
+        //dump($this->reste,$this->reste2);die();
+        $this->finalCA= array_merge($this->finalCA,$this->intersect);//merger les deux tableau pour calculer la somme total
+        //dump($this->finalCA);die();
+        //dump($CA);die();
+        //dump( $this->listofparametre );die();
+        $this->calculsum();
+        $form = $this->createForm(SalesdetailledFormType::class,$this->sales[$id]);
+       
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
-            $sales=$form->getData();     
-            
+          $this->sales=$form->getData();     
+           // dump($sales->getdetailled());die();
+      
+        //dump($finalCA);die();
             //$entityManager->merge($sales);
             $entityManager->flush();
     
             return $this->redirectToRoute('sales');
             }
-        return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,
-         'business' => $businessSession ,'listofparametre' => $listofparametre,'products' => $products , 'sales' => $sales[0], 'type' => $listoftype , 'listofname' => $listofname ]);
+        return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,'finalCA' => $this->finalCA,
+         'business' => $businessSession ,'listofparametre' => $this->listofparametre,'products' => $products , 'sales' => $this->sales[0], 'type' => $listoftype , 'listofname' => $listofname , 'total' =>$this->total ]);
+    }
+    public function calculsum(){
+      foreach($this->finalCA as $key => $value){
+        foreach($value as $ind => $chiffre){
+          for($l=0;$l<12;$l++){
+            $this->total[$ind][$l]=$this->total[$ind][$l]+$chiffre[$l];
+        
+      }}}
+      
+     // dump($this->finalCA);die();
+    }
+    public function reccuringcalcul($id){
+      //dump($salesRecuurent);
+      //lazem ysir controle si le cle convient 3al type reccurent walla
+      foreach($this->sales[$id]->getdetailled() as $key => $value){
+               
+           if($this->listofparametre!=null){
+        foreach($this->listofparametre as $key2 => $parametre){
+          if($key == $key2){
+
+          if($parametre[3] == true){
+           foreach($value as $index => $unites){
+             
+            $periode = $parametre[1];
+            $firstoccurence = $parametre[2];
+        //dump($periode);die();
+          for($x=(12*$id)+$firstoccurence; $x<12*$this->years;$x=$x+$periode){
+             
+            $this->CA[$key][($x+$index)] = $this->CA[$key][$x+$index] +  ($unites*$parametre[0]);
+            
+          }
+                         }      
+     }
+     if($parametre[3] == false){
+      foreach($value as $index => $unites){
+        $periode = $parametre[1];
+        $firstoccurence = $parametre[2];
+        $numberofoccurance = $parametre[4];
+        $controller =0 ;
+        for($x=(12*$id)+$firstoccurence; $x<12*$this->years;$x=$x+$periode){
+          if($controller < $numberofoccurance){
+          $this->CA[$key][($x+$index)] = $this->CA[$key][$x+$index]+($unites*$parametre[0]);;
+          $controller++;
+
+           }
+           else{
+          break;}
+          
+        }
+
+      }
+     }
+
+
+
+    }
+    else{
+      
+     $this->reste[$key][$id] = $value;
+     $this->reste2[$key2][$id] = $value;
+     
+     
+    }
+    
+     }
+    }
+else{
+  $this->reste[$key][$id] = $value;
+}
+
+   }
+   
+   
+   //dump($this->listofparametre);die(); 
+   $annes=0;
+   $pos=0;
+   
+   if($this->CA !=null){
+   foreach($this->CA as $cle => $value){
+   foreach($value as $valeur){
+    
+    $this->finalCA[$cle][$annes][$pos]=  $valeur;
+  // dump($valeur);
+   
+   $pos++;
+   if($pos==12){
+     $annes++;
+     $pos=0;
+   }
+   }
+   $annes=0;
+   $pos=0;
+   }
+  }
+   //dump($this->finalCA);die();
     }
     public $receipt ;
      /**
      * @Route("/salesreceipt", name="salesreceipt")
      */
-    public function receipt(ProductRepository $productRepository,SalesdetailledRepository $SalesdetailledRepository,SalesRepository $SalesRepository){
+    public function receipt(Request $request,ProductRepository $productRepository,SalesdetailledRepository $SalesdetailledRepository,SalesRepository $SalesRepository){
         
         $businessSession =$this->container->get('session')->get('business');
         $products=$productRepository->findBybusinessplan($businessSession);
         $id =0 ;
-        $this->receiptyears($SalesdetailledRepository,$productRepository,$id,$SalesRepository);
+        $this->receiptyears($request,$SalesdetailledRepository,$productRepository,$id,$SalesRepository);
         //dump($this->receipt);die();
         return $this->render('sales/salesreceipt.html.twig' , ['business' => $businessSession , 'receipt' => $this->receipt , 'products'=> $products ]) ;
     }
@@ -195,7 +362,7 @@ class SalesController extends AbstractController
         
         $years = $businessSession->getNumberofyears();
         $salesdetailled = $SalesdetailledRepository->findBy(['sales'=> $businessSession->getSales()->getId() /*, 'year' => $id+1 */]);
-        
+       
         $listofCA = [];
         //dump($salesdetailled);die();
         $loidencaissement = [] ;
@@ -443,18 +610,24 @@ class SalesController extends AbstractController
    /**
      * @Route("/salesreceipt-years-{id}", name="salesreceiptyear")
      */
-    public function receiptyears(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,SalesRepository $SalesRepository){
+    public function receiptyears(Request $request,SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,SalesRepository $SalesRepository){
       $entityManager = $this->getDoctrine()->getManager();
         
       $businessSession =$this->container->get('session')->get('business');
       
       $years = $businessSession->getNumberofyears();
       $salesdetailled = $SalesdetailledRepository->findBy(['sales'=> $businessSession->getSales()->getId() /*, 'year' => $id+1 */]);
+      $this->test($request,$id,$productRepository);
+      $recurentlist=array_diff_key($this->finalCA,$this->intersect);
       
       
       //dump($salesdetailled);die();
      // $TVAfinal0  =['0' => ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'] ];
       $loidencaissement = [] ;
+      for($j=0;$j<$years+2;$j++) {
+        ${'Revenue'}[$j] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
+        $TVAreccurente[$j] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
+      }
       for($i=0 ; $i<$years ; $i++ ){
       
       ${'total'.$i} = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'];
@@ -463,7 +636,7 @@ class SalesController extends AbstractController
       ${'After60'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       ${'After90'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       ${'After120'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
-      
+      ${'finalrevenue'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;//valeur final pour les type reccurent
       ${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
       ${'SumofTVA'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       for($s =0 ; $s < 5; $s++){
@@ -550,13 +723,13 @@ class SalesController extends AbstractController
                     //  dump($loidencaissement);die(); 
                     $TVA = $product->getvat();
                     $pos=0;
-                    //cette boucle permet de transformer la matrice de loi d'encaissement d'une axe y(par clé) vers axe x(par années)  
+                    //cette boucle permet de renverser la matrice de loi d'encaissement d'une axe y(par clé) vers axe x(par années)  
                     foreach($loidencaissement as $key=>$u){
                         for($x=0  ;$x<$years;$x++){
                        ${'loi'.$x}[$pos]= $u[$x];}
                        $pos++;     
                     }
-                    
+                    // la boucle ci dessous permet de calculer la valeur inclus TVA suivant la loi d'encaissement 
                     foreach($value as $c=>$D){
                       //${'result'.$s}[$o]=($value[$o]*$TVA/100)+$value[$o];
                      
@@ -605,8 +778,19 @@ class SalesController extends AbstractController
         }
       
       }
-     
-
+      //cette boucle consiste les produits type recurrente
+      foreach($products as $product){
+     foreach($recurentlist as $name =>$valeurrecurent){
+       if($product->getName() == $name){
+       foreach($valeurrecurent as $unit=>$valeur){
+         for ($k=0;$k<12;$k++){
+          ${'Revenue'}[$unit][$k] =${'Revenue'}[$unit][$k] +((($valeur[$k]*$product->getvat())/100)+$valeur[$k]);
+          $TVAreccurente[$unit][$k]  = $TVAreccurente[$unit][$k]+ (($valeur[$k]*$product->getvat())/100);
+          //    dump($name);  die();
+     }}}
+    }
+    }
+    // dump($TVAreccurente);  die();
 //cette boucle permet de mettre les valeur qui depasse le 12 eme mois dans la nouvelle années
       $p=0;
       $M = 11*$years;
@@ -618,8 +802,8 @@ class SalesController extends AbstractController
       $final2[$p][$i] = $final2[$p][$i] + ${'result2-'.$p}[$i];
       $final3[$p][$i] = $final3[$p][$i] + ${'result3-'.$p}[$i];
       $final4[$p][$i] = $final4[$p][$i] + ${'result4-'.$p}[$i];
-      $TVAfinal[$p][$i] = $TVAfinal0[$p][$i]+$TVAfinal1[$p][$i] + $TVAfinal2[$p][$i] + $TVAfinal3[$p][$i] + $TVAfinal4[$p][$i];
-      $Sum[$p][$i]=$Sum[$p][$i] +${'total'.$p}[$i];
+      $TVAfinal[$p][$i] = $TVAfinal0[$p][$i]+$TVAfinal1[$p][$i] + $TVAfinal2[$p][$i] + $TVAfinal3[$p][$i] + $TVAfinal4[$p][$i] + $TVAreccurente[$p][$i];
+      $Sum[$p][$i]=$Sum[$p][$i] +${'total'.$p}[$i] + $Revenue[$p][$i];
      }
      else {
        
@@ -660,14 +844,14 @@ class SalesController extends AbstractController
    $After60[$q]= $final2[$q];
    $After90[$q]= $final3[$q];
    $After120[$q]= $final4[$q];
-   
+   $finalrevenue[$q]=$Revenue[$q];
    }
    for($n=0 ;$n<$years ;$n++ ){
     $this->receipt[$n] =  array_sum($Sum[$n]) ;
    }
     
    //dump(array_sum($Sum[0]));die();
-      return $this->render('sales/salesreceiptyear.html.twig',['id' => $id ,'total' => $Sum,"business" => $businessSession , "product" => $product , "Cash" => $Cash , "After30" => $After30 ,"After60" => $After60
-      , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA]);
+      return $this->render('sales/salesreceiptyear.html.twig',['id' => $id ,'total' => $Sum,"business" => $businessSession , "Cash" => $Cash , "After30" => $After30 ,"After60" => $After60
+      , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA , "finalrevenue" => $finalrevenue]);
     }
 }

@@ -22,18 +22,18 @@
                             
 <div class="entete">
 	<h1 class="dblock fleft">
-		My business plans	</h1>
+		{{'MyBusinessPlan'|trans }}	</h1>
 
 	
 	<div class="call-to-action fright">
 		 <div class="fleft">
 							<a href="{{ path('businessplan_create')}}" title="Create a business plan" class="btn btn-lg btn-primary">
-					<i class="fa fa-plus-circle"></i> &nbsp;New				</a>
+					<i class="fa fa-plus-circle"></i> &nbsp;{{'New'|trans}}				</a>
 					</div>
 
 		<div class="fleft margeur-l20">
 			<a href="../espace_client/compte/affiche_invite" title="Share" class="btn btn-lg btn-primary">
-				<i class="fa fa-share-alt"></i> &nbsp;Share			</a>
+				<i class="fa fa-share-alt"></i> &nbsp;{{'Share'|trans}}			</a>
 		</div>
 
 		<div class="clearer"></div>
@@ -66,8 +66,8 @@
 
 					<td>
 						<p>
-							Business plan over {{business.numberofyears}} years, starting in {{business.startmonth}} {{ business.startyear}}						<br />
-							Created on {{business.CreatedAt|date("d/m/Y")}}  at {{business.CreatedAt|date("H:i:s","Europe/Paris")}}													</p>
+							{{'bpover'|trans}} {{business.numberofyears}} {{'starting'|trans}} {{business.startmonth}} {{ business.startyear}}						<br />
+							{{'creation'|trans}} {{business.CreatedAt|date("d/m/Y")}}  {{'at'|trans}} {{business.CreatedAt|date("H:i:s","Europe/Paris")}}													</p>
 					</td>
 
 					<td style="width:260px">
@@ -83,7 +83,7 @@
 								<a href="../espace_client/bp/duplicate_bp/070739fb2d8820bcf444610a2d3da350/0853db360679228d86f0c550e6025cc9" class="demande-confirmation">
 									<i class="fa fa-files-o"></i>
 									<br />
-									<span class="fs-15">clone</span>
+									<span class="fs-15">{{'clone'|trans}}</span>
 								</a>
 							</div>
 						
@@ -91,7 +91,7 @@
 							<a href="{{path('businessdelete',{'code':business.code})}}" class="demande-confirmation icone">
 								<i class="fa fa-trash-o"></i>
 								<br />
-								<span class="fs-15">delete</span>
+								<span class="fs-15">{{'delete'|trans}}</span>
 							</a>
 						</div>
 
@@ -107,19 +107,7 @@
 	<div class="margeur-20"></div>
 
 	<div class="row">
-		<div class="col-sm-6">
-			<div class="bloc-aide">
-				<p class="fs-20 bold">How to use Montpellier Unlimited Business Plan?</p>
-
-				<p class="margeur-10">
-					This application enables you to create and print the financial tables required for your business plan.				</p>
-
-				<p class="margeur-10">
-					<span class="fs-18">First time?</span>
-					&nbsp;<a id="commentremplir-bp" href="../espace_client/espace_client/ajax_commentremplir/bp" class="btn btn-md btn-primary open-modal" title="Find out more">Click here</a>
-					find out more				</p>
-			</div>
-		</div>
+		
 
 		<!-- <div class="col-sm-6">
 			<div class="bloc-aide">
