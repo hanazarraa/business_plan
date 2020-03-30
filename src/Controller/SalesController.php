@@ -225,8 +225,13 @@ class SalesController extends AbstractController
         //dump($CA);die();
         //dump( $this->listofparametre );die();
         $this->calculsum();
+        if($this->sales!=[]){
         $form = $this->createForm(SalesdetailledFormType::class,$this->sales[$id]);
-       
+        }
+        else{
+
+          $form = $this->createForm(SalesdetailledFormType::class,$this->sales);
+        }
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
@@ -240,7 +245,7 @@ class SalesController extends AbstractController
             return $this->redirectToRoute('sales');
             }
         return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,'finalCA' => $this->finalCA,
-         'business' => $businessSession ,'listofparametre' => $this->listofparametre,'products' => $products , 'sales' => $this->sales[0], 'type' => $listoftype , 'listofname' => $listofname , 'total' =>$this->total ]);
+         'business' => $businessSession ,'listofparametre' => $this->listofparametre,'products' => $products , 'type' => $listoftype , 'listofname' => $listofname , 'total' =>$this->total ]);
     }
     public function calculsum(){
       foreach($this->finalCA as $key => $value){
@@ -255,6 +260,8 @@ class SalesController extends AbstractController
     public function reccuringcalcul($id){
       //dump($salesRecuurent);
       //lazem ysir controle si le cle convient 3al type reccurent walla
+     
+      if($this->sales!=[]){
       foreach($this->sales[$id]->getdetailled() as $key => $value){
                
            if($this->listofparametre!=null){
@@ -335,6 +342,8 @@ else{
    $pos=0;
    }
   }
+
+}
    //dump($this->finalCA);die();
     }
     public $receipt ;
@@ -637,14 +646,19 @@ else{
       ${'After90'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       ${'After120'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       ${'finalrevenue'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;//valeur final pour les type reccurent
-      ${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
+      
       ${'SumofTVA'}[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'] ;
       for($s =0 ; $s < 5; $s++){
         
       }
 
     }
-    
+    if($salesdetailled!=[]){
+    for($i=0 ; $i<$years ; $i++ ){
+
+      ${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
+    }}
+
     for($t=0 ; $t<$years+1 ; $t++ ){
       for($s =0 ; $s < 5; $s++){
         $Sum[$t] =  ['0','0','0','0','0','0','0','0','0','0','0','0'];//variable pour calculer la somme d'encaissment pour chaque colonne

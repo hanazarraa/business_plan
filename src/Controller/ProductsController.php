@@ -21,7 +21,9 @@ use App\Repository\ProductRepository;
 use App\Repository\SalesRepository;
 use App\Repository\BusinessplanRepository;
 use App\Repository\SalesdetailledRepository;
-
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Validator\Constraints\Unique as ConstraintsUnique;
 /**
      * @Route("/{_locale}/dashboard/my-business-plan/products")
  */
@@ -54,14 +56,21 @@ class ProductsController extends AbstractController
       /**
      * @Route("/create_product", name="unit_invoicing_create")
      */
-    public function unit_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository){
+    public function unit_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,ValidatorInterface $validator){
         $unitinvoicing=new UnitInovicing();
         $Sale = new Sales();
         $Sales = new Sales();
         $SaleDetailled = new Salesdetailled();
         $SaleDetailled1 = new Salesdetailled();
-
+        $listofname = [];
         $businessSession =$this->container->get('session')->get('business');
+        $products=$productRepository->findBybusinessplan($businessSession);
+        foreach($products as $product){
+            array_push($listofname, $product->getName()); 
+        }
+        $unique = new ConstraintsUnique();
+        $errormessage = null ;
+        //dump($listofname,$unique->message);die();
         $Sale = $businessSession->getSales();
         $Sales = $SalesRepository->findByid($Sale->getId());
         $SaleDetailled1 = $SalesdetailledRepository->findBysales($Sales);
@@ -81,11 +90,15 @@ class ProductsController extends AbstractController
         $unitinvoicing->setProductCostSales($array0);
         $unitinvoicing->setPurchaseDisbursmentRule(['Cash'=> $array0,'After30'=>$array0,'After60'=>$array0,'After90'=>$array0,'After120'=>$array0]);
         $form = $this->createForm(UnitInvoicingType::class, $unitinvoicing);
-        
-        
+     
           //$product->setName($request->request->get('name'));
           $form->handleRequest($request);
-          
+          if($form->isSubmitted()){
+            $unitinvoicing=$form->getData();
+            if((in_array($form->getData()->getName(),$listofname))==true)
+            {$errormessage = $form->getData()->getName().' est déja utilisé';}
+            
+          }
           if($form->isSubmitted() && $form->isValid()){
             
             $unitinvoicing=$form->getData();
@@ -94,6 +107,11 @@ class ProductsController extends AbstractController
              //dump($SaleDetailled);die();
              $entityManager = $this->getDoctrine()->getManager();
              
+              //dump(in_array($form->getData()->getName(),$listofname));die();
+              //dump($errormessage);die();
+              if((in_array($form->getData()->getName(),$listofname))==false){
+                
+            
               if($SaleDetailled1 ==[]){
 
               
@@ -114,14 +132,18 @@ class ProductsController extends AbstractController
                 }
              }
              
+            
              $entityManager->merge($unitinvoicing);
              $entityManager->flush();
- 
+           
               return $this->redirectToRoute('products');
-              
+            }
+            else {
+                $errormessage = $form->getData()->getName().' est déja utilisé';
+            }
           }
           return $this->render('products/unit_invoicing_create.html.twig',['business' => $businessSession,
-              'form'=>$form->createView(),
+              'form'=>$form->createView(),'error' => $errormessage,
           ]);
      
  
