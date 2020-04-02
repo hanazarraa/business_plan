@@ -63,11 +63,16 @@ class PurchaseController extends AbstractController
         
         //---------------------------------------------------
         $TVA = 0;
+        if($salesdetailled!=[]){
         for($i=0 ; $i<$years ; $i++ ){
-            ${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
+          ${'listofCA'.$i} = $salesdetailled[$i]->getDetailled();
+        }}
+        for($i=0 ; $i<$years ; $i++ ){
+           
             $this->Sum[$i] = ['0','0','0','0','0','0','0','0','0','0','0','0'];
             $this->total[$i] =  0;
         }
+        
         foreach($this->products as $product){
             if($product->__toString() == 'Unit Invoicing'){
                 
@@ -76,6 +81,7 @@ class PurchaseController extends AbstractController
                 foreach (${'listofCA'.$i} as $key => $value){
                     if($key == $product->getName()){
                    for($t=0 ;$t<12 ;$t++){
+                     
                        ${''.$key}[$i][$t] = (($value[$t] * $Costofsales[$i])/100);
                        ${''.$key.$i} =  ${''.$key}[$i];
                        $this->list[''.$key.$i] =  ${''.$key.$i};
@@ -85,9 +91,9 @@ class PurchaseController extends AbstractController
                     //$list[$product.getName().''.$i] = 
           
         }
-     
+        //dump($dfd0);die();
         }
-        
+  
         }
         if($product->__toString()=='Variable Invoicing'){
           $Costofsales = $product->getPurchasecostofsales();
@@ -134,6 +140,7 @@ class PurchaseController extends AbstractController
 
     }
      //dump($this->list);die();
+     
     $index = 0 ;
     if($this->list!=null){
         foreach ($this->list as $key => $value){
@@ -165,8 +172,8 @@ class PurchaseController extends AbstractController
  /**
      * @Route("/purchasedetailled-{id}/pdf", name="purchasedet-pdf")
      */
-public function toPDF(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,Request $request){
-    $this->detail($SalesdetailledRepository,$productRepository,$id);
+public function toPDF(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,$id,Request $request,SalesRepository $SalesRepository){
+    $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
     $html = $this->renderView('purchase/modelpdf2.html.twig',[
         'base_dir' => $this->getParameter('kernel.project_dir') . '/../businessplan/public/' . $request->getBasePath(),
         'Somme' => $this->Sum ,
@@ -181,8 +188,8 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
  /**
      * @Route("/pdf", name="purchase-pdf")
      */
-    public function PDF(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,Request $request){
-        $this->index($SalesdetailledRepository,$productRepository);
+    public function PDF(SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository,Request $request,SalesRepository $SalesRepository){
+        $this->index($SalesdetailledRepository,$productRepository,$request,$SalesRepository);
         $html = $this->renderView('purchase/modelpdf.html.twig',[
             'base_dir' => $this->getParameter('kernel.project_dir') . '/../businessplan/public/' . $request->getBasePath(),
             'business' => $this->businessSession ,'products' => $this->products , 'Somme' => $this->Somme ,'total'=> $this->total 
@@ -203,17 +210,18 @@ public function toPDF(SalesdetailledRepository $SalesdetailledRepository,Product
         $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
         $years = $this->businessSession->getNumberofyears();
         $prof ;
+        if($this->list!=null){
         foreach($this->list as $key => $listofpurchase){
         
         $prof[substr($key,0,strlen($key)-1)][substr($key,strlen($key)-1,strlen($key))]= $listofpurchase ;
         
     }
-   
+  
     for($i=0 ; $i<$years ; $i++ ){
     foreach($prof as $key => $listofPur){
       
          ${'listOfPu'.$i}[$key] =$listofPur[$i];  
-    }}
+    }}}
     //dump($listOfPu0);die();
    // dump($listOfPu0,$listOfPu1,$listOfPu2,$listOfPu3);die();
     for($i=0 ; $i<$years ; $i++ ){

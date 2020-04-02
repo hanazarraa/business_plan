@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * @Annotation
  */
-class CollectionsValidator extends ConstraintValidator
+class DisbursementValidator extends ConstraintValidator
 {
    private $state = false ;    
     public function validate($value, Constraint $constraint){

@@ -1,8 +1,9 @@
-{% extends 'business/layout.html.twig' %}
-{% block head %}
+{% extends 'layout_dashboard.html.twig' %}
+{% block stylesheet %}
 {{ parent() }}
 {% endblock %}
   {% block page_content %}  
+  
  <!-- page content -->
         <div class="right_col" role="main">
                            {{ form_start(form, {'attr': {'class': 'formulaire' , 'method':'post','action':'' }}) }}
@@ -13,7 +14,7 @@
 
 		<div class="call-to-action fright">
 												<div class="fleft">
-						<a href="https://www.montpellier-business-plan.com/espace_client/bp/delete_bp/0" class="demande-confirmation btn btn-md btn-danger" title="ATTENTION : La suppression est définitive, vous ne pourrez plus revenir en arrière">
+						<a href="" class="demande-confirmation btn btn-md btn-danger" title="ATTENTION : La suppression est définitive, vous ne pourrez plus revenir en arrière">
 							<i class="fa fa-trash-o"></i> &nbsp;Delete						</a>
 					</div>
 

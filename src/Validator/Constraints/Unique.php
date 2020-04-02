@@ -7,11 +7,11 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class Collections extends Constraint
+class Unique extends Constraint
 {
     /*
      * Any public properties become valid options for the annotation.
      * Then, use these in your validator class.
      */
-    public $message = 'Le total des encaissements doit être égal à 100%.';
+    public $message = 'Eliminez les caractères spéciaux(@,$,*...)';
 }

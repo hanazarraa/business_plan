@@ -20,6 +20,9 @@ class UnitInovicing extends Product
 
     /**
      * @ORM\Column(type="json")
+     * 
+     *  
+     *  
      */
     protected $sellsprice = [];
 

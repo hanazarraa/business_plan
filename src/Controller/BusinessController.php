@@ -117,7 +117,7 @@ class BusinessController extends AbstractController
             return $this->redirectToRoute('dashboard');
 
         }
-         return $this->render('business/parametre.html.twig',['form' => $form->createView()]);
+         return $this->render('business/parametre.html.twig',['form' => $form->createView(),'business' => $business]);
      }
 
 }
