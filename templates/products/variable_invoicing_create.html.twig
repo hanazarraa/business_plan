@@ -70,7 +70,11 @@
 				</div>
 
 				<div class="erreurs">
-
+                {% if error == null %}
+				{{ form_errors(form.name) }}
+				{% else %}
+				{{error}}
+				{% endif %}
 			
 									</div>
 			</div>
@@ -134,6 +138,7 @@
 "></i>				</div>
 
 				<div class="erreurs">
+				{{form_errors(form.vat)}}
 									</div>
 			</div>
 
@@ -146,8 +151,15 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 
 			<div>
 			<div class="margeur-10 rouge fs-14">
+			{% set formErrors = form.productreceipt.vars.errors.form.getErrors(true) %}
+				{% if formErrors|length %}
+             <ul>
+             {% for error in formErrors|slice(0,1) %}
+            <li>{{ error.message }}</li>
+             {% endfor %}
+             </ul>
+            {% endif %}
 			
-			{{form_errors(form.productreceipt)}}
 		
            					</div>
 								<table class="tableau margeur-15">
@@ -181,6 +193,17 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 		<div  class="onglet_table">
 			<h2 class="margeur-30">Purchase cost of sales (in %) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Fill in the cost of raw materials, merchandise, services, intermediary wages, or other purchases directly required to manufacture, implement, or sell your product. For trade or wholesale activities, this price corresponds to the purchase price of the merchandise being sold. For a service activity, it represents systematic outsourcing or related costs. You must estimate this as a percentage of the sale price. This purchase cost is assigned at the moment of sale."></i></h2>
 			<div>
+			<div class="margeur-10 rouge fs-14">
+			{% set formErrors = form.purchasecostofsales.vars.errors.form.getErrors(true) %}
+				{% if formErrors|length %}
+             <ul>
+             {% for error in formErrors|slice(0,1) %}
+            <li>{{ error.message }}</li>
+             {% endfor %}
+             </ul>
+            {% endif %}
+			
+			</div>
 				<table class="tableau margeur-15">
 				    <tr>
                      {% for i in 1..business.numberofyears %}
@@ -227,7 +250,16 @@ BIC advice: clients rarely pay the totality of their orders when invoiced. To es
 BIC advice: disbursement always seems too soon! To estimate average times, examine the practices in your field and base yourself on a 'pessimistic' hypothesis. By default, the application proposes 100% of the disbursements as cash.
 "></i></h2>
 			<div>
-		
+				<div class="margeur-10 rouge fs-14">
+			{% set formErrors = form.purchasedisbursement.vars.errors.form.getErrors(true) %}
+				{% if formErrors|length %}
+             <ul>
+             {% for error in formErrors|slice(0,1) %}
+            <li>{{ error.message }}</li>
+             {% endfor %}
+             </ul>
+            {% endif %}
+           					</div>
 								<table class="tableau margeur-15">
 					<tr>
 						<th></th>

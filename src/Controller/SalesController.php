@@ -28,7 +28,9 @@ class SalesController extends AbstractController
         $sales=new Salesdetailled();
         $listofsales =[] ;
         $listofCA=[];
+        $data['name'] = [];
         $businessSession =$this->container->get('session')->get('business');
+        $numberofyears = $businessSession->getNumberofyears();
         $this->test($request, 0,$productRepository);
         $sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
         foreach($sales as  $key=>$value){
@@ -40,6 +42,7 @@ class SalesController extends AbstractController
           foreach($value as  $year=>$valeur){
           
             $listofCA[$year][$key] = array_sum($valeur);
+            
       }  }
       self::$staticlist = $this->finalCA;
       
@@ -64,12 +67,71 @@ class SalesController extends AbstractController
         }
            
         }*/
+        //---------------Partie pour calculer la somme des unités dans la page index.html.twig----------------------------
+        $listofprice =[];
+        $Units=[];
         
-        
+        $index = 0;
         $products=$productRepository->findBybusinessplan($businessSession);
+        foreach($products as $product){
+          if($product->__toString()=="Unit Invoicing"){
+          for($i=0;$i<$numberofyears;$i++){
+            //dump($product->getSellsprice()[0]);die();
+          $listofprice[$product->getName()][$i] = $product->getSellsprice()[$i];
+          
+        }} 
+           if($product->__toString()=="Reccuring Invoicing"){
+            for($i=0;$i<$numberofyears;$i++){
+              //dump($product->getSellsprice()[0]);die();
+            $Units[$product->getName()][$i] = array_sum($listofsale[$i][$product->getName()]) ;
+            
+          }
+
+           }
+          array_push($data['name'],$product->getName());
+          ${'list'.$index} = [];
+          $index ++; 
+      }
+     // dump( $Units);die();
+      //------------------FIN------------------------------
+      //-----------------Pour la charte graphique----------
+      $categories =[];
+      $reformlistofCA =[];
+      $data['data'] = [];
+      if($listofCA!=[]){//cette condition pour n'afficher pas d'erreur si la listeofCA est vide
+      for($i=0;$i<$numberofyears;$i++){
+        array_push($categories , "Année ".($i+1));//preparer le nombre d'anner pour la charte
+        $reformlistofCA[$i]= $listofCA[$i];//minimiser la liste de CA
+      }
+      $pos =0 ;
+      $posfotlist =0 ;
+      //cette boucle pour cree une liste contient les chiffre d'affaire comme suit : [[200,300],[500,800]]
+      //c'est a dire une liste qui contient des liste e taille nombre d'années et chaque liste contient le CA pour annés 1 et 2 par exemple
+      //si on ajoute une autre liste cad on ajout un autre produit , si on ajout une valeur a petit list ; cad on ajout une annees
+      foreach($data['name']   as  $product){
+      foreach($reformlistofCA   as  $key=>$value){
         
+         
+        ${'list'.$posfotlist}[$pos] = $value[$product];
+        //array_push($data['data'],$listofCA[$i][$cles]);
+        $pos++;
+      
+      }
+      $pos=0;
+      $posfotlist++;
+    }
+    for($x=0;$x<count($products);$x++){
+      $data['data'][$x] = ${'list'.$x};
+    } 
+  }
+    //dump($data);die();
+      //dump($data['name'],$reformlistofCA,$list0,$list1,$list2);
+      //die();
+      //dump($data);die();
+      //-----------------FIN--------------------------------
         return $this->render('sales/index.html.twig',['listofCA'=> $listofCA ,
-           'business' => $businessSession  ,  'products' => $products
+           'business' => $businessSession  ,  'products' => $products, 'price'=> $listofprice ,'Units' => $Units,
+            'categories'=> $categories , 'test' => $data
         ]);
     }
     /**

@@ -80,47 +80,40 @@
             {% set index = 1 %}
             {% for product in products %}
 				
-         	<tr>
+            <tr>
 				<td rowspan="2" class="soustitre">
 					<a href="{{path('editproduct',{'id':product.id})}}" title="Modifier" class="tool-tip open-modal">
 						{{product.name}} <i class="fa fa-pencil"></i>
 					</a>
 			  	</td>
-
+            {% if product.__toString == "Unit Invoicing" %}
 				<td class="soustitre ">
-			  		Units			  	</td>
-												  	<td class="aright  dnone">
-				  						  			0.00				  						  	</td>
-
-			  									  	<td class="aright  dnone">
-				  						  			0.00				  						  	</td>
-
-			  									  	<td class="aright  dnone">
-				  						  			0.00				  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-3" name="unite-257647-3" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-4" name="unite-257647-4" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-5" name="unite-257647-5" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-6" name="unite-257647-6" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-7" name="unite-257647-7" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-8" name="unite-257647-8" value="0.00"/>					  						  						  	</td>
-
-			  									  	<td class="aright duplicate dnone">
-				  							  		<input type="text" class="type-text js-unites" id="unite-257647-9" name="unite-257647-9" value="0.00"/>					  						  						  	</td>
-
-			  				</tr>
-                              <td class="soustitre">
+			  		Unités			  	</td>
+					  
+					  {% for i in 1..business.numberofyears %}
+					<td class="aright ">
+				  	{{listofCA[i-1][product.name] /  price[product.name][i-1]}}	</td>							 
+                   {% endfor %}
+			{% elseif product.__toString == "Reccuring Invoicing" %}
+			 	<td class="soustitre ">
+			  		Unités			  	</td>
+					  
+					  {% for i in 1..business.numberofyears %}
+					<td class="aright ">
+				  	{{Units[product.name][i - 1]}}	</td>							 
+                   {% endfor %}
+			{% else %}	   
+			<td class="soustitre dnone">
+			  		Unités			  	</td>
+					  
+					  {% for i in 1..business.numberofyears %}
+					<td class="aright dnone">
+				  	0</td>							 
+                   {% endfor %}
+            {% endif %}  
+		    </tr>
+					
+                <td class="soustitre">
 			  		CA (en {{business.currency}})
 			  	</td>
 			  	{% for i in 1..business.numberofyears %}
@@ -143,7 +136,78 @@
                 {% endfor %}
 		
 		</table>
-        
+        <div class="margeur-50">
+			<div id="container-venteglobale" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+			<script type="text/javascript">
+			var annee = {{categories|json_encode|raw}};
+			var test = {{test|json_encode|raw}};
+			var k ={'name':'','data':''} ;
+			var result =[];
+			var i;
+			
+            for (i = 0; i < test.name.length; i++) {
+			var s = window['a'+i];
+			window['a'+i] = {'name':'','data':''};
+			window['a'+i]['name'] = test.name[i];
+			window['a'+i]['data'] = test.data[i];
+			result.push(window['a'+i]);
+			}
+			console.log(result);
+			$(function () {
+			        $('#container-venteglobale').highcharts({
+
+			            chart: {
+			                type: 'column',
+			                animation: false
+			            },
+
+			            title: {
+			                text: 'Ventes'
+			            },
+
+			            xAxis: {
+			                categories: annee
+			            },
+
+			            yAxis: {
+			                allowDecimals: false,
+			                min: 0,
+			                title: {
+			                    text: 'CA (en {{business.currency}})'
+			                }
+			            },
+
+			            tooltip: {
+			                formatter: function() {
+			                    return '<b>'+ this.x +'</b><br/>'+
+			                        this.series.name +': '+ Math.round(this.y) +'<br/>'+
+			                        'Total: '+ Math.round(this.point.stackTotal);
+			                }
+			            },
+			            plotOptions: {
+			                column: {
+			                    stacking: 'normal',
+			                    pointWidth: '55',
+			                    dataLabels: {
+			                        enabled: true,
+			                        formatter: function() {
+			                            if (this.y === 0) {
+			                                return null;
+			                            } else {
+			                                return this.y;
+			                            }
+			                        },
+			                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+			                    }
+			                }
+			            },
+
+			            series: result
+			        });
+			    });
+			</script>
+		</div>
 	</div>
 </form>
                             <input type="hidden" id="id_tableau" name="id_tableau" value="3" />
@@ -211,7 +275,7 @@
 <script>
 var nbofyear = {{business.numberofyears}} ;
 var nbofproducts = {{ products|json_encode|raw}};
-console.log(nbofproducts.length);
+console.log(nbofproducts);
 var i ;
 var j ;
 for (i = 1; i <= nbofyear; i++) {

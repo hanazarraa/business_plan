@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use App\Validator\Constraints\Unique as ConstraintsUnique;
 
 
 class ReccuringInvoicingType extends AbstractType
@@ -28,7 +28,7 @@ class ReccuringInvoicingType extends AbstractType
         $builder
       
            
-       ->add('name', TextType::class
+       ->add('name', TextType::class,[ 'constraints'=> [new ConstraintsUnique()]]
        )
        ->add('saleprice',NumberType::class)
         ->add('vat', NumberType::class)         

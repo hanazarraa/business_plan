@@ -62,7 +62,7 @@ class ProductsController extends AbstractController
         $Sales = new Sales();
         $SaleDetailled = new Salesdetailled();
         $SaleDetailled1 = new Salesdetailled();
-        $listofname = [];
+        $listofname = [];//cette liste utilisé pour la recherche lexsistance de nom dans un plan d'affaire
         $businessSession =$this->container->get('session')->get('business');
         $products=$productRepository->findBybusinessplan($businessSession);
         foreach($products as $product){
@@ -152,15 +152,19 @@ class ProductsController extends AbstractController
      /**
      * @Route("/create_product_variable", name="Variable_invoicing")
      */
-    public function variable_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository){
+    public function variable_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository){
         $unitinvoicing=new VariableInvoicing();
         $Sale = new Sales();
         $Sales = new Sales();
         $SaleDetailled = new Salesdetailled();
         $SaleDetailled1 = new Salesdetailled();
-
+        $listofname = [];
         $businessSession =$this->container->get('session')->get('business');
-       
+        $products=$productRepository->findBybusinessplan($businessSession);
+        foreach($products as $product){
+            array_push($listofname, $product->getName()); 
+        }  
+        $errormessage = null ;
         $numberofyears = $businessSession->getNumberofyears();
         $Sale = $businessSession->getSales();
         $Sales = $SalesRepository->findByid($Sale->getId());
@@ -189,14 +193,19 @@ class ProductsController extends AbstractController
 
         $form->handleRequest($request);
         $errorCollection = $form->getErrors();
-      
+        if($form->isSubmitted()){
+            $unitinvoicing=$form->getData();
+            if((in_array($form->getData()->getName(),$listofname))==true)
+            {$errormessage = $form->getData()->getName().' est déja utilisé';}
+            
+          }
         if($form->isSubmitted() && $form->isValid()){
              
             $unitinvoicing=$form->getData();
             $unitinvoicing->setBusinessplan($businessSession);     
            $entityManager = $this->getDoctrine()->getManager();
 
-
+           if((in_array($form->getData()->getName(),$listofname))==false){
            if($SaleDetailled1 ==[]){
 
               
@@ -222,21 +231,31 @@ class ProductsController extends AbstractController
            $entityManager->flush();
 
             return $this->redirectToRoute('products');
-            
         }
-        return $this->render('products/variable_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession]);
+        else{
+            $errormessage = $form->getData()->getName().' est déja utilisé';
+        }
+        }
+        return $this->render('products/variable_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession,'error' => $errormessage]);
     }
 
        /**
      * @Route("/create_product_reccuring", name="reccuring_invoicing_create")
      */
-    public function reccuring_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository){
+    public function reccuring_invoicing_create(Request $request,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,ProductRepository $productRepository){
         $reccuringinvoicing=new ReccuringInvoicing();
         $Sale = new Sales();
         $Sales = new Sales();
         $SaleDetailled = new Salesdetailled();
         $SaleDetailled1 = new Salesdetailled();
+        $listofname = [];
         $businessSession =$this->container->get('session')->get('business');
+        $products=$productRepository->findBybusinessplan($businessSession);
+        foreach($products as $product){
+            array_push($listofname, $product->getName()); 
+        }  
+        $errormessage = null ;
+        
         $numberofyears = $businessSession->getNumberofyears();
         $Sale = $businessSession->getSales();
         $Sales = $SalesRepository->findByid($Sale->getId());
@@ -246,12 +265,19 @@ class ProductsController extends AbstractController
         //$reccuringinvoicing->setBusinessplan($businessSession);
         $product = new Product();
         $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $reccuringinvoicing=$form->getData();
+            if((in_array($form->getData()->getName(),$listofname))==true)
+            {$errormessage = $form->getData()->getName().' est déja utilisé';}
+            
+          }
         if($form->isSubmitted() && $form->isValid()){
              
            $reccuringinvoicing=$form->getData();
            
            $reccuringinvoicing->setBusinessplan($businessSession);  
            $entityManager = $this->getDoctrine()->getManager();
+           if((in_array($form->getData()->getName(),$listofname))==false){
            if($SaleDetailled1 ==[]){
 
               
@@ -276,9 +302,12 @@ class ProductsController extends AbstractController
            $entityManager->flush();
 
             return $this->redirectToRoute('products');
-            
         }
-        return $this->render('products/reccuring_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession]);
+        else{
+            $errormessage = $form->getData()->getName().' est déja utilisé';
+        }
+        }
+        return $this->render('products/reccuring_invoicing_create.html.twig',[ 'form'=>$form->createView(),'business' => $businessSession,'error' => $errormessage]);
 
 
     }

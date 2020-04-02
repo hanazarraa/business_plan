@@ -20,6 +20,7 @@ class ReccuringInvoicing extends Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive
      */
     protected $saleprice;
 
@@ -31,11 +32,13 @@ class ReccuringInvoicing extends Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min =0 , max = 100)
      */
     protected $purchasecostofsales;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min =0 , max = 100)
      */
     protected $vatonpurchases;
 
@@ -56,6 +59,7 @@ class ReccuringInvoicing extends Product
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $numberofoccurences;
 

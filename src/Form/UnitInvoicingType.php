@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType ;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints\Collections as ConstraintsCollection;
+use App\Validator\Constraints\Disbursement as ConstraintsDisbursement;
 use App\Validator\Constraints\Unique as ConstraintsUnique;
 class UnitInvoicingType extends AbstractType
 {
@@ -61,7 +62,7 @@ class UnitInvoicingType extends AbstractType
         ->add('purchase_disbursment_rule',CollectionType::class,array(
             'entry_type'=>CollectionType::class ,
             'error_bubbling' => false,
-            'constraints'=> [new ConstraintsCollection()]
+            'constraints'=> [new ConstraintsDisbursement()]
            
         ))
         ->add('submit',SubmitType::class)
