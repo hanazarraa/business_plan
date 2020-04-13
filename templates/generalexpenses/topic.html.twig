@@ -1,0 +1,56 @@
+<div class="" style="">
+	<h1>Créer une rubrique</h1>
+ {{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('topic') }}) }}
+
+	
+		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
+		<div class="fleft">
+	</div>
+
+<div class="fright">
+{{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'Valider'}}) }}
+
+</div>
+
+<div class="clearer"></div>
+
+<div class="form-element ">
+	<label for="nom_fr">
+		Nom <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+    {{ form_widget (form.Name, {'attr': {'type':'text','class':'type-text ' }}) }}</div>
+	<div class="clearer"></div>
+
+	
+</div>
+
+<div class="form-element ">
+	<label for="tva">
+		TVA <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.VAT, {'attr': {'type':'text','class':'type-text ' }}) }}
+    </div>
+	<div class="clearer"></div>
+
+</div>
+
+<div class="form-element ">
+	<label for="id_departement">
+		Département <span class="rouge">*</span>
+	</label>
+
+	<div class="champ margeur-5">
+				{{ form_widget (form.Departement, {'attr': {'type':'text','class':'type-text ' }}) }}
+	</div>
+
+	<div class="clearer"></div>
+
+</div>
+
+<div class="clearer"></div>
+	{{form_end(form)}}
+</div>

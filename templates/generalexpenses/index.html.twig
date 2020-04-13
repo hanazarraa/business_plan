@@ -1,0 +1,434 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+{% if business.rangeofdetail < business.numberofyears  %}
+{{ form_start(form) }}
+{% endif %}
+	<div class="right_col" role="main">
+
+		
+
+			<div class="entete entete-min">
+				<h1 class="fleft">
+					Frais généraux
+				</h1>
+
+				<div class="call-to-action fright">
+					<div class="fleft">
+						<a href="{{path('topic')}}" title="Créer une rubrique" class="open-modal btn btn-md btn-primary dont-print">
+							<i class="fa fa-plus-circle"></i>
+							&nbsp;Créer une rubrique
+						</a>
+					</div>
+
+					<div class="fleft">
+						<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?fg[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+							<i class="fa fa-file-pdf-o"></i>
+							&nbsp;Exporter
+						</a>
+					</div>
+
+					<div class="fleft">
+						<a href="https://www.montpellier-business-plan.com/espace_client/frais_generaux/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+							<i class="fa fa-file-excel-o"></i>
+							&nbsp;Exporter
+						</a>
+					</div>
+
+					<div class="fleft">
+					        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+					</div>
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="x_panel">
+
+				<input type="hidden" name="post-immo" value="true"/>
+
+				<div class="form-element absolute" id="validation_mouvante">
+					<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider"/>
+				</div>
+
+				<div class="clearer"></div>
+				<table class="tableau navigate">
+ 
+					<tr>
+						<th>Administration & Gestion</th>
+						<th>TVA</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+					</tr>
+
+					<tr>
+						<td class="soustitre">
+							Eau et électricité
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['eau']}}
+						</td>
+						 {% endfor %}
+						
+                        {% for s in form.administration['eau']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+                        
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Fournitures d'entretien
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['fournitureentretient']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['fournitureentretient']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Propriété industrielle
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['proprietes']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['proprietes']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+                        {% endfor %}
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Assurances (TTC)
+						</td>
+
+						<td>0.00</td>
+	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['assurance']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['assurance']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Honoraires juridiques
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                        	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['honorairej']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['honorairej']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Honoraires comptables
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                       	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['honorairec']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['honorairec']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Loyers
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                        	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['loyers']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['loyers']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Impôts et taxes
+						</td>
+
+						<td >
+							0.00
+						</td>
+							                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['impotettax']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['impotettax']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Poste et télécom
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                        	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['posteettelecom']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['posteettelecom']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Fournitures administratives
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                         	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['fournitureadmenstrative']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['fournitureadmenstrative']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Déplacements (TTC)
+						</td>
+
+						<td>0.00</td>
+                        	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['deplacement']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['deplacement']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+
+					</tr>
+					<tr>
+						<td class="soustitre">
+							Autres dépenses
+						</td>
+
+						<td>{{business.defaultVAT}}</td>
+                       	                    {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1]['autre']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration['autre']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+					</tr>
+                    {% for key, topic in diff %}
+                    <tr>
+						<td class="soustitre">
+							<a href="{{path('edit',{name:key })}}" title="" class="open-modal tool-tip" data-original-title="Modifier">
+										{{key}} <i class="fa fa-pencil"></i>
+									</a>
+						</td>
+						<td>{{tva[key][0]}}</td>
+						 {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{somme[i - 1][key]}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.administration[key]  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+					<tr>
+                   {% endfor %}
+					<tr>
+						<td class="total" colspan="2">Total Administration & Gestion</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{total[i -1 ]}}
+						</td>
+						{% endfor  %}
+						{% if globalTotal !=[] %}
+						{% for x in 1..(business.numberofyears - business.rangeofdetail)  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{globalTotal[x -1 ]}}
+						</td>
+						{% endfor  %}
+						{% endif %}
+					</tr>
+{% if business.rangeofdetail < business.numberofyears  %}
+{{ form_end(form) }}
+{% endif %}
+					</table>
+			</div>
+		</form>
+		<input type="hidden" id="id_tableau" name="id_tableau" value="13"/>
+
+		<div class="bloc-commentaires margeur-50" id="notes">
+			<h2 class="fleft">Notes</h2>
+
+			<div class="fright">
+				<a href="#" id="hide-notes" class="no_alert_a_sauvegarder">
+					<i class="fa fa-times-circle-o fs-20"></i>
+				</a>
+			</div>
+			<div class="clearer"></div>
+
+			<form action="" method="post" class="formulaire margeur-20">
+				<textarea id="note" name="note"></textarea>
+
+				<div class="form-element">
+					<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note"/>
+				</div>
+			</form>
+		</div>
+
+		<div class="bloc-commentaires margeur-50" id="commentaires">
+			<div class="clearer">&nbsp;</div>
+			<div class="margeur-10"></div>
+			<h2 class="fleft">Discussion</h2>
+			<div class="fright">
+				<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+					<i class="fa fa-times-circle-o fs-20"></i>
+				</a>
+			</div>
+			<div class="clearer"></div>
+
+			<div id="commentaires-container"></div>
+
+			<form action="" method="post" class="formulaire margeur-20">
+				<div class="champ">
+					<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value=""/>
+				</div>
+
+				<div class="champ margeur-5">
+					<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+				</div>
+
+				<div class="form-element">
+					<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire"/>
+				</div>
+			</form>
+
+			<div class="margeur-10"></div>
+		</div>
+
+		<div class="liens-sociaux">
+			<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+				<i class="fa fa-comments fs-18"></i>
+				(<span id="nb-commentaires">0</span>)
+			</div>
+
+			<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+				<i class="fa fa-sticky-note"></i>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

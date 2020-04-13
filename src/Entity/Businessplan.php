@@ -90,6 +90,11 @@ class Businessplan
      */
     private $sales;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rangeofdetail;
+
    
 
     function __construct() {
@@ -275,6 +280,18 @@ public function getSales(): ?sales
 public function setSales(?sales $sales): self
 {
     $this->sales = $sales;
+
+    return $this;
+}
+
+public function getRangeofdetail(): ?int
+{
+    return $this->rangeofdetail;
+}
+
+public function setRangeofdetail(int $rangeofdetail): self
+{
+    $this->rangeofdetail = $rangeofdetail;
 
     return $this;
 }

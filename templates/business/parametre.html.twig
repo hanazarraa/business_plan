@@ -255,10 +255,54 @@
 			<div class="clearer"></div>
 		</div>
 
-	 			 	
+	 	<table class="tableau no-highlight margeur-15">
+				<tbody><tr>
+					<th>
+						Année	</th>
+
+					<th>
+						Type</th>
+				</tr>
+				{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+                {% for i in 1..business.rangeofdetail %}
+				<tr>
+				
+					<td style="background: none;">
+						Année	{{i}}	</td>
+
+					<td style="background: none;">
+				Saisie détaillée</td>
+				</tr>
+		        {% endfor %}
+				{% endif %}
+				{% if business.rangeofdetail < business.numberofyears  %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears %}
+				<tr>
+				
+					<td style="background: none;">
+						Année	{{i}}	</td>
+
+					<td style="background: none;">
+				Saisie Globale {% if loop.first %}(<a href="{{path('detaile')}}">Passer en Saisie detailler</a>){% endif %} </td>
+				</tr>
+		        {% endfor %}
+				{% endif %}	
+				{% if business.rangeofdetail == business.numberofyears  %}
+				{% for i in 1..business.numberofyears  %}
+				<tr>
+				
+					<td style="background: none;">
+						Année	{{i}}	</td>
+
+					<td style="background: none;">
+				Saisie Globale</td>
+				</tr>
+				{% endfor %}
+				{% endif %}
+							</tbody></table>		 	
 
 			
-</form>
+
                     </div>
 		{% endblock %}
        	{% block footer %}

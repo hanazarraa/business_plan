@@ -11,7 +11,8 @@ use App\Entity\User;
 use App\Entity\Sales;
 use App\Entity\Salesdetailled;
 use App\Form\BusinessFormType;
-
+use App\Entity\Generalexpenses;
+use App\Entity\Generalexpensesdetail;
 class BusinessController extends AbstractController
 {
     
@@ -22,8 +23,10 @@ class BusinessController extends AbstractController
     {
         $business=new Businessplan();
         $sales= new Sales();
+        $expenses = new Generalexpenses();
+        $expenssesdetail = new Generalexpensesdetail();
         $form = $this->createForm(BusinessFormType::class, $business);
-
+        $listdefrais =["eau","autre","loyers","assurance","honorairec","honorairej","impotettax","proprietes","deplacement","posteettelecom","fournitureentretient","fournitureadmenstrative"];
           $form->handleRequest($request);
           $user = $this->get('security.token_storage')->getToken()->getUser();
           
@@ -33,10 +36,31 @@ class BusinessController extends AbstractController
              $business->setUser($user);
              $business->setSales($sales);
              $business->setCode("".strtoupper(bin2hex(openssl_random_pseudo_bytes(32))));
+             $business->setRangeofdetail(1);
+             
+             //$newgeneralexpensses->setAdministration($admisinstrator);
              $entityManager = $this->getDoctrine()->getManager();
+             $years = $form->getData()->getNumberofyears();
              $entityManager->persist($business);
-             $entityManager->flush();
-
+             $expenses->setBusinessplan($business);
+             
+             foreach($listdefrais as $value){
+             for($i=0;$i<($years-1);$i++){
+             $admisinstrator[$value][$i] = "0.00";}}  
+             $expenses->setAdministration($admisinstrator);          
+             $entityManager->persist($expenses);
+            foreach($listdefrais as $value){
+                for($i=0;$i<12;$i++){
+                $detaillist[$value][$i] = "0.00";
+                }}
+                $expenssesdetail->setDetail($detaillist);
+                
+                $expenssesdetail->setGeneralexpenses($expenses);
+                $expenssesdetail->setStatus(0);
+                for($i=0 ;$i<$years;$i++){
+                $expenssesdetail->setYear($i);
+                $entityManager->merge($expenssesdetail);}
+                $entityManager->flush();
               return $this->redirectToRoute('dashboard');
               
           }
@@ -119,5 +143,34 @@ class BusinessController extends AbstractController
         }
          return $this->render('business/parametre.html.twig',['form' => $form->createView(),'business' => $business]);
      }
-
+     /**
+     * @Route("/{_locale}/dashboard/my-business-plan/detailadd", name="detaile")
+     * 
+     */
+    public function detailadd(){
+        //dump($this->container->get('session'));
+        $businessSession =$this->container->get('session')->get('business');
+        $entityManager = $this->getDoctrine()->getManager();
+        $business = $entityManager->getRepository(Businessplan::class)->find($businessSession->getId());
+        $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($business);
+        $oldrange = $businessSession->getRangeofdetail();
+        $oldlist = $generalexpensses[0]->getAdministration();
+        $listdefrais=[];
+        foreach($oldlist as $key=>$value){
+            array_push($listdefrais,$key);
+        }
+        
+        //$listdefrais =["eau","autre","loyers","assurance","honorairec","honorairej","impotettax","proprietes","deplacement","posteettelecom","fournitureentretient","fournitureadmenstrative"];
+        foreach($listdefrais as $value){
+        array_shift($oldlist[$value]);
+       }
+       
+        //dump($oldlist);die();
+        $business->setRangeofdetail($oldrange+1);
+        $generalexpensses[0]->setAdministration($oldlist);
+        $entityManager->flush();
+        $this->container->get('session')->set('business', $business); 
+        //dump(get_class_methods($this->container->get('session')));die();
+        return $this->redirectToRoute('businessparametre');
+    }
 }
