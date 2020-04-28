@@ -313,7 +313,7 @@
 						</td>
 
 						<td>{{business.defaultVAT}}</td>
-                       	                    {% for i in 1..business.rangeofdetail  %}
+                       	 {% for i in 1..business.rangeofdetail  %}
 						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
 						{{somme[i - 1]['autre']}}
 						</td>
@@ -357,11 +357,596 @@
 						{% endfor  %}
 						{% endif %}
 					</tr>
+
+<tr>
+						<td class="separateur" colspan="6"></td>
+					</tr>
+<tr>
+						<th>Production</th>
+						<th>TVA</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+					</tr>
+
+																																																																																																																																																																											<tr>
+							<td class="soustitre">
+																	Crédit bail								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1]['bail']}}
+						</td>
+						 {% endfor %}
+					    {% for s in form.production['bail']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Petits équipements et fournitures								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+							 {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1]['petiteq']}}
+						</td>
+						 {% endfor %}
+                         {% for s in form.production['petiteq']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Emballages								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                         {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1]['emballage']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.production['emballage']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Déplacements (TTC)								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1]['deplacement']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.production['delpacement']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Autres dépenses								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1]['autre']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.production['autre']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+							{% for key, topic in diffpro %}
+                    <tr>
+						<td class="soustitre">
+							<a href="{{path('edit',{name:key })}}" title="" class="open-modal tool-tip" data-original-title="Modifier">
+										{{key}} <i class="fa fa-pencil"></i>
+									</a>
+						</td>
+						<td>{{tvapro[key][0]}}</td>
+						 {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumproduction[i - 1][key]}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.production[key]  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+				     	<tr>
+                       {% endfor %}																																																																																																																																																					
+					<tr>
+						<td class="total" COLSPAN=2>Total Production</td>
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{totalproduction[i -1 ]}}
+						</td>
+						{% endfor  %}
+						{% if globaltotalpro !=[] %}
+						{% for x in 1..(business.numberofyears - business.rangeofdetail)  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{globaltotalpro[x -1 ]}}
+						</td>
+						{% endfor  %}
+						{% endif %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="6"></td>
+					</tr>
+											
+				    <tr>
+						<th>Commercial</th>
+						<th>TVA</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+					</tr>
+
+																																																																																																																																																																																																																																		<tr>
+							<td class="soustitre">
+																	Frais de publicité								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1]['publicite']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['publicite']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Evènementiel								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1]['evenmentiel']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['evenmentiel']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Conseils								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+
+						{% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1]['conseils']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['conseils']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Documentation								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1]['documentation']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['documentation']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Promotions								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1]['promotions']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['promotions']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Salons								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+							{% for i in 1..business.rangeofdetail  %}
+							<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                          {{sumcommercial[i - 1]['salons']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['salons']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Déplacements (TTC)								
+							</td>
+
+							<td>0.00</td>
+							{% for i in 1..business.rangeofdetail  %}
+							<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{sumcommercial[i - 1]['deplacementsttc']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['deplacementsttc']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+					
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Autres dépenses								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+                     {% for i in 1..business.rangeofdetail  %}
+					 <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                      {{sumcommercial[i - 1]['autre']}}
+						</td>
+						 {% endfor %}
+						{% for s in form.sales['autre']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+					{% for key, topic in diffcom %}
+                    <tr>
+						<td class="soustitre">
+							<a href="{{path('edit',{name:key })}}" title="" class="open-modal tool-tip" data-original-title="Modifier">
+										{{key}} <i class="fa fa-pencil"></i>
+									</a>
+						</td>
+						<td>{{tvacom[key][0]}}</td>
+						 {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumcommercial[i - 1][key]}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.sales[key]  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+				     	<tr>
+                       {% endfor %}																																																													
+					<tr>
+						<td class="total" COLSPAN=2>Total Commercial</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{totalcommercial[i -1 ]}}
+						</td>
+						{% endfor  %}
+						{% if globaltotalcom !=[] %}
+						{% for x in 1..(business.numberofyears - business.rangeofdetail)  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{globaltotalcom[x -1 ]}}
+						</td>
+						{% endfor  %}
+						{% endif %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="6"></td>
+					</tr>
+											
+				    <tr>
+						<th>Recherche & Développement</th>
+						<th>TVA</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('generalexpensesdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+					</tr>
+
+																																																																																																																																																																																																																																																																																																																										<tr>
+							<td class="soustitre">
+																	Petits équipements R&D								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+						 {% for i in 1..business.rangeofdetail  %}
+					     <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                         {{sumrecherche[i - 1]['petiteq']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.research['petiteq']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+						{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Conseils								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+							{% for i in 1..business.rangeofdetail  %}
+					     <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                         {{sumrecherche[i - 1]['conseils']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.research['conseils']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+						{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Congrès Scientifiques								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+							{% for i in 1..business.rangeofdetail  %}
+					     <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                         {{sumrecherche[i - 1]['congres']}}
+						</td>
+						 {% endfor %}
+                       {% for s in form.research['congres']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+						{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Déplacements (TTC)								
+							</td>
+
+							<td>0.00</td>
+							{% for i in 1..business.rangeofdetail  %}
+					     <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                         {{sumrecherche[i - 1]['deplacement']}}
+						</td>
+						 {% endfor %}
+                         {% for s in form.research['deplacement']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+						{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+																							<tr>
+							<td class="soustitre">
+																	Autres dépenses								
+							</td>
+
+							<td>{{business.defaultVAT}}</td>
+							{% for i in 1..business.rangeofdetail  %}
+					     <td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                         {{sumrecherche[i - 1]['autre']}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.research['autre']  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+						{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+					    {% endfor %}
+							
+						</tr>
+						 {% for key, topic in diffrec %}
+                    <tr>
+						<td class="soustitre">
+							<a href="{{path('edit',{name:key })}}" title="" class="open-modal tool-tip" data-original-title="Modifier">
+										{{key}} <i class="fa fa-pencil"></i>
+									</a>
+						</td>
+						<td>{{tvarec[key][0]}}</td>
+						 {% for i in 1..business.rangeofdetail  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+						{{sumrecherche[i - 1][key]}}
+						</td>
+						 {% endfor %}
+                        {% for s in form.research[key]  %}
+						<td class="aright  somme-js somme-287924-0" id="somme2244877-287924-0">
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						</td>
+						{% endfor %}
+				     	<tr>
+                       {% endfor %}							
+					<tr>
+						<td class="total" COLSPAN=2>Total Recherche & Développement</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{totalrecherche[i -1 ]}}
+						</td>
+						{% endfor  %}
+						{% if globaltotalrec !=[] %}
+						{% for x in 1..(business.numberofyears - business.rangeofdetail)  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{globaltotalrec[x -1 ]}}
+						</td>
+						{% endfor  %}
+						{% endif %}
+						
+					</tr>
+                   
+					
+					<tr>
+						<td class="separateur" colspan="6"></td>
+					</tr>
+							
+			<tr>
+				<td COLSPAN=2 class="total">Total autres achats et charges externes</td>
+                        {% for i in 1..business.rangeofdetail  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{total[i -1 ] + totalproduction[i -1 ]+ totalcommercial[i -1 ] + totalrecherche[i -1 ]}}
+						</td>
+						{% endfor  %}
+						{% if globalTotal !=[] %}
+						{% for x in 1..(business.numberofyears - business.rangeofdetail)  %}
+						<td class="aright total totalprovisoire-0" id="total-287924-0">{{globalTotal[x -1 ] + globaltotalpro[x -1 ]+ globaltotalcom[x -1 ] + globaltotalrec[x -1 ]}}
+						</td>
+						{% endfor  %}
+						{% endif %}
+							</tr>
+					</table>
+			</div>
 {% if business.rangeofdetail < business.numberofyears  %}
 {{ form_end(form) }}
 {% endif %}
-					</table>
-			</div>
 		</form>
 		<input type="hidden" id="id_tableau" name="id_tableau" value="13"/>
 

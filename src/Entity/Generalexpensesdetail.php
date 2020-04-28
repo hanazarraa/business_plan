@@ -38,6 +38,21 @@ class Generalexpensesdetail
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $DetailProduction = [];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $DetailCommercial = [];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $DetailRecherche = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +102,42 @@ class Generalexpensesdetail
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDetailProduction(): ?array
+    {
+        return $this->DetailProduction;
+    }
+
+    public function setDetailProduction(array $DetailProduction): self
+    {
+        $this->DetailProduction = $DetailProduction;
+
+        return $this;
+    }
+
+    public function getDetailCommercial(): ?array
+    {
+        return $this->DetailCommercial;
+    }
+
+    public function setDetailCommercial(array $DetailCommercial): self
+    {
+        $this->DetailCommercial = $DetailCommercial;
+
+        return $this;
+    }
+
+    public function getDetailRecherche(): ?array
+    {
+        return $this->DetailRecherche;
+    }
+
+    public function setDetailRecherche(array $DetailRecherche): self
+    {
+        $this->DetailRecherche = $DetailRecherche;
 
         return $this;
     }

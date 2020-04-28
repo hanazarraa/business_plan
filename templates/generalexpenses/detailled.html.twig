@@ -180,7 +180,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['assurance']  %}
+							{% for s in form.detail['assurance']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -201,7 +201,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['honorairej']  %}
+							{% for s in form.detail['honorairej']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -222,7 +222,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['honorairec']  %}
+							{% for s in form.detail['honorairec']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -243,12 +243,12 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['loyers']  %}
+							{% for s in form.detail['loyers']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
 																						
-                                    {% endfor %}
+                            {% endfor %}
 									</tr>
 																							<tr class="tr-287924 ventilate-2244883">
 							<td class="soustitre">
@@ -264,7 +264,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['impotettax']  %}
+							 {% for s in form.detail['impotettax']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -285,7 +285,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['posteettelecom']  %}
+							{% for s in form.detail['posteettelecom']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -306,7 +306,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['fournitureadmenstrative']  %}
+							{% for s in form.detail['fournitureadmenstrative']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -327,7 +327,7 @@
 								</a>
 							</td>
 
-															 {% for s in form.detail['deplacement']  %}
+							 {% for s in form.detail['deplacement']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -349,7 +349,7 @@
 							</td>
 
 															
-															 {% for s in form.detail['autre']  %}
+							{% for s in form.detail['autre']  %}
 			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
                              {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
                               </td>
@@ -387,7 +387,572 @@
 						
 					</tr>
 
+			<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Production							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287925">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																											<tr class="tr-287925 ventilate-2244888">
+							<td class="soustitre">
+																	Crédit bail															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244888">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['bail']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244888" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['bail']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+																						
+                                    {% endfor %}    
+													</tr>
+																							<tr class="tr-287925 ventilate-2244889">
+							<td class="soustitre">
+																	Petits équipements et fournitures															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244889">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['petiteq']}}									</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244889" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+						{% for s in form.DetailProduction['petiteq']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244890">
+							<td class="soustitre">
+																	Emballages															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244890">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['emballage']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244890" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+															
+						{% for s in form.DetailProduction['emballage']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244891">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244891">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['deplacement']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244891" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['deplacement']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244892">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244892">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['autre']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244892" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+				{% for key, topic in diffpro %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>20.00</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sommeproduction[id][key]}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244887" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailProduction[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}																																																																																																																																																						
+				<tr>
+						<td class="total" COLSPAN=2>Total Production</td>
+
+						<td class="aright total totalgeneraldep" id="totalgeneraldep-287925">{{totalproduction}}</td>
+
+						{% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthproduction[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
 					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Commercial							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287926">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																																																																																		<tr class="tr-287926 ventilate-2244893">
+							<td class="soustitre">
+																	Frais de publicité															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244893">
+								<span class="ventilate-total">
+									{{sumcommercial[id]['publicite']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244893" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['publicite']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244894">
+							<td class="soustitre">
+																	Evènementiel															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244894">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['evenmentiel']}}	</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244894" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['evenmentiel']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244895">
+							<td class="soustitre">
+																	Conseils															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244895">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['conseils']}}</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244895" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['conseils']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244896">
+							<td class="soustitre">
+																	Documentation															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244896">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['documentation']}}</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244896" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+									{% for s in form.DetailCommercial['documentation']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244897">
+							<td class="soustitre">
+																	Promotions															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244897">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['promotions']}}	</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244897" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['promotions']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244898">
+							<td class="soustitre">
+																	Salons															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244898">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['salons']}}</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244898" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.DetailCommercial['salons']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244899">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244899">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['deplacementsttc']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244899" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['deplacementsttc']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244900">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244900">
+								<span class="ventilate-total">
+									{{sumcommercial[id]['autre']}}</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244900" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+					{% for key, topic in diffcom %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>20.00</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sumcommercial[id][key]}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244887" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailCommercial[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}																																																													
+					<tr>
+						<td class="total" COLSPAN=2>Total Commercial</td>
+
+						
+
+                       <td class="aright total totalgeneraldep" id="totalgeneraldep-287925">{{totalcommercial}}</td>
+
+						{% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthcommercial[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Recherche & Développement							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287927">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année 1</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																																																																																																																																																																										<tr class="tr-287927 ventilate-2244901">
+							<td class="soustitre">
+																	Petits équipements R&D															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244901">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['petiteq']}}			</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244901" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailRecherche['petiteq']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244902">
+							<td class="soustitre">
+																	Conseils															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244902">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['conseils']}}									</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244902" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailRecherche['conseils']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244903">
+							<td class="soustitre">
+																	Congrès Scientifiques															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244903">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['congres']}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244903" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['congres']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244904">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244904">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['deplacement']}}									</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244904" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['deplacement']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244905">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>20.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244905">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['autre']}}									</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244905" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+					{% for key, topic in diffrec %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>20.00</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sumrecherche[id][key]}}								</span>
+								&nbsp;
+								<a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ventilation_modal/ventilate-2244887" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailRecherche[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}							
+					<tr>
+						<td class="total" COLSPAN=2>Total Recherche & Développement</td>
+
+						<td class="aright total totalgeneraldep" id="totalgeneraldep-287927">{{totalrecherche}}</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthrecherche[x]}} </td>
+						{% endfor %}
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+							
+			<tr>
+				<td class="total" COLSPAN=2>Total autres achats et charges externes</td>
+
+				<td class="aright total totalgeneralannee">{{totalsomme}}</td>
+                {% for x in 0..11 %}
+									<td class="aright total totalgeneral" id="totalgeneral-0">{{totalpermonth[x]}} </td>
+				{% endfor %}					
+							</tr>			
 		</table>
 	</div>
 {{ form_end(form) }}

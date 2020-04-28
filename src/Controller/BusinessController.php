@@ -27,7 +27,11 @@ class BusinessController extends AbstractController
         $expenssesdetail = new Generalexpensesdetail();
         $form = $this->createForm(BusinessFormType::class, $business);
         $listdefrais =["eau","autre","loyers","assurance","honorairec","honorairej","impotettax","proprietes","deplacement","posteettelecom","fournitureentretient","fournitureadmenstrative"];
-          $form->handleRequest($request);
+        $listProduction =["bail","petiteq","emballage","delpacement","autre"];
+        $listdetail =["bail","petiteq","emballage","deplacement","autre"];
+        $listCommercial =["publicite","evenmentiel","conseils","documentation","promotions","salons","deplacementsttc","autre"];
+        $listRecherche = ["petiteq","conseils","congres","deplacement","autre"];  
+        $form->handleRequest($request);
           $user = $this->get('security.token_storage')->getToken()->getUser();
           
           if($form->isSubmitted() && $form->isValid()){
@@ -42,24 +46,52 @@ class BusinessController extends AbstractController
              $entityManager = $this->getDoctrine()->getManager();
              $years = $form->getData()->getNumberofyears();
              $entityManager->persist($business);
+             //----------------------------Frais generaux-----------------//
              $expenses->setBusinessplan($business);
-             
              foreach($listdefrais as $value){
              for($i=0;$i<($years-1);$i++){
-             $admisinstrator[$value][$i] = "0.00";}}  
-             $expenses->setAdministration($admisinstrator);          
+             $admisinstrator[$value][$i] = "0.00";}}  //list pour les frais generaux global
+             foreach($listProduction as $value){
+             for($i=0;$i<($years-1);$i++){
+             $production[$value][$i] = "0.00";}}
+             foreach($listCommercial as $value){
+             for($i=0;$i<($years-1);$i++){
+             $commercial[$value][$i] = "0.00";}}
+             foreach($listRecherche as $value){
+             for($i=0;$i<($years-1);$i++){
+             $recherche[$value][$i] = "0.00";}}
+             $expenses->setAdministration($admisinstrator);
+             $expenses->setProduction($production);
+             $expenses->setSales($commercial);
+             $expenses->setResearch($recherche);          
              $entityManager->persist($expenses);
             foreach($listdefrais as $value){
                 for($i=0;$i<12;$i++){
-                $detaillist[$value][$i] = "0.00";
+                $detaillist[$value][$i] = "0.00";     // list pour les frais generaux detailler
+                }}
+            foreach($listdetail as $value){
+                    for($i=0;$i<12;$i++){
+                    $productiondetail[$value][$i] = "0.00";   
+                }}
+            foreach($listCommercial as $value){
+                    for($i=0;$i<12;$i++){
+                    $commercialdetail[$value][$i] = "0.00";   
+                }}
+            foreach($listRecherche as $value){
+                    for($i=0;$i<12;$i++){
+                    $recherchedetail[$value][$i] = "0.00";   
                 }}
                 $expenssesdetail->setDetail($detaillist);
-                
+                $expenssesdetail->setDetailProduction($productiondetail);
+                $expenssesdetail->setDetailCommercial($commercialdetail);
+                $expenssesdetail->setDetailRecherche($recherchedetail);
+
                 $expenssesdetail->setGeneralexpenses($expenses);
                 $expenssesdetail->setStatus(0);
                 for($i=0 ;$i<$years;$i++){
                 $expenssesdetail->setYear($i);
                 $entityManager->merge($expenssesdetail);}
+            //------------------------FIN--------------------------------------//
                 $entityManager->flush();
               return $this->redirectToRoute('dashboard');
               
@@ -155,19 +187,44 @@ class BusinessController extends AbstractController
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($business);
         $oldrange = $businessSession->getRangeofdetail();
         $oldlist = $generalexpensses[0]->getAdministration();
+        $oldlistpro = $generalexpensses[0]->getProduction();
+        $oldlistcom = $generalexpensses[0]->getSales();
+        $oldlistrec = $generalexpensses[0]->getResearch();
         $listdefrais=[];
+        $listdefraispro=[];
+        $listdefraiscom=[];
+        $listdefraisrec=[];
         foreach($oldlist as $key=>$value){
             array_push($listdefrais,$key);
         }
-        
+        foreach($oldlistpro as $key=>$value){
+            array_push($listdefraispro,$key);
+        }
+        foreach($oldlistcom as $key=>$value){
+            array_push($listdefraiscom,$key);
+        }
+        foreach($oldlistrec as $key=>$value){
+            array_push($listdefraisrec,$key);
+        }
         //$listdefrais =["eau","autre","loyers","assurance","honorairec","honorairej","impotettax","proprietes","deplacement","posteettelecom","fournitureentretient","fournitureadmenstrative"];
         foreach($listdefrais as $value){
         array_shift($oldlist[$value]);
        }
-       
+       foreach($listdefraispro as $value){
+        array_shift($oldlistpro[$value]);
+       }
+       foreach($listdefraiscom as $value){
+        array_shift($oldlistcom[$value]);
+       }
+       foreach($listdefraisrec as $value){
+        array_shift($oldlistrec[$value]);
+       }
         //dump($oldlist);die();
         $business->setRangeofdetail($oldrange+1);
         $generalexpensses[0]->setAdministration($oldlist);
+        $generalexpensses[0]->setProduction($oldlistpro);
+        $generalexpensses[0]->setSales($oldlistcom);
+        $generalexpensses[0]->setResearch($oldlistrec);
         $entityManager->flush();
         $this->container->get('session')->set('business', $business); 
         //dump(get_class_methods($this->container->get('session')));die();

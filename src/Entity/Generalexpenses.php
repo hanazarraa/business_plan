@@ -53,6 +53,21 @@ class Generalexpenses
      */
     private $TVAlist = [];
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $tvalistproduction = [];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $tvalistcommercial = [];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $tvalistrecherche = [];
+
     public function __construct()
     {
         $this->expensesdetail = new ArrayCollection();
@@ -162,6 +177,42 @@ class Generalexpenses
     public function setTVAlist(?array $TVAlist): self
     {
         $this->TVAlist = $TVAlist;
+
+        return $this;
+    }
+
+    public function getTvalistproduction(): ?array
+    {
+        return $this->tvalistproduction;
+    }
+
+    public function setTvalistproduction(array $tvalistproduction): self
+    {
+        $this->tvalistproduction = $tvalistproduction;
+
+        return $this;
+    }
+
+    public function getTvalistcommercial(): ?array
+    {
+        return $this->tvalistcommercial;
+    }
+
+    public function setTvalistcommercial(array $tvalistcommercial): self
+    {
+        $this->tvalistcommercial = $tvalistcommercial;
+
+        return $this;
+    }
+
+    public function getTvalistrecherche(): ?array
+    {
+        return $this->tvalistrecherche;
+    }
+
+    public function setTvalistrecherche(array $tvalistrecherche): self
+    {
+        $this->tvalistrecherche = $tvalistrecherche;
 
         return $this;
     }

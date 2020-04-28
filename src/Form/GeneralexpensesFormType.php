@@ -21,6 +21,18 @@ class GeneralexpensesFormType extends AbstractType
 
             'entry_type'=>CollectionType::class
         ])
+        ->add('production', CollectionType::class,[
+
+            'entry_type'=>CollectionType::class
+        ])
+        ->add('sales', CollectionType::class,[
+
+            'entry_type'=>CollectionType::class
+        ])
+        ->add('research', CollectionType::class,[
+
+            'entry_type'=>CollectionType::class
+        ])
         ->add('submit', SubmitType::class);
     }
 

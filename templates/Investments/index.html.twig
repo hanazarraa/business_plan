@@ -1,0 +1,360 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+<div class="right_col" role="main">
+                            
+<form class="formulaire" method="post" action="">
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Investissements		</h1>
+
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="https://www.montpellier-business-plan.com/espace_client/immo/modal_immo/0" title="Créer un investissement" class="open-modal btn btn-md btn-primary">
+						<i class="fa fa-plus-circle"></i> &nbsp;Créer un investissement
+					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?investissement[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+				<div class="fleft">
+					<a href="https://www.montpellier-business-plan.com/espace_client/immo/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
+					</a>
+				</div>
+
+									<div class="fleft">
+						<input type="submit" class="btn btn-md btn-success dont-print" value="Valider" />
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+		<input type="hidden" name="post-immo" value="true" />
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+		<table class="tableau navigate">
+							
+				    <tr>
+						<th>Administration & Gestion</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+												<th>
+							Année 1														<br />
+							<span class="saisie-detaillee-link">
+								<a href="https://www.montpellier-business-plan.com/mon-business-plan/investissements-annee-0" title="Saisie détaillée">
+									Saisie détaillée								</a>
+							</span>
+													</th>
+												<th>
+							Année 2													</th>
+												<th>
+							Année 3													</th>
+												<th>
+							Année 4													</th>
+						
+					</tr>
+
+																	<tr>
+							<td class="soustitre">
+																	<a href="https://www.montpellier-business-plan.com/espace_client/immo/modal_immo/161516/292732" title="Modifier" class="open-modal tool-tip">
+										test <i class="fa fa-pencil"></i>
+									</a>
+																<span class="fs-12">(Frais d'établissement)</span>
+							</td>
+							<td>3</td>
+							<td>20.00</td>
+															<td class="aright  somme-js somme-292732-0" id="somme161516-292732-0">
+																			430.00																	</td>
+															<td class="aright duplicate somme-js somme-292732-1" id="somme161516-292732-1">
+																													<input type="text" class="type-text" id="valeur-1-161516" name="valeur-1-161516" value="20.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292732-2" id="somme161516-292732-2">
+																													<input type="text" class="type-text" id="valeur-2-161516" name="valeur-2-161516" value="100.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292732-3" id="somme161516-292732-3">
+																													<input type="text" class="type-text" id="valeur-3-161516" name="valeur-3-161516" value="50.00" />																	</td>
+							
+						</tr>
+																																	
+					<tr>
+						<td class="total" COLSPAN=3>Total Administration & Gestion</td>
+
+													<td class="aright total totalprovisoire-0" id="total-292732-0">
+								430.00							</td>
+													<td class="aright total totalprovisoire-1" id="total-292732-1">
+								20.00							</td>
+													<td class="aright total totalprovisoire-2" id="total-292732-2">
+								100.00							</td>
+													<td class="aright total totalprovisoire-3" id="total-292732-3">
+								50.00							</td>
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="7"></td>
+					</tr>
+											
+				    <tr>
+						<th>Production</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+												<th>
+							Année 1														<br />
+							<span class="saisie-detaillee-link">
+								<a href="https://www.montpellier-business-plan.com/mon-business-plan/investissements-annee-0" title="Saisie détaillée">
+									Saisie détaillée								</a>
+							</span>
+													</th>
+												<th>
+							Année 2													</th>
+												<th>
+							Année 3													</th>
+												<th>
+							Année 4													</th>
+						
+					</tr>
+
+																												<tr>
+							<td class="soustitre">
+																	<a href="https://www.montpellier-business-plan.com/espace_client/immo/modal_immo/161517/292733" title="Modifier" class="open-modal tool-tip">
+										test1 <i class="fa fa-pencil"></i>
+									</a>
+																<span class="fs-12">(Matériel informatique)</span>
+							</td>
+							<td>3</td>
+							<td>20.00</td>
+															<td class="aright  somme-js somme-292733-0" id="somme161517-292733-0">
+																			50.00																	</td>
+															<td class="aright duplicate somme-js somme-292733-1" id="somme161517-292733-1">
+																													<input type="text" class="type-text" id="valeur-1-161517" name="valeur-1-161517" value="100.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292733-2" id="somme161517-292733-2">
+																													<input type="text" class="type-text" id="valeur-2-161517" name="valeur-2-161517" value="100.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292733-3" id="somme161517-292733-3">
+																													<input type="text" class="type-text" id="valeur-3-161517" name="valeur-3-161517" value="10.00" />																	</td>
+							
+						</tr>
+																						
+					<tr>
+						<td class="total" COLSPAN=3>Total Production</td>
+
+													<td class="aright total totalprovisoire-0" id="total-292733-0">
+								50.00							</td>
+													<td class="aright total totalprovisoire-1" id="total-292733-1">
+								100.00							</td>
+													<td class="aright total totalprovisoire-2" id="total-292733-2">
+								100.00							</td>
+													<td class="aright total totalprovisoire-3" id="total-292733-3">
+								10.00							</td>
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="7"></td>
+					</tr>
+											
+				    <tr>
+						<th>Commercial</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+												<th>
+							Année 1														<br />
+							<span class="saisie-detaillee-link">
+								<a href="https://www.montpellier-business-plan.com/mon-business-plan/investissements-annee-0" title="Saisie détaillée">
+									Saisie détaillée								</a>
+							</span>
+													</th>
+												<th>
+							Année 2													</th>
+												<th>
+							Année 3													</th>
+												<th>
+							Année 4													</th>
+						
+					</tr>
+
+																																							<tr>
+							<td class="soustitre">
+																	<a href="https://www.montpellier-business-plan.com/espace_client/immo/modal_immo/161518/292734" title="Modifier" class="open-modal tool-tip">
+										test2 <i class="fa fa-pencil"></i>
+									</a>
+																<span class="fs-12">(Autres investissements immatériels)</span>
+							</td>
+							<td>3</td>
+							<td>20.00</td>
+															<td class="aright  somme-js somme-292734-0" id="somme161518-292734-0">
+																			0.00																	</td>
+															<td class="aright duplicate somme-js somme-292734-1" id="somme161518-292734-1">
+																													<input type="text" class="type-text" id="valeur-1-161518" name="valeur-1-161518" value="50.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292734-2" id="somme161518-292734-2">
+																													<input type="text" class="type-text" id="valeur-2-161518" name="valeur-2-161518" value="10.00" />																	</td>
+															<td class="aright duplicate somme-js somme-292734-3" id="somme161518-292734-3">
+																													<input type="text" class="type-text" id="valeur-3-161518" name="valeur-3-161518" value="0.00" />																	</td>
+							
+						</tr>
+											
+					<tr>
+						<td class="total" COLSPAN=3>Total Commercial</td>
+
+													<td class="aright total totalprovisoire-0" id="total-292734-0">
+								0.00							</td>
+													<td class="aright total totalprovisoire-1" id="total-292734-1">
+								50.00							</td>
+													<td class="aright total totalprovisoire-2" id="total-292734-2">
+								10.00							</td>
+													<td class="aright total totalprovisoire-3" id="total-292734-3">
+								0.00							</td>
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="7"></td>
+					</tr>
+											
+				    <tr>
+						<th>Recherche & Développement</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+												<th>
+							Année 1														<br />
+							<span class="saisie-detaillee-link">
+								<a href="https://www.montpellier-business-plan.com/mon-business-plan/investissements-annee-0" title="Saisie détaillée">
+									Saisie détaillée								</a>
+							</span>
+													</th>
+												<th>
+							Année 2													</th>
+												<th>
+							Année 3													</th>
+												<th>
+							Année 4													</th>
+						
+					</tr>
+
+																																						
+					<tr>
+						<td class="total" COLSPAN=3>Total Recherche & Développement</td>
+
+													<td class="aright total totalprovisoire-0" id="total-292735-0">
+								0.00							</td>
+													<td class="aright total totalprovisoire-1" id="total-292735-1">
+								0.00							</td>
+													<td class="aright total totalprovisoire-2" id="total-292735-2">
+								0.00							</td>
+													<td class="aright total totalprovisoire-3" id="total-292735-3">
+								0.00							</td>
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="7"></td>
+					</tr>
+							
+			<tr>
+				<td COLSPAN=3 class="total">Total investissements</td>
+
+									<td class="aright total totalgeneral" id="totalgeneral-0">
+						480.00					</td>
+									<td class="aright total totalgeneral" id="totalgeneral-1">
+						170.00					</td>
+									<td class="aright total totalgeneral" id="totalgeneral-2">
+						210.00					</td>
+									<td class="aright total totalgeneral" id="totalgeneral-3">
+						60.00					</td>
+							</tr>
+		</table>
+	</div>
+</form>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="18" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}
