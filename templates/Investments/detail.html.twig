@@ -1,0 +1,399 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+ <div class="right_col" role="main">
+                            
+<form class="formulaire" method="post" action="">
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Investissements		</h1>
+
+					<div class="fleft margeur-l15">
+					<div class="pagination-periode">
+		           {% for i in 0..rangeofdetail - 1 %}
+					<a href="{{path('investmentsdetail',{'id':i })}}" class="btn btn-primary btn-md btn-success" title="Année 1">
+				Année {{i +1}}			</a>
+				   {% endfor %}
+		
+		
+
+	</div>
+			</div>
+		
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="{{path('investmentsadd')}}" title="Créer un investissement" class="open-modal btn btn-md btn-primary">
+						<i class="fa fa-plus-circle"></i> &nbsp;Créer un investissement
+					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+				<div class="fleft">
+					<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
+					</a>
+				</div>
+
+									<div class="fleft">
+									{{ form_widget(form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+	
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+		<input type="hidden" name="post-immo" value="true" />
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+		<table class="tableau navigate">
+											    <tr>
+						<th style="width:15%">Administration & Gestion</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+											</tr>
+				{% for key ,s in form.Administration %}
+				<tr class="ventilate-162557">
+							<td class="soustitre">
+				<a href="#" title="Modifier" class="open-modal tool-tip">
+				{{key}} <i class="fa fa-pencil"></i>
+				</a>
+				<span class="fs-12">({{categorie[key][0]}})</span>
+				</td>
+				<td>{{duration[key][0]}}</td>
+				<td>{{tvalist[key][0]}}</td>
+                <td class="aright totalrubrique" id="totalrubrique-162557">
+				<span class="ventilate-total">
+				{{sum[id][key]}}</span>
+				&nbsp;
+				<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+				<i class="fa fa-edit"></i>
+				</a>
+				</td>
+                 {% for x in 0..11 %}
+				<td class="aright duplicate somme-js somme-292732-0 sommerubrique-162557" id="somme162557-292732-0">
+				{{ form_widget (s[x], {'attr': {'type':'text','class':'type-text ' }}) }}
+				</td>
+				{% endfor  %}
+				</tr>
+				{% endfor %}
+					<tr>
+						<td class="total" COLSPAN=3>
+							Total Administration & Gestion						</td>
+
+						<td class="total totalgeneraldep aright" id="totalgeneraldep-292732">
+							{{total}}						</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonth[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="16"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">Production</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+											</tr>
+
+				{% for key ,s in form.production %}
+				<tr class="ventilate-162557">
+							<td class="soustitre">
+				<a href="#" title="Modifier" class="open-modal tool-tip">
+				{{key}} <i class="fa fa-pencil"></i>
+				</a>
+				<span class="fs-12">({{categorie[key][0]}})</span>
+				</td>
+				<td>{{duration[key][0]}}</td>
+				<td>{{tvalist[key][0]}}</td>
+                <td class="aright totalrubrique" id="totalrubrique-162557">
+				<span class="ventilate-total">
+				{{sumproduction[id][key]}}</span>
+				&nbsp;
+				<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+				<i class="fa fa-edit"></i>
+				</a>
+				</td>
+                 {% for x in 0..11 %}
+				<td class="aright duplicate somme-js somme-292732-0 sommerubrique-162557" id="somme162557-292732-0">
+				{{ form_widget (s[x], {'attr': {'type':'text','class':'type-text ' }}) }}
+				</td>
+				{% endfor  %}
+				</tr>
+				{% endfor %}
+					<tr>
+						<td class="total" COLSPAN=3>
+							Total Production						</td>
+
+						<td class="total totalgeneraldep aright" id="totalgeneraldep-292732">
+							{{totalProduction}}						</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthproduction[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="16"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">Commercial</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+											</tr>
+
+					{% for key ,s in form.sales %}
+				<tr class="ventilate-162557">
+							<td class="soustitre">
+				<a href="#" title="Modifier" class="open-modal tool-tip">
+				{{key}} <i class="fa fa-pencil"></i>
+				</a>
+				<span class="fs-12">({{categorie[key][0]}})</span>
+				</td>
+				<td>{{duration[key][0]}}</td>
+				<td>{{tvalist[key][0]}}</td>
+                <td class="aright totalrubrique" id="totalrubrique-162557">
+				<span class="ventilate-total">
+				{{sumcommercial[id][key]}}</span>
+				&nbsp;
+				<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+				<i class="fa fa-edit"></i>
+				</a>
+				</td>
+                 {% for x in 0..11 %}
+				<td class="aright duplicate somme-js somme-292732-0 sommerubrique-162557" id="somme162557-292732-0">
+				{{ form_widget (s[x], {'attr': {'type':'text','class':'type-text ' }}) }}
+				</td>
+				{% endfor  %}
+				</tr>
+				{% endfor %}
+					<tr>
+						<td class="total" COLSPAN=3>
+							Total Commercial						</td>
+
+						<td class="total totalgeneraldep aright" id="totalgeneraldep-292732">
+							{{totalCommercial}}						</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthcommercial[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="16"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">Recherche & Développement</th>
+						<th>Durée Immo</th>
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+											</tr>
+
+					{% for key ,s in form.recherche %}
+				<tr class="ventilate-162557">
+							<td class="soustitre">
+				<a href="#" title="Modifier" class="open-modal tool-tip">
+				{{key}} <i class="fa fa-pencil"></i>
+				</a>
+				<span class="fs-12">({{categorie[key][0]}})</span>
+				</td>
+				<td>{{duration[key][0]}}</td>
+				<td>{{tvalist[key][0]}}</td>
+                <td class="aright totalrubrique" id="totalrubrique-162557">
+				<span class="ventilate-total">
+				{{sumrecherche[id][key]}}</span>
+				&nbsp;
+				<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+				<i class="fa fa-edit"></i>
+				</a>
+				</td>
+                 {% for x in 0..11 %}
+				<td class="aright duplicate somme-js somme-292732-0 sommerubrique-162557" id="somme162557-292732-0">
+				{{ form_widget (s[x], {'attr': {'type':'text','class':'type-text ' }}) }}
+				</td>
+				{% endfor  %}
+				</tr>
+				{% endfor %}
+					<tr>
+						<td class="total" COLSPAN=3>
+							Total Recherche & Développement						</td>
+
+					<td class="total totalgeneraldep aright" id="totalgeneraldep-292732">
+							{{totalRecherche}}						</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthrecherche[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="16"></td>
+					</tr>
+							
+			<tr>
+				<td class="total" COLSPAN=3>Total investissements</td>
+
+				<td class="aright total totalgeneralannee">{{totalsomme}}</td>
+                {% for x in 0..11 %}
+									<td class="aright total totalgeneral" id="totalgeneral-0">{{totalpermonth[x]}} </td>
+				{% endfor %}
+							</tr>
+		</table>
+	</div>
+{{form_end(form)}}
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="19" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

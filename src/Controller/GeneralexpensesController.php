@@ -72,8 +72,7 @@ class GeneralexpensesController extends AbstractController
         $total[$i] =  0.00 ;
         $totalpro[$i] = 0.00;
         $totalcom[$i] = 0.00;
-        $totalrech[$i] = 0.00;
-    }
+        $totalrech[$i] = 0.00;}
        // $etat =$generalexpenssesde[0]->getStatus(); 
        //-------------------------------------Adimnistration---------------- 
         for ($i=0 ; $i<$years ; $i++){
@@ -424,7 +423,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
             unset($tvalist[$name]);
             $tvalist[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
             //$generalexpensses[0]->getTVAlist()[$name] = 
-            dump($list,$tvalist,$generalexpenssesdetail);die();
+            //dump($list,$tvalist,$generalexpenssesdetail);die();
             }
             return $this->redirectToRoute('generalexpenses');
         }

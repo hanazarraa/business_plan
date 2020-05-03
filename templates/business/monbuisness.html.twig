@@ -34,10 +34,7 @@
                                     <link href="{{ asset('css/print.css') }}" rel="stylesheet" type="text/css" media="print" />
                
             <script type="text/javascript">
-            //var site_url = 'https://www.montpellier-business-plan.com/';
-           // var base_url = 'https://www.montpellier-business-plan.com/';
-           // var lang_url = 'fr';
-           // var current_url = 'https://www.montpellier-business-plan.com/mon-compte';
+   
         </script>
         
 
@@ -94,8 +91,8 @@
               <div class="left_col scroll-view">
                   <!--
                   <div class="navbar nav_title acenter" style="border: 0; height:auto;">
-                    <a href="https://www.montpellier-business-plan.com/mes-business-plan">
-                       <img src="https://www.montpellier-business-plan.com/images/design/header/logo-mmm-only-white.png" alt="" />
+                    <a href="#">
+                       <img src="#" alt="" />
                     </a>
                   </div>
 
@@ -224,7 +221,7 @@
                     <h3>Autre</h3>
                     <ul class="nav side-menu">
                       <li>
-                          <a href="http://montpellier-business-plan.mynelis.com" target="_blank"><i class="fa fa-bug"></i> Support </a>
+                          <a href="#" target="_blank"><i class="fa fa-bug"></i> Support </a>
                       </li>
                     </ul>
                   </div> -->
@@ -236,16 +233,16 @@
                 <!-- /menu footer buttons -->
 				{% block menufooter %}
                 <div class="sidebar-footer hidden-small">
-                  <a href="http://www.bic-montpellier.com/fr/notre-offre/montpellier-business-planne" data-toggle="tooltip" data-placement="top" title="Accueil">
+                  <a href="{{path('dashboard')}}" data-toggle="tooltip" data-placement="top" title="Accueil">
                       <i class="fa fa-home"></i>
                   </a>
-                  <a href="https://www.montpellier-business-plan.com/mon-compte" data-toggle="tooltip" data-placement="top" title="Paramètres">
+                  <a href="#" data-toggle="tooltip" data-placement="top" title="Paramètres">
                       <i class="fa fa-cog"></i>
                   </a>
-                  <a href="https://www.montpellier-business-plan.com/espace_client/espace_client/ajax_commentremplir/bp" class="open-modal" data-toggle="tooltip" data-placement="top" title="Aide">
+                  <a href="#" class="open-modal" data-toggle="tooltip" data-placement="top" title="Aide">
                       <i class="fa fa-question-circle"></i>
                   </a>
-                  <a href="https://www.montpellier-business-plan.com/frontoffice/deconnexion" data-toggle="tooltip" data-placement="top" title="Sign out">
+                  <a href="{{path('app_logout')}}" data-toggle="tooltip" data-placement="top" title="Sign out">
                       <i class="fa fa-power-off"></i>
                   </a>
                 </div>
@@ -263,9 +260,7 @@
                     <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                   </div>
 
-                <!--   <div class="logo-line">
-                    <img src="https://www.montpellier-business-plan.com/images/design/header/logo-mbp.jpg" alt="" />
-                  </div> -->
+               
 
                   <ul class="nav navbar-nav navbar-right">
                     <li class="">
@@ -301,13 +296,12 @@
         <div class="right_col" role="main">
                             <div class="entete">
 	<h1  class="dblock fleft">
-		{{ business.name }}		<!-- <a href="https://www.montpellier-business-plan.com/espace_client/bp/imprimer_bp" id="export-imprimer" class="tool-tip fright" title="Print"></a>
-		<a class="dblock clearer"></a> -->
+		{{ business.name }}		
 	</h1>
 
 	<div class="call-to-action fright">
 		<div class="fleft margeur-l20">
-			<a href="https://www.montpellier-business-plan.com/espace_client/compte/affiche_invite" title="Share" class="btn btn-lg btn-primary">
+			<a href="#" title="Share" class="btn btn-lg btn-primary">
 				<i class="fa fa-share-alt"></i> &nbsp;{{'Share'|trans}}			</a>
 		</div>	
 		
@@ -316,24 +310,21 @@
 				<i class="fa fa-sliders" aria-hidden="true"></i> &nbsp;{{'settings'|trans}}			</a>
 		</div>
 
-		<!-- <div class="fleft margeur-l20">
-			<a href="https://www.montpellier-business-plan.com/fichiers" title="Files" class="btn btn-lg btn-primary">
-				<i class="fa fa-file-text-o" aria-hidden="true"></i> &nbsp;Files			</a>
-		</div> -->
+		
 		<div class="clearer"></div>
 	</div>
 <!--
 	<div class="margeur-20 liste w-30pc fleft">
 		<div class="fright acenter margeur-l15 margeur-r30 fs-12">
-			<a href="https://www.montpellier-business-plan.com/fichiers" title="Files" class="acenter" style="color:#595959">
-				<img src="https://www.montpellier-business-plan.com/images/design/file.png" alt="" class="margeur-b5" />
+			<a href="#" title="Files" class="acenter" style="color:#595959">
+				<img src="#" alt="" class="margeur-b5" />
 				<br />
 				Files			</a>
 		</div>
 
 					<div class="fright acenter margeur-2 fs-12">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/parametres" title="Settings" class="acenter" style="color:#595959">
-					<img src="https://www.montpellier-business-plan.com/images/design/settings01.png" alt=""  class="margeur-b5" />
+				<a href="#" title="Settings" class="acenter" style="color:#595959">
+					<img src="#" alt=""  class="margeur-b5" />
 					<br />
 					Settings				</a>
 			</div>
@@ -368,7 +359,7 @@
 				{{'purchase'|trans}}			</a>
 		</div>
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/personnel" title="Staff" class="btn btn-second">
+			<a href="#" title="Staff" class="btn btn-second">
 				{{'STAFF'|trans}}			</a>
 		</div>
 		<div class="col-sm-3">
@@ -384,15 +375,15 @@
 				{{'deprication'|trans}}			</a>
 		</div>
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/emprunts" title="Loans" class="btn btn-second">
+			<a href="#" title="Loans" class="btn btn-second">
 				{{'Loans'|trans}}			</a>
 		</div>
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/compte-resultat" title="Compte de résultat" class="btn btn-second">
+			<a href="#" title="Compte de résultat" class="btn btn-second">
 				{{'compteresultat'|trans}}			</a>
 		</div>
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/income-statement" title="profit and loss" class="btn btn-second">
+			<a href="#" title="profit and loss" class="btn btn-second">
 				{{'profitandloss'|trans}}
 			</a>
 		</div>
@@ -403,32 +394,32 @@
 			</div>
 		
 					<div class="col-sm-3">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/tva-annee-0" title="VAT" class="btn btn-second">
+				<a href="#" title="VAT" class="btn btn-second">
 					{{'VAT'|trans}}				</a>
 			</div>
 
 			<div class="col-sm-3">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-0" title="Corporate tax" class="btn btn-second">
+				<a href="#" title="Corporate tax" class="btn btn-second">
 					{{'Corporatetax'|trans}}				</a>
 			</div>
 		
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/bfr" title="WCR" class="btn btn-second">
+			<a href="#" title="WCR" class="btn btn-second">
 				{{'WCR'|trans}}			</a>
 		</div>
 
 					<div class="col-sm-3">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/tresorerie-annee-0" title="Trésorerie" class="btn btn-second">
+				<a href="#" title="Trésorerie" class="btn btn-second">
 					Trésorerie				</a>
 			</div>
 		
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/plan-financement" title="Plan financement" class="btn btn-second">
+			<a href="#" title="Plan financement" class="btn btn-second">
 				{{'planfinancement'|trans}}			</a>
 		</div>
 
 		<div class="col-sm-3">
-			<a href="https://www.montpellier-business-plan.com/mon-business-plan/cash-flow" title="cash flow" class="btn btn-second">
+			<a href="#" title="cash flow" class="btn btn-second">
 				{{'cashflow'|trans}}
 			</a>
 		</div>

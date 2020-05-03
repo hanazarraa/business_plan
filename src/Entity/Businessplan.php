@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -95,10 +97,13 @@ class Businessplan
      */
     private $rangeofdetail;
 
+
+
    
 
-    function __construct() {
-   
+    function __construct()
+    {
+        $this->investments = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -295,5 +300,7 @@ public function setRangeofdetail(int $rangeofdetail): self
 
     return $this;
 }
+
+
 
 }
