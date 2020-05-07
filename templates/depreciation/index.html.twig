@@ -399,7 +399,7 @@
 								</td>
 								{% endfor %}
 								{% if business.rangeofdetail < business.numberofyears  %}
-								{% for s in business.rangeofdetail..business.numberofyears -1  %}
+								{% for x in business.rangeofdetail..business.numberofyears -1  %}
 								<td class="aright">
 								{{GlobalListRec[s][x - business.rangeofdetail] +  totalperNameRec[s][x]}}
 								</td>

@@ -1,0 +1,98 @@
+<h1>Modifier un investissement</h1>
+ {{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('investmentsedit',{'name':name}) }}) }}
+
+		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
+		<div class="fleft">
+			<a href="{{path('investmentsdelete',{'name':name})}}" class="btn btn-md btn-danger demande-confirmation">
+			<i class="fa fa-trash-o"></i> &nbsp;Supprimer		</a>
+	</div>
+
+<div class="fright">
+	{{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'Valider'}}) }}
+</div>
+
+<div class="clearer"></div>
+
+<div class="form-element ">
+	<label for="nom_fr">
+		Nom <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+	{{ form_widget (form.Name, {'attr': {'type':'text','class':'type-text','value':name }}) }}</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element  dnone">
+	<label for="nom_en">
+		Nom (Anglais)
+	</label>
+
+	<div class="champ">
+		<input type="text" class="type-text" id="nom_en" name="nom_en" value="">	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="id_departement">
+		Département <span class="rouge">*</span>
+	</label>
+
+
+	<div class="champ margeur-5">
+				{{ form_widget (form.Department, {'attr': {'type':'text','class':'type-text ' }}) }}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="duree">
+		Catégorie comptable <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.categorie, {'attr': {'type':'text','class':'type-text ' }}) }}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="duree">
+		Durée en années <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.Duration, {'attr': {'type':'text','class':'type-text ','value':duration[0] }}) }}
+</div>
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="tva">
+		TVA <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.VAT, {'attr': {'type':'text','class':'type-text','value':tva[0] }}) }}	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element fright aright">
+	<input type="hidden" name="type" value="">
+	<input type="hidden" name="post-produit" value="true">
+	<input type="hidden" name="action" id="action" value="">
+	<input type="hidden" name="sqda45bz" value="162756">
+</div>
+<div class="clearer"></div>
+{{form_end(form)}}

@@ -265,6 +265,7 @@ else{
       $Production = [];
       $Commercial = [];
       $Recherche = [];
+      $TVAList=[];
       if($investments==null && $investmentsdetail == null){
         $empty= true ;
       $investments = new Investments();
@@ -297,7 +298,7 @@ else{
       $form->handleRequest($request);
       if($form->isSubmitted() && $form->isValid()){
        // $investments = $form->getData();
-        
+       if($form->getData()['Name'] != '' && array_key_exists($form->getData()['Name'],$TVAList) == false){
         //------------------------global saisie-----------------//
            if($form->getData()['Department']==0 ){
             $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
@@ -474,15 +475,10 @@ else{
             //$investments[0]->setBusinessplan($businessSession);
             }
           }
+        }
         //------------------------fin global--------------------//
-        //------------------------Detailled saisie--------------//
-    
-        
-        //------------------------fin detailled-----------------//
-        if($empty ==true){
-        
-       
-      }
+  
+   
         $entityManager->flush();
         return $this->redirectToRoute('investments');  
       }
@@ -492,4 +488,337 @@ else{
 
     }
 
+     /**
+     * @Route("/edit/{name}", name="investmentsedit")
+     */
+    public function edit(Request $request,$name){
+      $entityManager = $this->getDoctrine()->getManager();
+      $businessSession =$this->container->get('session')->get('business');
+      $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
+      $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
+      $rangeofdetail = $businessSession->getRangeofdetail();
+      $years = $businessSession->getNumberofyears();
+      $rangeofglobal = $years - $rangeofdetail;
+      $tvalist = $investments[0]->getTvalist();
+      $durationlist = $investments[0]->getDuration();
+      $categorielist = $investments[0]->getCategorie();
+      // verifier le status actuel de l'investissement avant l'editer
+      for($i = 0 ; $i<$years;$i++){
+      $Adminlist[$i] =  $investmentsdetail[$i]->getAdministration();
+      $Productionlist[$i] = $investmentsdetail[$i]->getProduction();
+      $CommercialList[$i] =  $investmentsdetail[$i]->getSales();
+      $RechercheList[$i] =  $investmentsdetail[$i]->getRecherche();}
+      $Allkeys = array_keys($tvalist);
+      $status = '';
+      if(array_key_exists($name, $Adminlist[0]) == true){
+        $status = 'Administration';
+        $AdminGlobalList = $investments[0]->getAdministration() ;
+       }
+       if(array_key_exists($name, $Productionlist[0]) == true){
+        $status = 'Production';
+        $ProductionGlobalList = $investments[0]->getProduction() ;
+       }
+       if(array_key_exists($name, $CommercialList[0]) == true){
+        $status = 'Commercial';
+        $CommercialGlobalList =  $investments[0]->getSales() ;
+       }
+       if(array_key_exists($name, $RechercheList[0]) == true){
+        $status = 'Recherche';
+        $RechercheGlobalList =  $investments[0]->getRecherche() ;
+       }
+       $form = $this->createForm(InvestmentsFormType::class);
+       $form->handleRequest($request);
+       if($form->isSubmitted() && $form->isValid()){
+         //dump($form->getData()['Name']);die();
+         //delete element from lists 
+         unset($tvalist[$name]);
+         unset($durationlist[$name]);
+         unset($categorielist[$name]);
+         ${"admin" . $name}= [];
+         if($status == 'Administration' && $AdminGlobalList != []){
+          ${"admin" . $name}=$AdminGlobalList[$name]; // conserver les valeurs  avant de supprimer
+           unset($AdminGlobalList[$name]);
+           $investments[0]->setAdministration($AdminGlobalList);
+         }
+         
+         if($status == 'Production'  && $ProductionGlobalList != []){
+          ${"admin" . $name}=$ProductionGlobalList[$name];
+          unset($ProductionGlobalList[$name]);
+          $investments[0]->setProduction($ProductionGlobalList);
+          
+         }
+         if ($status == 'Commercial'  && $CommercialGlobalList != []){
+          ${"admin" . $name}=$CommercialGlobalList[$name];
+          unset($CommercialGlobalList[$name]);
+          $investments[0]->setSales($CommercialGlobalList);
+         }
+         if ($status == 'Recherche'  && $RechercheGlobalList != []){
+          ${"admin" . $name}=$RechercheGlobalList[$name];
+          unset($RechercheGlobalList[$name]);
+          $investments[0]->setRecherche($RechercheGlobalList);
+         }
+         //ajouter le nouveau element
+         if($form->getData()['Name'] != '' && array_key_exists($form->getData()['Name'],$tvalist) == false){
+          if($form->getData()['Department']==0 ){
+           
+            $tvalist[$form->getData()['Name']] = [''.$form->getData()['VAT']];
+            $durationlist[$form->getData()['Name']]=   [''.$form->getData()['Duration']];
+            $categorielist[$form->getData()['Name']] = [''.$form->getData()['categorie']];
+            if($status == 'Administration'){
+            for($i = 0 ; $i<$years;$i++){    
+              ${"d" . $i} = $Adminlist[$i][$name];
+              unset($Adminlist[$i][$name]);
+              $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+            }}
+            if($status == 'Production'){
+              for($i = 0 ; $i<$years;$i++){    
+                ${"d" . $i} = $Productionlist[$i][$name];
+                unset($Productionlist[$i][$name]);
+                $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+              }}
+            if($status == 'Commercial'){
+                for($i = 0 ; $i<$years;$i++){    
+                  ${"d" . $i} = $CommercialList[$i][$name];
+                  unset($CommercialList[$i][$name]);
+                  $investmentsdetail[$i]->setSales($CommercialList[$i]);
+                }}
+            if($status == 'Recherche'){
+                  for($i = 0 ; $i<$years;$i++){    
+                    ${"d" . $i} = $RechercheList[$i][$name];
+                    unset($RechercheList[$i][$name]);
+                    $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+                  }}
+            for($i = 0 ; $i<$years;$i++){
+              $Adminlist[$i][$form->getData()['Name']] = ${"d" . $i};
+              $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+             }    
+            $investments[0]->setTvalist($tvalist);
+            $investments[0]->setDuration($durationlist);
+            $investments[0]->setCategorie($categorielist);
+            if($rangeofdetail < $rangeofglobal){ 
+              if($investments[0]->getAdministration()!=[]){
+                $AdminGlobalList = $investments[0]->getProduction() ;
+              }
+              $AdminGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+             
+              $investments[0]->setAdministration($AdminGlobalList);
+            }
+
+          }
+          if($form->getData()['Department']==1 ){
+           
+            $tvalist[$form->getData()['Name']] = [''.$form->getData()['VAT']];
+            $durationlist[$form->getData()['Name']]=   [''.$form->getData()['Duration']];
+            $categorielist[$form->getData()['Name']] = [''.$form->getData()['categorie']];
+            if($status == 'Administration'){
+            for($i = 0 ; $i<$years;$i++){    
+              ${"d" . $i} = $Adminlist[$i][$name];
+              unset($Adminlist[$i][$name]);
+              $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+            }}
+            if($status == 'Production'){
+              for($i = 0 ; $i<$years;$i++){    
+                ${"d" . $i} = $Productionlist[$i][$name];
+                unset($Productionlist[$i][$name]);
+                $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+            }}
+            if($status == 'Commercial'){
+                for($i = 0 ; $i<$years;$i++){    
+                  ${"d" . $i} = $CommercialList[$i][$name];
+                  unset($CommercialList[$i][$name]);
+                  $investmentsdetail[$i]->setSales($CommercialList[$i]);
+            }}
+            if($status == 'Recherche'){
+              for($i = 0 ; $i<$years;$i++){    
+                ${"d" . $i} = $RechercheList[$i][$name];
+                unset($RechercheList[$i][$name]);
+                $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+            }}
+            for($i = 0 ; $i<$years;$i++){
+              $Productionlist[$i][$form->getData()['Name']] = ${"d" . $i};
+              $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+             }    
+            $investments[0]->setTvalist($tvalist);
+            $investments[0]->setDuration($durationlist);
+            $investments[0]->setCategorie($categorielist);
+            //deplacer la liste globale
+            if($rangeofdetail < $rangeofglobal){ 
+              if($investments[0]->getProduction()!=[]){
+                $ProductionGlobalList = $investments[0]->getProduction() ;
+              }
+              $ProductionGlobalList[$form->getData()['Name']] =  ${"admin" . $name};
+              $investments[0]->setProduction($ProductionGlobalList);
+            }
+
+          }
+          if($form->getData()['Department']==2 ){
+           
+            $tvalist[$form->getData()['Name']] = [''.$form->getData()['VAT']];
+            $durationlist[$form->getData()['Name']]=   [''.$form->getData()['Duration']];
+            $categorielist[$form->getData()['Name']] = [''.$form->getData()['categorie']];
+            if($status == 'Administration'){
+            for($i = 0 ; $i<$years;$i++){    
+              ${"d" . $i} = $Adminlist[$i][$name];
+              unset($Adminlist[$i][$name]);
+              $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+            }}
+            if($status == 'Production'){
+              for($i = 0 ; $i<$years;$i++){    
+                ${"d" . $i} = $Productionlist[$i][$name];
+                unset($Productionlist[$i][$name]);
+                $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+              }}
+            if($status == 'Commercial'){
+                for($i = 0 ; $i<$years;$i++){    
+                  ${"d" . $i} = $CommercialList[$i][$name];
+                  unset($CommercialList[$i][$name]);
+                  $investmentsdetail[$i]->setSales($CommercialList[$i]);
+                }}
+            if($status == 'Recherche'){
+                  for($i = 0 ; $i<$years;$i++){    
+                    ${"d" . $i} = $RechercheList[$i][$name];
+                    unset($RechercheList[$i][$name]);
+                    $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+                  }}
+            for($i = 0 ; $i<$years;$i++){
+              $CommercialList[$i][$form->getData()['Name']] = ${"d" . $i};
+              $investmentsdetail[$i]->setSales($CommercialList[$i]);
+             }    
+            $investments[0]->setTvalist($tvalist);
+            $investments[0]->setDuration($durationlist);
+            $investments[0]->setCategorie($categorielist);
+            if( $rangeofdetail < $rangeofglobal){ 
+              if($investments[0]->getSales()!=[]){
+                $CommercialGlobalList = $investments[0]->getSales() ;
+              }
+              $CommercialGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+              $investments[0]->setSales($CommercialGlobalList);
+            }
+         }
+         if($form->getData()['Department']==3 ){
+           
+          $tvalist[$form->getData()['Name']] = [''.$form->getData()['VAT']];
+          $durationlist[$form->getData()['Name']]=   [''.$form->getData()['Duration']];
+          $categorielist[$form->getData()['Name']] = [''.$form->getData()['categorie']];
+          if($status == 'Administration'){
+          for($i = 0 ; $i<$years;$i++){    
+            ${"d" . $i} = $Adminlist[$i][$name];
+            unset($Adminlist[$i][$name]);
+            $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+          }}
+          if($status == 'Production'){
+            for($i = 0 ; $i<$years;$i++){    
+              ${"d" . $i} = $Productionlist[$i][$name];
+              unset($Productionlist[$i][$name]);
+              $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+            }}
+          if($status == 'Commercial'){
+              for($i = 0 ; $i<$years;$i++){    
+                ${"d" . $i} = $CommercialList[$i][$name];
+                unset($CommercialList[$i][$name]);
+                $investmentsdetail[$i]->setSales($CommercialList[$i]);
+              }}
+          if($status == 'Recherche'){
+                for($i = 0 ; $i<$years;$i++){    
+                  ${"d" . $i} = $RechercheList[$i][$name];
+                  unset($RechercheList[$i][$name]);
+                  $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+                }}
+          for($i = 0 ; $i<$years;$i++){
+            $RechercheList[$i][$form->getData()['Name']] = ${"d" . $i};
+            $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+           }    
+          $investments[0]->setTvalist($tvalist);
+          $investments[0]->setDuration($durationlist);
+          $investments[0]->setCategorie($categorielist);
+          if($rangeofdetail < $rangeofglobal){ 
+            if($investments[0]->getRecherche()!=[]){
+              $RechercheGlobalList = $investments[0]->getRecherche() ;
+            }
+            $RechercheGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+            $investments[0]->setRecherche($RechercheGlobalList);
+          }
+       }
+         }
+
+         $entityManager->flush();
+         return $this->redirectToRoute('investments');  
+       }
+
+        return $this->render('Investments/edit.html.twig',[
+        'name'=> $name , 'form' => $form->createView()  ,'tva'=> $tvalist[$name] , 'duration'=>$durationlist[$name]
+
+        ]);
+    }
+    /**
+     * @Route("/delete/{name}", name="investmentsdelete")
+     */
+    public function delete(Request $request,$name){
+      $entityManager = $this->getDoctrine()->getManager();
+      $businessSession =$this->container->get('session')->get('business');
+      $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
+      $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
+      $rangeofdetail = $businessSession->getRangeofdetail();
+      $years = $businessSession->getNumberofyears();
+      $rangeofglobal = $years - $rangeofdetail;
+      $tvalist = $investments[0]->getTvalist();
+      $durationlist = $investments[0]->getDuration();
+      $categorielist = $investments[0]->getCategorie();
+      // verifier le status actuel de l'investissement avant l'editer
+      for($i = 0 ; $i<$years;$i++){
+      $Adminlist[$i] =  $investmentsdetail[$i]->getAdministration();
+      $Productionlist[$i] = $investmentsdetail[$i]->getProduction();
+      $CommercialList[$i] =  $investmentsdetail[$i]->getSales();
+      $RechercheList[$i] =  $investmentsdetail[$i]->getRecherche();}
+      $Allkeys = array_keys($tvalist);
+      $status = '';
+      if(array_key_exists($name, $Adminlist[0]) == true){
+        $status = 'Administration';
+        $AdminGlobalList = $investments[0]->getAdministration() ;
+        unset($AdminGlobalList[$name]);
+        $investments[0]->setAdministration($AdminGlobalList);
+        for($i = 0 ; $i<$years;$i++){        
+          unset($Adminlist[$i][$name]);
+          $investmentsdetail[$i]->setAdministration($Adminlist[$i]);
+        }
+       }
+       if(array_key_exists($name, $Productionlist[0]) == true){
+        $status = 'Production';
+        $ProductionGlobalList = $investments[0]->getProduction() ;
+        unset($ProductionGlobalList[$name]);
+        $investments[0]->setProduction($ProductionGlobalList);
+        for($i = 0 ; $i<$years;$i++){        
+          unset($Productionlist[$i][$name]);
+          $investmentsdetail[$i]->setProduction($Productionlist[$i]);
+        }
+       }
+       if(array_key_exists($name, $CommercialList[0]) == true){
+        $status = 'Commercial';
+        $CommercialGlobalList =  $investments[0]->getSales() ;
+        unset($CommercialGlobalList[$name]);
+        $investments[0]->setSales($CommercialGlobalList);
+        for($i = 0 ; $i<$years;$i++){        
+          unset($CommercialList[$i][$name]);
+          $investmentsdetail[$i]->setSales($CommercialList[$i]);
+        }
+       }
+       if(array_key_exists($name, $RechercheList[0]) == true){
+        $status = 'Recherche';
+        $RechercheGlobalList =  $investments[0]->getRecherche() ;
+        unset($RechercheGlobalList[$name]);
+        $investments[0]->setRecherche($RechercheGlobalList);
+        for($i = 0 ; $i<$years;$i++){        
+          unset($RechercheList[$i][$name]);
+          $investmentsdetail[$i]->setRecherche($RechercheList[$i]);
+        }
+       }
+      unset($tvalist[$name]);
+      unset($durationlist[$name]);
+      unset($categorielist[$name]);
+      $investments[0]->setTvalist($tvalist);
+      $investments[0]->setDuration($durationlist);
+      $investments[0]->setCategorie($categorielist);
+      $entityManager->flush();
+      return $this->redirectToRoute('investments'); 
+    }
 }

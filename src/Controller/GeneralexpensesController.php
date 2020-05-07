@@ -570,20 +570,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
 
         ]);
     }
-     /**
-     * @Route("/edit/rename", name="rename")
-     */
-    public function rename(Request $request){
-        $entityManager = $this->getDoctrine()->getManager();
-        $businessSession =$this->container->get('session')->get('business');
-        $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
-        $generalexpenssesdetail = $entityManager->getRepository(Generalexpensesdetail::class)->findBy(['generalexpenses' =>$generalexpensses] );
-        $list = $generalexpensses[0]->getAdministration() ;
-        $list[$newkey] = $list[$oldkey];
-        unset($list[$oldkey]);
-        //$entityManager->flush();
-        return $this->render('generalexpenses');
-    }
+  
     /**
      * @Route("/delete/{name}", name="delete")
      */

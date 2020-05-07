@@ -91,7 +91,7 @@ class DepreciationController extends AbstractController
     foreach($keyRecherche as $key=>$value){
       $type[$value] = 'Recherche';
     }
-    
+    //dump($this->totalFinalSumListperNameRec);die();
     return $this->render('depreciation/index.html.twig',['business'=> $businessSession, 'rangeofglobal'=>$rangeofglobal,
     'totalperName' => $this->totalFinalSumListperName,'totalperNamePro' => $this->totalFinalSumListperNamePro ,'totalperNameCom' => $this->totalFinalSumListperNameCom ,'totalperNameRec' => $this->totalFinalSumListperNameRec , 
      'categorie' => $this->categorie,'nature'=>$L,'type' => $type,
@@ -134,22 +134,23 @@ class DepreciationController extends AbstractController
       $var = 0 ; 
       //----------------------------------Initialiser les listes globale-----------------//
       foreach($keysAdministration as $value){
-        for($x = 0 ; $x<$rangeofglobal+10;$x++){
+        ${'Globalelement'.$value}  =0;
+        for($x = 0 ; $x<$rangeofglobal+30;$x++){
           $this->listGlobalAdm[$value][$x]= 0;
         }
       } 
       foreach($keysProduction as $value){
-        for($x = 0 ; $x<$rangeofglobal+10;$x++){
+        for($x = 0 ; $x<$rangeofglobal+30;$x++){
           $this->listGlobalPro[$value][$x]= 0;
         }
       } 
       foreach($KeyCommercial as $value){
-        for($x = 0 ; $x<$rangeofglobal+10;$x++){
+        for($x = 0 ; $x<$rangeofglobal+30;$x++){
           $this->listGlobalCom[$value][$x]= 0;
         }
       } 
       foreach($keyRecherche as $value){
-        for($x = 0 ; $x<$rangeofglobal+10;$x++){
+        for($x = 0 ; $x<$rangeofglobal+30;$x++){
           $this->listGlobalRec[$value][$x]= 0;
         }
       } 
