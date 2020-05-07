@@ -31,6 +31,10 @@ class InvestmentsController extends AbstractController
     $tvalist =[];
     $duration =[]; 
     $categorie =[];
+    $KeyAdmin = [];
+    $KeyPro = [];
+    $KeyCom  = [];
+    $KeyRec  = [];
     $globalTotalpro =  [] ;
     $globalTotalcom =[];
     $globalTotalrec = [];
@@ -38,7 +42,12 @@ class InvestmentsController extends AbstractController
     if($investments!=[]){
     $tvalist = $investments[0]->getTvalist();
     $duration = $investments[0]->getDuration();
-    $categorie = $investments[0]->getCategorie();}
+    $categorie = $investments[0]->getCategorie();
+    $KeyAdmin = array_intersect_key($investments[0]->getTvalist(),$investmentsdetail[0]->getAdministration());
+    $KeyPro   = array_intersect_key($investments[0]->getTvalist(),$investmentsdetail[0]->getProduction());
+    $KeyCom   = array_intersect_key($investments[0]->getTvalist(),$investmentsdetail[0]->getSales());
+    $KeyRec   = array_intersect_key($investments[0]->getTvalist(),$investmentsdetail[0]->getRecherche());
+  }
     $years = $businessSession->getNumberofyears();
     //-----------------------------Calcul de somme-----------------------//
     $rangeofglobal = $years - $rangeofdetail;
@@ -95,10 +104,13 @@ class InvestmentsController extends AbstractController
       foreach($investments[0]->getRecherche() as $value){
        $globalTotalrec[$i] += $value[$i];}}
   //--------------------------------Fin Recherche-----------------//
+ 
   $form = $this->createForm(CollectionFormType::class,$investments[0]);
+ 
 }
 else{
   $form = $this->createForm(CollectionFormType::class);
+ 
 }
   //-----------------------------Fin-----------------------------------//
     //dump($globalTotal);die();
@@ -109,12 +121,13 @@ else{
       $entityManager->flush();
       return $this->redirectToRoute('investments');
     }
-    //dump($form);die();
+   
     return $this->render('Investments/index.html.twig',['business'=> $businessSession,'rangeofdetail'=>$rangeofdetail
     ,'form' => $form->createView() ,'tvalist'=> $tvalist,'duration' => $duration, 'categorie'=>$categorie,
     'Sum' => $Sum,'sumproduction'=>$Sumproduction,'sumrecherche'=>$Sumrecherche,'sumcommercial'=>$Sumcommercial,
     'total' => $total,'totalpro'=>$totalpro,'totalcom'=>$totalcom,'totalrec'=>$totalrech,
     'globalTotal'=> $globalTotal,'globalTotalpro'=>$globalTotalpro,'globalTotalcom'=>$globalTotalcom,'globalTotalrec'=>$globalTotalrec,
+    'keyadmin'=>$KeyAdmin,'keypro' => $KeyPro , 'keycom' => $KeyCom , 'keyrec'=>$KeyRec,
     ]);
    }
     /**
@@ -125,9 +138,15 @@ else{
       $entityManager = $this->getDoctrine()->getManager();
       $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
       $rangeofdetail = $businessSession->getRangeofdetail();
+      $tvalist =[];
+      $duration =[]; 
+      $categorie =[];
+      $totalsomme = 0;
+      
+      if($investments!=[]){
       $tvalist = $investments[0]->getTvalist();
       $duration = $investments[0]->getDuration();
-      $categorie = $investments[0]->getCategorie();
+      $categorie = $investments[0]->getCategorie();}
       $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['year' => $id ,'Investment' =>$investments] );
       //----------------------------Calcul de somme --------------------------//
       $total=0;
@@ -139,11 +158,13 @@ else{
       $Sumcommercial=[];
       $Sumrecherche=[];
       for($x=0;$x<12;$x++){
+        $totalpermonth[$x]= 0.00;
           $Sumpermonth [$x] = 0.00 ;
           $SumpermonthProduction[$x]=0.00 ;
           $SumpermonthCommercial[$x] = 0.00 ;
           $SumpermonthRecherche[$x] = 0.00;
       }
+      if($investments!=[]){
           foreach($investmentsdetail[0]->getAdministration() as $key=>$list){//Somme par cle
            
       
@@ -198,6 +219,7 @@ else{
                       $SumpermonthRecherche[$x] += $list[$x];
                       
              }}
+            
               //--------------------------------Somme total-------------------//
              $totalsomme = $total + $totalProduction +  $totalCommercial + $totalRecherche;
              for($i=0 ; $i<12;$i++){
@@ -207,6 +229,10 @@ else{
       //----------------------------Fin de Calcul ----------------------------//
 
       $form = $this->createForm(CollectionFormType::class,$investmentsdetail[0]);
+    }
+    else{
+      $form = $this->createForm(CollectionFormType::class);
+    }
       $form->handleRequest($request);
       if($form->isSubmitted() && $form->isValid()){
      
@@ -274,11 +300,11 @@ else{
         
         //------------------------global saisie-----------------//
            if($form->getData()['Department']==0 ){
+            $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
+            $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
+            $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
            for($i =0 ;$i<$rangeofglobal;$i++){
              $Administration[$form->getData()['Name']][$i] = "0.00";
-             $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
-             $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
-             $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
            }
            for($i=0; $i<$years;$i++){
            for($x=0 ; $x<12;$x++){
@@ -320,11 +346,12 @@ else{
 
           }
           else if($form->getData()['Department']==1 ){
-            for($i =0 ;$i<$rangeofglobal;$i++){
-              $Production[$form->getData()['Name']][$i] = "0.00";
-              $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
+            $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
               $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
               $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
+            for($i =0 ;$i<$rangeofglobal;$i++){
+              $Production[$form->getData()['Name']][$i] = "0.00";
+              
             }
             for($i=0; $i<$years;$i++){
             for($x=0 ; $x<12;$x++){
@@ -362,11 +389,12 @@ else{
             }
           }
           else if($form->getData()['Department']==2 ){
+            $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
+            $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
+            $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
             for($i =0 ;$i<$rangeofglobal;$i++){
               $Commercial[$form->getData()['Name']][$i] = "0.00";
-              $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
-              $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
-              $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
+            
             }
             for($i=0; $i<$years;$i++){
             for($x=0 ; $x<12;$x++){
@@ -404,11 +432,12 @@ else{
             }
           }
           else if($form->getData()['Department']==3 ){
+            $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
+            $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
+            $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
             for($i =0 ;$i<$rangeofglobal;$i++){
               $Recherche[$form->getData()['Name']][$i] = "0.00";
-              $TVAList[$form->getData()['Name']][0] = $form->getData()['VAT'];
-              $DurationList[$form->getData()['Name']][0] = $form->getData()['Duration'];
-              $CategorieList[$form->getData()['Name']][0] = $form->getData()['categorie'];
+            
             }
             for($i=0; $i<$years;$i++){
             for($x=0 ; $x<12;$x++){

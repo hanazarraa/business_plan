@@ -63,6 +63,9 @@ class GeneralexpensesController extends AbstractController
         //------------Fin de partie-----------------//
         $rangeofglobal = count($generalexpensses[0]->getAdministration()['eau']);
         $globalTotal =[];
+        $globalTotalpro=[];
+        $globalTotalcom = [];
+        $globalTotalrec = [];
         for ($i=0 ; $i<$rangeofglobal ; $i++){
             $globalTotal[$i] =  0.00 ;
             $globalTotalpro[$i] =  0.00 ;
@@ -73,6 +76,7 @@ class GeneralexpensesController extends AbstractController
         $totalpro[$i] = 0.00;
         $totalcom[$i] = 0.00;
         $totalrech[$i] = 0.00;}
+       
        // $etat =$generalexpenssesde[0]->getStatus(); 
        //-------------------------------------Adimnistration---------------- 
         for ($i=0 ; $i<$years ; $i++){
@@ -134,6 +138,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
      $globalTotalrec[$i] += $value[$i];
 }
 }
+
    //dump($globalTotal);die();
     //-------Partie pour generer un tableau pour les frais generaux si n'existe pas ----------//
    /* if($generalexpensses==null){
@@ -169,6 +174,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
               $entityManager->flush();
       
               return $this->redirectToRoute('generalexpenses');}
+             
         return $this->render('generalexpenses/index.html.twig' ,['business'=>$businessSession, 'tvacom'=> $tvalistcom ,'tvarec' =>$tvalistrec,
         'form' => $form->createView(),'somme'=> $Sum,'total'=>$total, 'sumproduction'=>$Sumproduction,'tvapro'=>$tvalistpro,
         'globalTotal' => $globalTotal , 'diff' => $diff ,'diffpro'=> $diffpro,'diffcom'=>$diffcom,'diffrec'=> $diffrec,'tva' => $tvalist , 'totalproduction'=>$totalpro, 
@@ -394,11 +400,12 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
             $entityManager->flush();
             return $this->redirectToRoute('generalexpenses');  
         }
-        return $this->render('generalexpenses/topic.html.twig',[
+        return $this->render('generalexpenses/topic.html.twig',['business'=>$businessSession,
             'form' => $form->createView() 
         ]);
     }
-    private $topicname ;
+    public $topicname ;
+    
      /**
      * @Route("/edit/{name}", name="edit")
      */
@@ -409,26 +416,157 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
         $generalexpenssesdetail = $entityManager->getRepository(Generalexpensesdetail::class)->findBy(['generalexpenses' =>$generalexpensses] );
         $list = $generalexpensses[0]->getAdministration() ;
+        $listpro =  $generalexpensses[0]->getProduction();
+        $listcom = $generalexpensses[0]->getSales() ;
+        $listrec =  $generalexpensses[0]->getResearch();
+        $years = $businessSession->getNumberofyears();
+         for($i = 0 ; $i<$years;$i++){
+            $listdetail[$i]= $generalexpenssesdetail[$i]->getDetail();
+            $listdetailPro[$i]= $generalexpenssesdetail[$i]->getDetailProduction();
+            $listdetailCom[$i]= $generalexpenssesdetail[$i]->getDetailCommercial();
+            $listdetailRec[$i]= $generalexpenssesdetail[$i]->getDetailRecherche();
+         }
         $tvalist = $generalexpensses[0]->getTVAlist() ; 
-       // unset($list[$name]); delete key from list
-        //dump($list);die();
-        $tva = $generalexpensses[0]->getTVAlist()[$name];
+        $tvalistpro = $generalexpensses[0]->getTvalistproduction();
+        $tvalistcom = $generalexpensses[0]->getTvalistcommercial();
+        $tvalistrec = $generalexpensses[0]->getTvalistrecherche();
+        // unset($list[$name]); delete key from list
+        //
+        $status = '';
+        $finaltva = [];
+        /*$tva = $generalexpensses[0]->getTVAlist()[$name];
+        $tvapro = $generalexpensses[0]->getTvalistproduction()[$name];
+        $tvacom = $generalexpensses[0]->getTvalistcommercial()[$name];
+        $tvarec = $generalexpensses[0]->getTvalistrecherche()[$name];*/
+        
+        if(array_key_exists($name, $tvalist) == true){
+            $status = 'Administration';
+            $finaltva = $generalexpensses[0]->getTVAlist()[$name];
+        }
+        
+        if(array_key_exists($name, $tvalistpro) == true ){
+            $status = 'Production';
+            $finaltva = $generalexpensses[0]->getTvalistproduction()[$name];
+        }
+       
+        if(array_key_exists($name, $tvalistcom) == true){
+            $status = 'Commercial';
+            $finaltva = $generalexpensses[0]->getTvalistcommercial()[$name]; 
+        }
+        if(array_key_exists($name, $tvalistrec) == true){
+            $status = 'Recherche';
+            $finaltva = $generalexpensses[0]->getTvalistrecherche()[$name];
+            
+        }
+       
+        
+        //$finaltva = array_merge($tva,$tvapro,$tvacom,$tvarec) ;
+        //dump($finaltva);die();
         $this->topicname = $name;
+       
+   // dump($this->topicname);die();
         $form = $this->createForm(TopicFormType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             if($form->getData()['Name']!= $name){
-            $list[$form->getData()['Name']] = $list[$name];
-            unset($list[$name]);
-            unset($tvalist[$name]);
-            $tvalist[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
-            //$generalexpensses[0]->getTVAlist()[$name] = 
-            //dump($list,$tvalist,$generalexpenssesdetail);die();
+                if($status == 'Administration'){
+                 $a = $list[$name];
+                 unset($list[$name]);
+                 unset($tvalist[$name]);
+                 $generalexpensses[0]->setAdministration($list); 
+                 $generalexpensses[0]->setTVAlist($tvalist) ; 
+                 for($i = 0 ; $i<$years;$i++){
+                    ${"d" . $i} = $listdetail[$i][$name];
+                    unset($listdetail[$i][$name]);
+                    $generalexpenssesdetail[$i]->setDetail($listdetail[$i]);
+                 }
+                }
+                if($status == 'Production'){
+                $a = $listpro[$name];
+                unset($listpro[$name]);
+                unset($tvalistpro[$name]); 
+                $generalexpensses[0]->setProduction($listpro); 
+                $generalexpensses[0]->setTvalistproduction($tvalistpro) ; 
+                for($i = 0 ; $i<$years;$i++){
+                    ${"d" . $i} = $listdetailPro[$i][$name];
+                    unset($listdetailPro[$i][$name]);
+                    $generalexpenssesdetail[$i]->setDetailProduction($listdetailPro[$i]);
+                 }
             }
+                if($status == 'Commercial'){
+                $a = $listcom[$name];
+                unset($listcom[$name]);
+                unset($tvalistcom[$name]);
+                $generalexpensses[0]->setSales($listcom); 
+                $generalexpensses[0]->setTvalistcommercial($tvalistcom) ; 
+
+                for($i = 0 ; $i<$years;$i++){
+                    ${"d" . $i} = $listdetailCom[$i][$name];
+                    unset($listdetailCom[$i][$name]);
+                    $generalexpenssesdetail[$i]->setDetailCommercial($listdetailCom[$i]);
+                 }
+            }
+                if($status == 'Recherche'){
+                $a = $listrec[$name];
+                unset($listrec[$name]);
+                unset($tvalistrec[$name]); 
+                $generalexpensses[0]->setRecherche($listrec); 
+                $generalexpensses[0]->setTvalistrecherche($tvalistrec) ; 
+
+                for($i = 0 ; $i<$years;$i++){
+                    ${"d" . $i} = $listdetailRec[$i][$name];
+                    unset($listdetailRec[$i][$name]);
+                    $generalexpenssesdetail[$i]->setDetailRecherche($listdetailRec[$i]);
+                 }
+            }
+   
+            if($form->getData()['Departement']==0 ){
+            $list[$form->getData()['Name']] = $a;
+            $tvalist[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
+            for($i = 0 ; $i<$years;$i++){
+                $listdetail[$i][$form->getData()['Name']] = ${"d" . $i};
+                $generalexpenssesdetail[$i]->setDetail($listdetail[$i]);
+            }     
+            $generalexpensses[0]->setAdministration($list); 
+            $generalexpensses[0]->setTVAlist($tvalist) ; }
+            
+
+            if($form->getData()['Departement']==1 ){
+            $listpro[$form->getData()['Name']] = $a;
+            $tvalistpro[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
+            for($i = 0 ; $i<$years;$i++){
+                $listdetailPro[$i][$form->getData()['Name']] = ${"d" . $i};
+                $generalexpenssesdetail[$i]->setDetailProduction($listdetailPro[$i]);
+            }  
+            $generalexpensses[0]->setProduction($listpro); 
+            $generalexpensses[0]->setTvalistproduction($tvalistpro) ; }
+            
+            if($form->getData()['Departement']==2 ){
+            $listcom[$form->getData()['Name']] = $a;
+            $tvalistcom[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
+            for($i = 0 ; $i<$years;$i++){
+                $listdetailCom[$i][$form->getData()['Name']] = ${"d" . $i};
+                $generalexpenssesdetail[$i]->setDetailCommercial($listdetailCom[$i]);
+            } 
+            $generalexpensses[0]->setSales($listcom); 
+            $generalexpensses[0]->setTvalistcommercial($tvalistcom) ; }
+          
+            if($form->getData()['Departement']==3 ){
+            $listrec[$form->getData()['Name']] = $a;
+            $tvalistrec[$form->getData()['Name']] = ["".$form->getData()['VAT']] ;
+            for($i = 0 ; $i<$years;$i++){
+                $listdetailRec[$i][$form->getData()['Name']] = ${"d" . $i};
+                $generalexpenssesdetail[$i]->setDetailRecherche($listdetailRec[$i]);
+            } 
+            $generalexpensses[0]->setRecherche($listrec); 
+            $generalexpensses[0]->setTvalistrecherche($tvalistrec) ; }
+
+            }
+            $entityManager->flush();
             return $this->redirectToRoute('generalexpenses');
         }
-        return $this->render('generalexpenses/edit.html.twig',[
-        'name'=> $name, 'tva' => $tva , 'form' => $form->createView()
+        return $this->render('generalexpenses/edit.html.twig',['finaltva'=> $finaltva,
+        'name'=> $name , 'form' => $form->createView()
 
         ]);
     }
@@ -447,11 +585,113 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         return $this->render('generalexpenses');
     }
     /**
-     * @Route("/edit/delete", name="delete")
+     * @Route("/delete/{name}", name="delete")
      */
-    public function delete(Request $request){
+    public function delete(Request $request,$name){
+        $entityManager = $this->getDoctrine()->getManager();
+        $businessSession =$this->container->get('session')->get('business');
+        $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
+        $generalexpenssesdetail = $entityManager->getRepository(Generalexpensesdetail::class)->findBy(['generalexpenses' =>$generalexpensses] );
+        $list = $generalexpensses[0]->getAdministration() ;
+        $listpro =  $generalexpensses[0]->getProduction();
+        $listcom = $generalexpensses[0]->getSales() ;
+        $listrec =  $generalexpensses[0]->getResearch();
+        $years = $businessSession->getNumberofyears();
+         for($i = 0 ; $i<$years;$i++){
+            $listdetail[$i]= $generalexpenssesdetail[$i]->getDetail();
+            $listdetailPro[$i]= $generalexpenssesdetail[$i]->getDetailProduction();
+            $listdetailCom[$i]= $generalexpenssesdetail[$i]->getDetailCommercial();
+            $listdetailRec[$i]= $generalexpenssesdetail[$i]->getDetailRecherche();
+         }
+        $tvalist = $generalexpensses[0]->getTVAlist() ; 
+        $tvalistpro = $generalexpensses[0]->getTvalistproduction();
+        $tvalistcom = $generalexpensses[0]->getTvalistcommercial();
+        $tvalistrec = $generalexpensses[0]->getTvalistrecherche();
+        // unset($list[$name]); delete key from list
+        //
+        $status = '';
+        $finaltva = [];
+        /*$tva = $generalexpensses[0]->getTVAlist()[$name];
+        $tvapro = $generalexpensses[0]->getTvalistproduction()[$name];
+        $tvacom = $generalexpensses[0]->getTvalistcommercial()[$name];
+        $tvarec = $generalexpensses[0]->getTvalistrecherche()[$name];*/
+        
+        if(array_key_exists($name, $tvalist) == true){
+            $status = 'Administration';
+            $finaltva = $generalexpensses[0]->getTVAlist()[$name];
+        }
+        
+        if(array_key_exists($name, $tvalistpro) == true ){
+            $status = 'Production';
+            $finaltva = $generalexpensses[0]->getTvalistproduction()[$name];
+        }
+       
+        if(array_key_exists($name, $tvalistcom) == true){
+            $status = 'Commercial';
+            $finaltva = $generalexpensses[0]->getTvalistcommercial()[$name]; 
+        }
+        if(array_key_exists($name, $tvalistrec) == true){
+            $status = 'Recherche';
+            $finaltva = $generalexpensses[0]->getTvalistrecherche()[$name];
+            
+        }
+       
+        
+        //$finaltva = array_merge($tva,$tvapro,$tvacom,$tvarec) ;
+        //dump($finaltva);die();
+        $this->topicname = $name;
+        if($status == 'Administration'){
+            unset($list[$name]);
+            unset($tvalist[$name]);
+            $generalexpensses[0]->setAdministration($list); 
+            $generalexpensses[0]->setTVAlist($tvalist) ; 
+            for($i = 0 ; $i<$years;$i++){
+               unset($listdetail[$i][$name]);
+               $generalexpenssesdetail[$i]->setDetail($listdetail[$i]);
+            }
+           }
+           if($status == 'Production'){
+         
+           unset($listpro[$name]);
+           unset($tvalistpro[$name]); 
+           $generalexpensses[0]->setProduction($listpro); 
+           $generalexpensses[0]->setTvalistproduction($tvalistpro) ; 
+           for($i = 0 ; $i<$years;$i++){
+               unset($listdetailPro[$i][$name]);
+               $generalexpenssesdetail[$i]->setDetailProduction($listdetailPro[$i]);
+            }
+       }
+           if($status == 'Commercial'){
+           
+           unset($listcom[$name]);
+           unset($tvalistcom[$name]);
+           $generalexpensses[0]->setSales($listcom); 
+           $generalexpensses[0]->setTvalistcommercial($tvalistcom) ; 
 
+           for($i = 0 ; $i<$years;$i++){
 
+               unset($listdetailCom[$i][$name]);
+               $generalexpenssesdetail[$i]->setDetailCommercial($listdetailCom[$i]);
+            }
+       }
+           if($status == 'Recherche'){
+           
+           unset($listrec[$name]);
+           unset($tvalistrec[$name]); 
+           $generalexpensses[0]->setRecherche($listrec); 
+           $generalexpensses[0]->setTvalistrecherche($tvalistrec) ; 
+
+           for($i = 0 ; $i<$years;$i++){
+               
+               unset($listdetailRec[$i][$name]);
+               $generalexpenssesdetail[$i]->setDetailRecherche($listdetailRec[$i]);
+            }
+       }
+       $entityManager->flush();
+     
+        return $this->redirectToRoute('generalexpenses');
+
+       
     }
 
 }

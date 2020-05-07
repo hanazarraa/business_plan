@@ -214,10 +214,11 @@ class BusinessController extends AbstractController
         $listdefraisrec=[];
         //--------------------------fin--------------------------------------//
         //--------------------------variables des investissements------------//
+        if($investments!=null){
         $oldlistInv = $investments[0]->getAdministration();
         $oldlistInvpro = $investments[0]->getProduction();
         $oldlistInvcom = $investments[0]->getSales();
-        $oldlistInvrec = $investments[0]->getRecherche();
+        $oldlistInvrec = $investments[0]->getRecherche();}
         $listInv=[];
         $listInvpro=[];
         $listInvcom=[];
@@ -257,6 +258,7 @@ class BusinessController extends AbstractController
         $generalexpensses[0]->setResearch($oldlistrec);
        //-----------------------------------fin----------------------------//
        //----------------------------------Push Investissement------------//
+       if($investments!=null){ 
        foreach($oldlistInv as $key=>$value){
         array_push($listInv,$key);
     }
@@ -285,7 +287,7 @@ class BusinessController extends AbstractController
    $investments[0]->setAdministration($oldlistInv);
    $investments[0]->setProduction($oldlistInvpro);
    $investments[0]->setSales($oldlistInvcom);
-   $investments[0]->setRecherche($oldlistInvrec);
+   $investments[0]->setRecherche($oldlistInvrec);}
        //----------------------------------Fin-----------------------------//
         $entityManager->flush();
         $this->container->get('session')->set('business', $business); 

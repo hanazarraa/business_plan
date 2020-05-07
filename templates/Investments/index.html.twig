@@ -106,7 +106,7 @@
 					</tr>
 
 					<tr>
-					       {% for key ,s in form.Administration %}
+					       {% for key,value  in keyadmin %}
 							<td class="soustitre">
 							<a href="#" title="Modifier" class="open-modal tool-tip">
 										{{key}} <i class="fa fa-pencil"></i>
@@ -121,10 +121,12 @@
 							</td>
 							{% endfor %}
 							{% if business.rangeofdetail < business.numberofyears  %}
-							{% for i in 0..business.numberofyears - rangeofdetail - 1 %}
+							
+							{% for s in form.Administration[key] %}
 							<td class="aright duplicate somme-js somme-292732-1" id="somme162557-292732-1">
-							{{ form_widget (s[i], {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
 	                        {% endfor %}
+						   
 							{% endif %}
 							 
 						
@@ -193,7 +195,7 @@
 						
 					</tr>
 					
-                         {% for key ,s in form.production %}
+                         {% for key ,s in keypro %}
 							<td class="soustitre">
 									<a href="#" title="Modifier" class="open-modal tool-tip">
 										{{key}} <i class="fa fa-pencil"></i>
@@ -207,11 +209,13 @@
 							{{sumproduction[i][key]}}
 							</td>
 							{% endfor %}
-							{% for i in 0..business.numberofyears - rangeofdetail - 1 %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in form.production[key] %}
 							<td class="aright duplicate somme-js somme-292732-1" id="somme162557-292732-1">
-							{{ form_widget (s[i], {'attr': {'type':'text','class':'type-text ' }}) }}</td>
-	                        {% endfor %}
-							 
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+	                      
+							{% endfor %}
+							{% endif %}
 						
 							
 						</tr>
@@ -278,7 +282,7 @@
 						{% endif %}
 					</tr>
 
-                         {% for key ,s in form.sales %}
+                         {% for key ,s in keycom %}
 							<td class="soustitre">
 																	<a href="#" title="Modifier" class="open-modal tool-tip">
 										{{key}} <i class="fa fa-pencil"></i>
@@ -292,11 +296,12 @@
 							{{sumcommercial[i][key]}}
 							</td>
 							{% endfor %}
-							{% for i in 0..business.numberofyears - rangeofdetail - 1 %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in form.sales[key] %}
 							<td class="aright duplicate somme-js somme-292732-1" id="somme162557-292732-1">
-							{{ form_widget (s[i], {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
 	                        {% endfor %}
-							 
+							{% endif %}
 						
 							
 						</tr>
@@ -363,7 +368,7 @@
 						{% endif %}
 					</tr>
 
-                         {% for key ,s in form.recherche %}
+                         {% for key ,s in keyrec %}
 							<td class="soustitre">
 																	<a href="#" title="Modifier" class="open-modal tool-tip">
 										{{key}} <i class="fa fa-pencil"></i>
@@ -377,11 +382,12 @@
 							{{sumrecherche[i][key]}}
 							</td>
 							{% endfor %}
-							{% for i in 0..business.numberofyears - rangeofdetail - 1 %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in form.recherche[key] %}
 							<td class="aright duplicate somme-js somme-292732-1" id="somme162557-292732-1">
-							{{ form_widget (s[i], {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+							{{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
 	                        {% endfor %}
-							 
+							{% endif %}
 						
 							
 						</tr>

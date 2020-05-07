@@ -1,8 +1,7 @@
-{{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' }})}}
-
+ {{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('edit',{'name':name}) }}) }}
 		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
 		<div class="fleft">
-			<a href="{{path('delete')}}" class="btn btn-md btn-danger demande-confirmation">
+			<a href="{{path('delete',{'name':name})}}" class="btn btn-md btn-danger demande-confirmation">
 			<i class="fa fa-trash-o"></i> &nbsp;Supprimer		</a>
 	</div>
 
@@ -32,7 +31,7 @@
 
 	<div class="champ">
 			
-        {{ form_widget (form.VAT, {'attr': {'type':'text','class':'type-text ','value':tva[0] }}) }}</div>
+        {{ form_widget (form.VAT, {'attr': {'type':'text','class':'type-text ','value':finaltva[0] }}) }}</div>
 	<div class="clearer"></div>
 
 	</div>
@@ -43,13 +42,8 @@
 	</label>
 
 	<div class="champ margeur-5">
-				<input type="hidden" name="id_departement" value="">
-		<select id="id_departement" name="id_departement">
-							<option value="287924" selected="selected">Administration &amp; Gestion</option>
-							<option value="287925">Production</option>
-							<option value="287926">Commercial</option>
-							<option value="287927">Recherche &amp; Développement</option>
-					</select>
+							{{ form_widget (form.Departement, {'attr': {'type':'text','class':'type-text ' }}) }}
+
 	</div>
 
 	<div class="clearer"></div>
