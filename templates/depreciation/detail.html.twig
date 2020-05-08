@@ -1,0 +1,293 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+
+
+  <div class="right_col" role="main">
+                            
+
+<div class="entete entete-min">
+	<h1 class="fleft">
+		Amortissements	</h1>
+
+			<div class="fleft margeur-l15">
+				<div class="pagination-periode">
+		
+					{% for i in 1..business.rangeofdetail %}
+					<a href="{{path('depreciationdetail',{'id':i -1})}}" class="btn btn-primary btn-md btn-success" title="Année 1">
+				Année {{i}}			</a>
+			    {% endfor %}
+		
+		
+
+	</div>
+		</div>
+	
+	<div class="call-to-action fright">
+					<div class="fleft">
+				<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
+					Éléments antérieurs				</a>
+			</div>
+
+				<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+			</div>
+
+	<div class="clearer"></div>
+</div>
+
+<div class="x_panel">
+	<table class="tableau">
+									<tr>
+					<th>Administration & Gestion</th>
+					<th>Année {{id + 1}}</th>
+											<th>Janv</th>
+											<th>Fév</th>
+											<th>Mars</th>
+											<th>Avril</th>
+											<th>Mai</th>
+											<th>Juin</th>
+											<th>Juil</th>
+											<th>Aout</th>
+											<th>Sept</th>
+											<th>Oct</th>
+											<th>Nov</th>
+											<th>Déc</th>
+									</tr>
+                                    
+                            {% for name in Administration %}
+							<tr>
+							<td class="soustitre">
+								{{name}} <span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+                            <td class="aright">
+								{{totalperName[name][id]}}							</td>
+                            {% for x in 0..11 %}
+							<td class="aright">
+								{{showed[name][id][x]}}</td>
+                            {% endfor %}
+															
+							</tr>
+                            {% endfor %}
+				
+				<tr>
+					<td class="total">
+						Total Administration & Gestion					</td>
+
+					<td class="total aright">
+						{% if sumperyear != [] %}
+						{{sumperyear[id]}}
+						{% else %} 0.00 {% endif %}
+						</td>
+                    {% for i in 0..11 %}
+										<td class="aright">
+						{% if sumtotal != [] %}
+						{{sumtotal[id][i]}}	{% else %} 0.00 {% endif %}</td>
+					{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="14"></td>
+				</tr>
+												<tr>
+					<th>Production</th>
+					<th>Année {{id + 1}}</th>
+											<th>Janv</th>
+											<th>Fév</th>
+											<th>Mars</th>
+											<th>Avril</th>
+											<th>Mai</th>
+											<th>Juin</th>
+											<th>Juil</th>
+											<th>Aout</th>
+											<th>Sept</th>
+											<th>Oct</th>
+											<th>Nov</th>
+											<th>Déc</th>
+									</tr>
+
+				{% for name in Production %}
+							<tr>
+							<td class="soustitre">
+								{{name}} <span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+                            <td class="aright">
+								{{totalperNamePro[name][id]}}							</td>
+                            {% for x in 0..11 %}
+							<td class="aright">
+								{{showedpro[name][id][x]}}</td>
+                            {% endfor %}
+															
+							</tr>
+                            {% endfor %}
+				
+				
+				<tr>
+					<td class="total">
+						Total Production					</td>
+
+					<td class="total aright">
+							{% if sumperyearPro != [] %}
+						{{sumperyearPro[id]}}
+						{% else %} 0.00 {% endif %}
+						</td>
+                    {% for i in 0..11 %}
+										<td class="aright">
+						{% if sumtotalPro != [] %}
+						{{sumtotalPro[id][i]}}	{% else %} 0.00 {% endif %}</td>
+					{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="14"></td>
+				</tr>
+												<tr>
+					<th>Commercial</th>
+					<th>Année {{id + 1}}</th>
+											<th>Janv</th>
+											<th>Fév</th>
+											<th>Mars</th>
+											<th>Avril</th>
+											<th>Mai</th>
+											<th>Juin</th>
+											<th>Juil</th>
+											<th>Aout</th>
+											<th>Sept</th>
+											<th>Oct</th>
+											<th>Nov</th>
+											<th>Déc</th>
+									</tr>
+
+				
+			       	{% for name in Commercial %}
+							<tr>
+							<td class="soustitre">
+								{{name}} <span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+                            <td class="aright">
+								{{totalperNameCom[name][id]}}							</td>
+                            {% for x in 0..11 %}
+							<td class="aright">
+								{{showedcom[name][id][x]}}</td>
+                            {% endfor %}
+															
+							</tr>
+                            {% endfor %}
+				
+				<tr>
+					<td class="total">
+						Total Commercial					</td>
+
+					<td class="total aright">
+						{% if sumperyearCom != [] %}
+						{{sumperyearCom[id]}}
+						{% else %} 0.00 {% endif %}
+						</td>
+                    {% for i in 0..11 %}
+										<td class="aright">
+						{% if sumtotalCom != [] %}
+						{{sumtotalCom[id][i]}}	{% else %} 0.00 {% endif %}</td>
+					{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="14"></td>
+				</tr>
+												<tr>
+					<th>Recherche & Développement</th>
+					<th>Année {{id + 1}}</th>
+											<th>Janv</th>
+											<th>Fév</th>
+											<th>Mars</th>
+											<th>Avril</th>
+											<th>Mai</th>
+											<th>Juin</th>
+											<th>Juil</th>
+											<th>Aout</th>
+											<th>Sept</th>
+											<th>Oct</th>
+											<th>Nov</th>
+											<th>Déc</th>
+									</tr>
+
+				{% for name in Recherche %}
+							<tr>
+							<td class="soustitre">
+								{{name}} <span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+                            <td class="aright">
+								{{totalperNameRec[name][id]}}							</td>
+                            {% for x in 0..11 %}
+							<td class="aright">
+								{{showedrec[name][id][x]}}</td>
+                            {% endfor %}
+															
+							</tr>
+                            {% endfor %}
+				
+				<tr>
+					<td class="total">
+						Total Recherche & Développement					</td>
+
+					<td class="total aright">
+							{% if sumperyearRec != [] %}
+						{{sumperyearRec[id]}}
+						{% else %} 0.00 {% endif %}
+						</td>
+                    {% for i in 0..11 %}
+										<td class="aright">
+						{% if sumtotalRec != [] %}
+						{{sumtotalRec[id][i]}}	{% else %} 0.00 {% endif %}</td>
+					{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="14"></td>
+				</tr>
+					
+		
+		<tr>
+			<td class="total">Total immobilisations</td>
+
+			<td class="aright total">
+			    {% if sumperyear !=[] and sumperyearPro != [] and sumperyearCom != [] and sumperyearRec != []   %}
+				{{sumperyear[id]+ sumperyearPro[id] + sumperyearCom[id] + sumperyearRec[id]}}	
+				 {% else %} 0.00  {% endif %}</td>
+                {% for i in 0..11 %} 
+							<td class="total aright">
+							<class="aright total">
+			    {% if sumtotal !=[] and sumtotalPro != [] and sumtotalCom != [] and sumtotalRec != []   %}
+					{{sumtotal[id][i]+ sumtotalPro[id][i] + sumtotalCom[id][i] + sumtotalRec[id][i]}}			
+					 {% else %} 0.00  {% endif %}	</td>
+				{% endfor %}
+					</tr>
+
+	</table>
+</div>
+                    </div>
+
+
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

@@ -57,7 +57,7 @@ a:hover {
     font-family: 'cabinregular';
     color: #FFF;
     text-transform: uppercase;
-    background: #6d3e91;
+    background: #5d78ff;
     font-size: 18px;
     padding: 2px 8px;
     transition-duration: 250ms;
@@ -96,7 +96,7 @@ a:hover {
 }
 
 .bouton-or:hover {
-    background-color: #6d3e91 !important;
+    background-color: #5d78ff !important;
     transition-duration: 250ms;
     transition-timing-function: ease-out;
     text-decoration: none;
@@ -134,7 +134,7 @@ input.bouton-unlimited {
 }
 
 .bouton-vert:hover {
-    color: #6d3e91 !important;
+    color: #5d78ff !important;
     transition-duration: 250ms;
     transition-timing-function: ease-out;
     text-decoration: none;
@@ -434,10 +434,10 @@ h3 {
 #header.header-content {
     /*background:url(../images/design/header/header_bg.jpg) no-repeat top center;*/
     /*background:url(../images/design/header/Header-BP-230.jpg) no-repeat top center;*/
-    height: 230px;
-    border-bottom: 24px solid #E31E29;
+  
+    border-bottom: 24px solid #5d78ff;
     /*  */
-    background-image: url(../images/design/header/header-230.jpg);
+   /* background-image: url(../images/design/header/header-230.jpg);*/
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -1151,7 +1151,7 @@ h3 {
 }
 
 .bloc-aide {
-    border: 2px solid #6d3e91;
+    border: 2px solid #5d78ff;
     padding: 20px;
     background: #fafaf9;
 }
@@ -1164,7 +1164,7 @@ h3 {
 .ui-tooltip {
     box-shadow: 0px 0px 0px !important;
     border-radius: 0px !important;
-    border: 1px solid #6d3e91 !important;
+    border: 1px solid #5d78ff !important;
 }
 
 #export-excel {
@@ -1259,7 +1259,7 @@ h3 {
     margin-top: 0;
     padding: 11px 5px 4px;
     text-transform: uppercase;
-    color: #6d3e91;
+    color: #343a40;
     display: block;
     font-family: 'crimson_textroman' !important;
     font-weight: bold;
@@ -1309,7 +1309,7 @@ h3 {
 
 .contenu-unlimited ul li {
     background: url("../images/design/bullet-darkblue.gif") no-repeat scroll 0 9px rgba(0, 0, 0, 0);
-    color: #6d3e91;
+    color: #5d78ff;
     display: block;
     font-size: 14px;
     font-weight: bold;
@@ -1322,11 +1322,11 @@ h3 {
 .contenu-unlimited ul li p,
 .contenu-unlimited .content ul li p {
     margin: 0px;
-    color: #6d3e91;
+    color: #5d78ff;
 }
 
 .contenu-unlimited a {
-    color: #6d3e91;
+    color: #5d78ff;
 }
 
 .contenu-unlimited .bouton-unlimited a,
@@ -1355,7 +1355,7 @@ h3 {
     margin-left: 20px;
     padding: 0 25px 0 5px;
     text-transform: none;
-    color: #6d3e91;
+    color: #5d78ff;
     font-family: 'crimson_textroman' !important;
     font-size: 22px;
     font-weight: bold;
@@ -1419,7 +1419,7 @@ h3 {
 }
 
 .more-link a {
-    background: none repeat scroll 0 0 #6d3e91;
+    background: none repeat scroll 0 0 #5d78ff;
     color: #FFFFFF;
     margin-left: 10px;
     padding: 2px 10px;

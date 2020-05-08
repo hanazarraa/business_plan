@@ -1,0 +1,1028 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+{{ form_start(form) }}
+
+ <div class="right_col" role="main">
+                            
+<form class="formulaire" method="post" action="">
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Frais généraux		</h1>
+
+					<div class="fleft margeur-l15">
+					<div class="pagination-periode">
+		         {% for i in 1..business.rangeofdetail %}
+					<a href="{{path('generalexpensesdetail',{id:i -1 })}}" class="btn btn-primary btn-md btn-success" title="Année 1">
+				Année {{i}}			</a>
+			    {% endfor %}
+		
+				<!--<a href="#" class="btn btn-md">
+			&raquo;
+		</a>-->
+		
+
+	</div>
+			</div>
+		
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="{{path('topic')}}" title="Créer une rubrique" class="open-modal btn btn-md btn-primary dont-print" >
+						<i class="fa fa-plus-circle"></i> &nbsp;Créer une rubrique					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+				<div class="fleft">
+					<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
+					</a>
+				</div>
+
+									<div class="fleft">
+{{ form_widget(form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+		<input type="hidden" name="post-immo" value="true" />
+
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+		<div class="clearer"></div>
+
+		<table class="tableau navigate">
+											    <tr>
+						<th style="width:15%">
+							Administration & Gestion							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287924">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																	<tr class="tr-287924 ventilate-2244876">
+							<td class="soustitre">
+																	Eau et électricité															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244876">
+								<span class="ventilate-total">
+									{{somme[id]['eau']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                            {% for s in form.detail['eau']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+																						
+                                    {% endfor %}    
+													</tr>
+																							<tr class="tr-287924 ventilate-2244877">
+							<td class="soustitre">
+																	Fournitures d'entretien															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244877">
+								<span class="ventilate-total">
+									{{somme[id]['fournitureentretient']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                            {% for s in form.detail['fournitureentretient']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+							
+													</tr>
+																							<tr class="tr-287924 ventilate-2244878">
+							<td class="soustitre">
+																	Propriété industrielle															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244878">
+								<span class="ventilate-total">
+									{{somme[id]['proprietes']}}										</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                             {% for s in form.detail['proprietes']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+													</tr>
+																							<tr class="tr-287924 ventilate-2244879">
+							<td class="soustitre">
+																	Assurances (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244879">
+								<span class="ventilate-total">
+									{{somme[id]['assurance']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['assurance']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244880">
+							<td class="soustitre">
+																	Honoraires juridiques															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244880">
+								<span class="ventilate-total">
+									{{somme[id]['honorairej']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['honorairej']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244881">
+							<td class="soustitre">
+																	Honoraires comptables															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244881">
+								<span class="ventilate-total">
+									{{somme[id]['honorairec']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['honorairec']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244882">
+							<td class="soustitre">
+																	Loyers															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244882">
+								<span class="ventilate-total">
+									{{somme[id]['loyers']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['loyers']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                            {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244883">
+							<td class="soustitre">
+																	Impôts et taxes															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244883">
+								<span class="ventilate-total">
+									{{somme[id]['impotettax']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							 {% for s in form.detail['impotettax']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244884">
+							<td class="soustitre">
+																	Poste et télécom															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244884">
+								<span class="ventilate-total">
+									{{somme[id]['posteettelecom']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['posteettelecom']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244885">
+							<td class="soustitre">
+																	Fournitures administratives															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244885">
+								<span class="ventilate-total">
+									{{somme[id]['fournitureadmenstrative']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.detail['fournitureadmenstrative']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+																							<tr class="tr-287924 ventilate-2244886">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244886">
+								<span class="ventilate-total">
+									{{somme[id]['deplacement']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							 {% for s in form.detail['deplacement']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+					       <tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{somme[id]['autre']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+															
+							{% for s in form.detail['autre']  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+																						
+                                    {% endfor %}
+									</tr>
+					{% for key, topic in diff %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>{{business.defaultVAT}}</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{somme[id][key]}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.detail[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}																																																																																																																																																																																																												
+					<tr>
+						<td class="total" COLSPAN=2>Total Administration & Gestion</td>
+
+						<td class="aright total totalgeneraldep" id="totalgeneraldep-287924">{{total}}</td>
+                                                 {% for x in 0..11 %}
+												<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonth[x]}} </td>
+												{% endfor %}
+						
+					</tr>
+
+			<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Production							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287925">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																											<tr class="tr-287925 ventilate-2244888">
+							<td class="soustitre">
+																	Crédit bail															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244888">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['bail']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['bail']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+																						
+                                    {% endfor %}    
+													</tr>
+																							<tr class="tr-287925 ventilate-2244889">
+							<td class="soustitre">
+																	Petits équipements et fournitures															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244889">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['petiteq']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+						{% for s in form.DetailProduction['petiteq']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244890">
+							<td class="soustitre">
+																	Emballages															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244890">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['emballage']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+															
+						{% for s in form.DetailProduction['emballage']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244891">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244891">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['deplacement']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['deplacement']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287925 ventilate-2244892">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244892">
+								<span class="ventilate-total">
+									{{sommeproduction[id]['autre']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailProduction['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+				{% for key, topic in diffpro %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>{{business.defaultVAT}}</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sommeproduction[id][key]}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailProduction[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}																																																																																																																																																						
+				<tr>
+						<td class="total" COLSPAN=2>Total Production</td>
+
+						<td class="aright total totalgeneraldep" id="totalgeneraldep-287925">{{totalproduction}}</td>
+
+						{% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthproduction[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Commercial							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287926">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																																																																																		<tr class="tr-287926 ventilate-2244893">
+							<td class="soustitre">
+																	Frais de publicité															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244893">
+								<span class="ventilate-total">
+									{{sumcommercial[id]['publicite']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['publicite']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244894">
+							<td class="soustitre">
+																	Evènementiel															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244894">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['evenmentiel']}}	</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['evenmentiel']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244895">
+							<td class="soustitre">
+																	Conseils															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244895">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['conseils']}}</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['conseils']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244896">
+							<td class="soustitre">
+																	Documentation															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244896">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['documentation']}}</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+									{% for s in form.DetailCommercial['documentation']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244897">
+							<td class="soustitre">
+																	Promotions															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244897">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['promotions']}}	</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['promotions']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244898">
+							<td class="soustitre">
+																	Salons															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244898">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['salons']}}</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+							{% for s in form.DetailCommercial['salons']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244899">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244899">
+								<span class="ventilate-total">
+								{{sumcommercial[id]['deplacementsttc']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['deplacementsttc']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287926 ventilate-2244900">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244900">
+								<span class="ventilate-total">
+									{{sumcommercial[id]['autre']}}</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailCommercial['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+					{% for key, topic in diffcom %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>{{business.defaultVAT}}</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sumcommercial[id][key]}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailCommercial[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}																																																													
+					<tr>
+						<td class="total" COLSPAN=2>Total Commercial</td>
+
+						
+
+                       <td class="aright total totalgeneraldep" id="totalgeneraldep-287925">{{totalcommercial}}</td>
+
+						{% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthcommercial[x]}} </td>
+						{% endfor %}
+						
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+															    <tr>
+						<th style="width:15%">
+							Recherche & Développement							<br />
+
+							<a href="#" class="masquertr fs-14" id="masquertr-287927">
+								<span>(-Masquer)</span>
+								<span style="display:none">(+Afficher)</span>
+							</a>
+						</th>
+
+						<th>TVA</th>
+
+						<th>Année {{id + 1}}</th>
+
+												<th>Janv</th>
+												<th>Fév</th>
+												<th>Mars</th>
+												<th>Avril</th>
+												<th>Mai</th>
+												<th>Juin</th>
+												<th>Juil</th>
+												<th>Aout</th>
+												<th>Sept</th>
+												<th>Oct</th>
+												<th>Nov</th>
+												<th>Déc</th>
+						
+					</tr>
+
+																																																																																																																																																																																																																																																																																																																										<tr class="tr-287927 ventilate-2244901">
+							<td class="soustitre">
+																	Petits équipements R&D															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244901">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['petiteq']}}			</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailRecherche['petiteq']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244902">
+							<td class="soustitre">
+																	Conseils															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244902">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['conseils']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+
+				{% for s in form.DetailRecherche['conseils']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244903">
+							<td class="soustitre">
+																	Congrès Scientifiques															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244903">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['congres']}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['congres']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244904">
+							<td class="soustitre">
+																	Déplacements (TTC)															</td>
+							<td>0.00</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244904">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['deplacement']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['deplacement']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+													</tr>
+																							<tr class="tr-287927 ventilate-2244905">
+							<td class="soustitre">
+																	Autres dépenses															</td>
+							<td>{{business.defaultVAT}}</td>
+
+							<td class="aright totalrubrique" id="totalrubrique-2244905">
+								<span class="ventilate-total">
+									{{sumrecherche[id]['autre']}}									</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>
+                {% for s in form.DetailRecherche['autre']  %}
+				<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                        {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                </td>
+				{% endfor %}
+				</tr>
+					{% for key, topic in diffrec %}
+					<tr>
+					<tr class="tr-287924 ventilate-2244887">
+							<td class="soustitre">
+																	{{key}}														</td>
+							<td>{{business.defaultVAT}}</td>
+							<td class="aright totalrubrique" id="totalrubrique-2244887">
+								<span class="ventilate-total">
+									{{sumrecherche[id][key]}}								</span>
+								&nbsp;
+								<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+									<i class="fa fa-edit"></i>
+								</a>
+							</td>										
+							{% for s in form.DetailRecherche[key]  %}
+			              	<td class="aright  somme-js somme-287924-0" id="somme2244876-287924-0">
+                             {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+                              </td>
+							   {% endfor %}
+					</tr>
+					{% endfor %}							
+					<tr>
+						<td class="total" COLSPAN=2>Total Recherche & Développement</td>
+
+						<td class="aright total totalgeneraldep" id="totalgeneraldep-287927">{{totalrecherche}}</td>
+                        {% for x in 0..11 %}
+						<td class="aright total totalprovisoire-0 totalprovisoiredep-287924" id="total-287924-0">{{sumpermonthrecherche[x]}} </td>
+						{% endfor %}
+					</tr>
+
+					
+					<tr>
+						<td class="separateur" colspan="14"></td>
+					</tr>
+							
+			<tr>
+				<td class="total" COLSPAN=2>Total autres achats et charges externes</td>
+
+				<td class="aright total totalgeneralannee">{{totalsomme}}</td>
+                {% for x in 0..11 %}
+									<td class="aright total totalgeneral" id="totalgeneral-0">{{totalpermonth[x]}} </td>
+				{% endfor %}					
+							</tr>			
+		</table>
+	</div>
+{{ form_end(form) }}
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="14-0" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+                    
+
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

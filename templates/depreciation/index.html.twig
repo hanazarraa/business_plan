@@ -1,0 +1,512 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+<div class="right_col" role="main">
+                            
+<div class="entete entete-min">
+	<h1 class="fleft">
+		Amortissements	</h1>
+
+	<div class="call-to-action fright">
+					<div class="fleft">
+				<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
+					Éléments antérieurs				</a>
+			</div>
+
+				<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+			</div>
+
+	<div class="clearer"></div>
+</div>
+
+<div class="x_panel">
+	<table class="tableau">
+									<tr>
+					<th>Administration & Gestion</th>
+							{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+									</tr>
+
+																		
+				
+				<tr>
+				{% for name in Administration %}
+												<tr>
+							<td class="soustitre">
+								{{name}}<span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+							{% for x in 0..business.rangeofdetail - 1 %}
+							<td class="aright">
+									{{totalperName[name][x]}}
+							</td>
+							{% endfor %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in business.rangeofdetail..business.numberofyears -1  %}
+							<td class="aright">
+							  {{GlobalListAdm[name][s - business.rangeofdetail] +  totalperName[name][s]}}   
+							</td>
+							{% endfor %}
+							{% endif %}
+													</tr>
+				{% endfor %}
+					<td class="total">
+						Total Administration & Gestion					</td>
+						{% for i in 0..business.numberofyears - 1  %}
+										<td class="aright">
+						{% if sumperyear != [] %}				
+						{{sumperyear[i] + SumglobalAdm[i] }}  {% else %} 0.00	{% endif %}				</td>
+						{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="7"></td>
+				</tr>
+												<tr>
+					<th>Production</th>
+							{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+				<tr>
+								{% for name in Production %}
+												<tr>
+							<td class="soustitre">
+								{{name}}<span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+							{% for x in 0..business.rangeofdetail - 1 %}
+							<td class="aright">
+									{{totalperNamePro[name][x]}}
+							</td>
+							{% endfor %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in business.rangeofdetail..business.numberofyears -1  %}
+							<td class="aright">
+							 {{GlobalListPro[name][s - business.rangeofdetail] +  totalperNamePro[name][s]}}
+							</td>
+							{% endfor %}
+							{% endif %}
+													</tr>
+				{% endfor %}
+					<td class="total">
+						Total Production					</td>
+							{% for i in 0..business.numberofyears - 1  %}
+										<td class="aright">
+						{% if sumperyearPro != [] %}				
+						{{sumperyearPro[i]   + SumglobalPro[i] }} {% else %} 0.00	{% endif %}				</td>
+						{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="7"></td>
+				</tr>
+												<tr>
+					<th>Commercial</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+				<tr>
+								{% for name in Commercial %}
+												<tr>
+							<td class="soustitre">
+								{{name}}<span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+								{% for x in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+										{{totalperNameCom[name][x]}}
+								</td>
+								{% endfor %}
+								{% if business.rangeofdetail < business.numberofyears  %}
+								{% for s in business.rangeofdetail..business.numberofyears -1  %}
+								<td class="aright">
+								{{GlobalListCom[name][s - business.rangeofdetail] +  totalperNameCom[name][s]}}
+								</td>
+								{% endfor %}
+								{% endif %}
+													</tr>
+				{% endfor %}
+					<td class="total">
+						Total Commercial					</td>
+								{% for i in 0..business.numberofyears - 1  %}
+										<td class="aright">
+						{% if sumperyearCom != [] %}				
+						{{sumperyearCom[i]  + SumglobalCom[i] }} {% else %} 0.00	{% endif %}				</td>
+						{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="7"></td>
+				</tr>
+												<tr>
+					<th>Recherche & Développement</th>
+						{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="{{path('depreciationdetail',{'id':i -1})}}" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+				<tr>
+								{% for name in Recherche %}
+												<tr>
+							<td class="soustitre">
+								{{name}}<span class="fs-12">({{categorie[name][0]}})</span>
+							</td>
+							{% for x in 0..business.rangeofdetail - 1 %}
+							<td class="aright">
+									{{totalperNameRec[name][x]}}
+							</td>
+							{% endfor %}
+							{% if business.rangeofdetail < business.numberofyears  %}
+							{% for s in business.rangeofdetail..business.numberofyears -1  %}
+							<td class="aright">
+							 {{GlobalListRec[name][s - business.rangeofdetail] +  totalperNameRec[name][s]}}
+							</td>
+							{% endfor %}
+							{% endif %}
+													</tr>
+				{% endfor %}
+					<td class="total">
+						Total Recherche & Développement					</td>
+							{% for i in 0..business.numberofyears - 1  %}
+										<td class="aright">
+						{% if sumperyearRec != [] %}				
+						{{sumperyearRec[i]  + SumglobalRec[i] }} {% else %} 0.00	{% endif %}				</td>
+						{% endfor %}
+									</tr>
+
+				<tr>
+					<td class="separateur" colspan="7"></td>
+				</tr>
+					
+		
+		<tr>
+			<td class="total">Total immobilisations</td>
+                 {% for i in 0..business.numberofyears - 1  %}   
+				<td class="total aright">{% if sumperyear !=[] and sumperyearPro != [] and sumperyearCom != [] and sumperyearRec != []   %}	
+							{{sumperyear[i] + SumglobalAdm[i] + sumperyearPro[i]   + SumglobalPro[i]  + sumperyearCom[i]   + SumglobalCom[i]  + sumperyearRec[i]   + SumglobalRec[i] }}
+				{% else %} 0.00 {% endif %}		
+							</td>
+					{% endfor %}
+					</tr>
+
+	</table>
+
+
+
+	<h1 class="margeur-30">Amortissements par nature d'investissements</h1>
+
+	<table class="tableau margeur-20">
+	{% if type != [] %}
+			 {% for key,value in nature %}										
+				<tr>
+					<th>{{key}}</th>
+					 {% for i in 0..business.numberofyears - 1  %}   
+					<th>
+					Année {{i + 1}}	</th>
+					{% endfor %}							
+				</tr>
+			
+			<tr>
+			{% for s in value %}
+				<td class="soustitre">
+					{{value[loop.index0]}}			</td>
+					   
+						{% if type[s] == 'Administration' %}
+						        {% for x in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+										{{totalperName[s][x]}}
+								</td>
+								{% endfor %}
+								{% if business.rangeofdetail < business.numberofyears  %}
+								{% for x in business.rangeofdetail..business.numberofyears -1  %}
+								<td class="aright">
+								{{GlobalListAdm[s][x - business.rangeofdetail] +  totalperName[s][x]}}
+								</td>
+								{% endfor %}
+								{% endif %}
+						{% elseif type[s] == 'Production' %}
+					         	{% for x in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+										{{totalperNamePro[s][x]}}
+								</td>
+								{% endfor %}
+								{% if business.rangeofdetail < business.numberofyears  %}
+								{% for x in business.rangeofdetail..business.numberofyears -1  %}
+								<td class="aright">
+								{{GlobalListPro[s][x - business.rangeofdetail] +  totalperNamePro[s][x]}}
+								</td>
+								{% endfor %}
+								{% endif %}
+						{% elseif type[s] =='Commercial' %}
+				         	   	{% for x in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+										{{totalperNameCom[s][x]}}
+								</td>
+								{% endfor %}
+								{% if business.rangeofdetail < business.numberofyears  %}
+								{% for x in business.rangeofdetail..business.numberofyears -1  %}
+								<td class="aright">
+								{{GlobalListCom[s][x - business.rangeofdetail] +  totalperNameCom[s][x]}}
+								</td>
+								{% endfor %}
+								{% endif %}
+						{% elseif type[s] =='Recherche' %}
+						        {% for x in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+										{{totalperNameRec[s][x]}}
+								</td>
+								{% endfor %}
+								{% if business.rangeofdetail < business.numberofyears  %}
+								{% for x in business.rangeofdetail..business.numberofyears -1  %}
+								<td class="aright">
+								{{GlobalListRec[s][x - business.rangeofdetail] +  totalperNameRec[s][x]}}
+								</td>
+								{% endfor %}
+								{% endif %}
+						 {% endif  %}  
+						   </td>
+ 
+					
+							</tr>
+			{% endfor %}		
+			
+				
+														<tr>
+						<td class="separateur" colspan="7"></td>
+					</tr>
+	            {% endfor %}
+			{% endif %}
+			
+		
+		
+		<tr>
+			<td class="separateur" colspan="7"></td>
+		</tr>
+
+		
+		
+		<tr>
+			<td class="total">Total immobilisations</td>
+  {% for i in 0..business.numberofyears - 1  %}   
+				<td class="total aright">{% if sumperyear !=[] and sumperyearPro != [] and sumperyearCom != [] and sumperyearRec != []   %}	
+							{{sumperyear[i] + SumglobalAdm[i] + sumperyearPro[i]   + SumglobalPro[i]  + sumperyearCom[i]   + SumglobalCom[i]  + sumperyearRec[i]   + SumglobalRec[i] }}
+				{% else %} 0.00 {% endif %}		
+							</td>
+					{% endfor %}
+					</tr>
+
+
+	</table>
+</div>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="18" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+
+
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

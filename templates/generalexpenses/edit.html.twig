@@ -1,0 +1,60 @@
+ {{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('edit',{'name':name}) }}) }}
+		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
+		<div class="fleft">
+			<a href="{{path('delete',{'name':name})}}" class="btn btn-md btn-danger demande-confirmation">
+			<i class="fa fa-trash-o"></i> &nbsp;Supprimer		</a>
+	</div>
+
+<div class="fright">
+{{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'Valider'}}) }}
+
+</div>
+
+<div class="clearer"></div>
+
+<div class="form-element ">
+	<label for="nom_fr">
+		Nom <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+			
+{{ form_widget (form.Name, {'attr': {'type':'text','class':'type-text','value':name }}) }}</div>
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="tva">
+		TVA <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+			
+        {{ form_widget (form.VAT, {'attr': {'type':'text','class':'type-text ','value':finaltva[0] }}) }}</div>
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="id_departement">
+		Département <span class="rouge">*</span>
+	</label>
+
+	<div class="champ margeur-5">
+							{{ form_widget (form.Departement, {'attr': {'type':'text','class':'type-text ' }}) }}
+
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element fright aright">
+	<input type="hidden" name="type" value="">
+	<input type="hidden" name="post-produit" value="true">
+	<input type="hidden" name="action" id="action" value="">
+	<input type="hidden" name="sqda45bz" value="2282173">
+</div>
+<div class="clearer"></div>
+{{form_end(form)}}
