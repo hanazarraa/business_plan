@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
 
 }
  /**
-     * @Route("/account/confirm/{token}", name="confirm_account")
+     * @Route("/account/confirm/{token}/{username}", name="confirm_account")
      * @param $token
      * @param $username
      * @return Response
@@ -80,9 +80,11 @@ class RegistrationController extends AbstractController
            $user->setEnabled(true);
            $em->persist($user);
            $em->flush();
-           
+           return $this->redirectToRoute('app_login');
         }
-        return $this->redirectToRoute('app_login');
+        else{
+            return $this->redirectToRoute('app_register');
+        }
     }
      /**
      * @Route("/send-token-confirmation", name="send_confirmation_token")

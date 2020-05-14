@@ -1,0 +1,169 @@
+
+{{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('staffedit',{'name':name}) }}) }}
+		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
+		<div class="form-element  margeur-20">
+	<label for="poste">
+		Poste <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+	{{ form_widget (form.Name, {'attr': {'type':'text','class':'type-text ','value':name }}) }}	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="departement">
+		Département <span class="rouge">*</span>
+	</label>
+	<div class="champ">
+	{{ form_widget (form.Department, {'attr': {'type':'text','class':'type-text'}}) }}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="jei">
+		JEI <span class="rouge">*</span>
+		&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="JEI : le statut de Jeune Entreprise Innovante donne droit aux entreprises qui dépensent plus de 15%  de leurs charges annuelles en R&amp;D à des exonérations de charges patronales (pour les salariés principalement affectés à la R&amp;D) et fiscales. Des démarches sont  à entreprendre pour obtenir ce statut très intéressant. Renseignez-vous auprès de vos conseils ou sur le site du Ministère de l’Enseignement Supérieur et de la Recherche.
+"></i>	</label>
+
+	<div class="champ">
+			{{ form_widget (form.JEI)}}   (18% de charges patronales)
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="tns">
+		TNS <span class="rouge">*</span>
+		&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="Le statut de Travailleur Non Salarié est notamment celui des gérants majoritaires ou égalitaires de SARL (ou des cogérants majoritaires ou égalitaires). Le taux de charge est inférieur à celui des salariés, et pendant les 12 premiers mois, le TNS est imposé sur une base forfaitaire (à renseigner).
+"></i>	</label>
+
+	<div class="champ">
+		 {{ form_widget (form.TNS)}}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="gratification">
+		Gratification <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		 {{ form_widget (form.Gratification)}}  (Aucune charge patronale)
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div id="charges_patronales_block" class="form-element ">
+	<label for="charges_patronales">
+		Charges patronales (en %) <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.ChargePatronale, {'attr': {'type':'text','class':'type-text ','value':charges[0] }}) }}	</div>
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="charges_patronales">
+		Charges salariales (en %) <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.ChargeSalariales, {'attr': {'type':'text','class':'type-text ','value':charges[1] }}) }}	</div>
+
+
+	<div class="clearer"></div>
+
+	</div>
+	 <script src="{{ asset('js/espace_client/salairecreate.js') }}" type="text/javascript" ></script>
+   <div id="commissions_block">
+	<input type="hidden" name="id_salarie" id="id_salarie" value="216427">
+	<div class="form-element ">
+		<label for="type_commission">
+			Type commission		</label>
+
+		<div class="champ">
+			<select id="type_commission" name="type_commission">
+				<option value="" selected="selected"></option>
+				<option value="ca">Chiffre d'affaire</option>
+				<option value="produit">Produit</option>
+			</select>
+		</div>
+
+		<div class="clearer"></div>
+
+			</div>
+
+	<div class="form-element " id="choix_commission" style="display: none;">
+		<label for="pourcentage_commission_ca">
+			Pourcentage commission CA <span class="rouge">*</span>
+			&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="Ce pourcentage est appliqué à la totalité du chiffre d'affaire
+"></i>		</label>
+
+		<div class="champ">
+			<input type="text" class="type-text" id="pourcentage_commission_ca" name="pourcentage_commission_ca" value="0">		</div>
+
+		<div class="clearer"></div>
+
+			</div>
+
+	<div class="form-element" id="choix_commission_produit" style="display: none;">
+		<label for="jei">
+			Commissions par produit		</label>
+
+		<div class="champ">
+							<select id="produit_commission_ca_2" name="produit_commission_ca_2">
+											<option value="261305">asus</option>
+											<option value="264760">dsd</option>
+											<option value="264441">fsdfs</option>
+											<option value="261862">Honor</option>
+											<option value="261577">hp</option>
+											<option value="264258">vdvdf</option>
+											<option value="264759">wxcx</option>
+									</select>
+				Saisissez le pourcentage de commission :
+				<!-- <input type="text" class="type-text w-100" id="produit_commission_ca" name="produit_commission_ca" value="" />  -->
+				<input type="text" class="type-text w-50" id="produit_pourcentage_commission_ca" name="produit_pourcentage_commission_ca" maxlength="2" value=""> %
+				<input type="button" class="type-text w-50" value="OK" id="ajouter_produit_pourcentage_commission_ca" name="ajouter_produit_pourcentage_commission_ca">
+						<ul id="liste_commision_produits">
+							</ul>
+		</div>
+
+		<div class="clearer"></div>
+	</div>
+	<input type="hidden" name="sqda45bz" value="216427">
+</div>
+
+<div class="form-element fright aright">
+	<input type="hidden" name="post-salarie" value="true">
+</div>
+<div class="clearer"></div>
+
+	<div class="fleft">
+					<a href="https://www.montpellier-business-plan.com/espace_client/salarie/delete/216427" class="btn btn-md btn-danger demande-confirmation">
+				<i class="fa fa-trash-o"></i> &nbsp;Supprimer			</a>
+			</div>
+
+	<div class="fright">
+				{{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'Valider'}}) }}
+		<div class="clearer"></div>
+	</div>
+
+	<div class="clearer"></div>
+{{form_end(form)}}
