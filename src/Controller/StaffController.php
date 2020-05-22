@@ -113,6 +113,21 @@ class StaffController extends AbstractController
           'SalesRepository' => $SalesRepository,
       ]);
       $finalCA = SalesController::getfinalca();
+     
+        for($x = 0 ; $x < $years ; $x++){
+         for($i = 0 ; $i < 12 ; $i++){
+           $SumfinalCAperMouth[$x][$i] =  0 ;
+         }
+        }   
+      
+      foreach($finalCA as $key=>$value){
+        for($x = 0 ; $x < $years ; $x++){
+         for($i = 0 ; $i < 12 ; $i++){
+           $SumfinalCAperMouth[$x][$i] +=  $finalCA[$key][$x][$i] ;
+         }
+        }     
+      }
+      
       // ----------------------- decouper la liste finalCA -----------------//
 
       //------------------------fin de decoupage----------------------------//
@@ -158,6 +173,8 @@ class StaffController extends AbstractController
        foreach($staffdetail[$i]->getAdministration() as $key=>$value){
           $tvapatronale = $staff[0]->getCharges()[$key][0];
           $chargesalariale = $staff[0]->getCharges()[$key][1];
+          $tvaCA = $staff[0]->getPourcentageCA()[$key][0];
+          $typeCommision = $staff[0]->getTypecommission()[$key][0];
           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
             $tvapatronale = $staff[0]->getCharges()[$key][0];
             $chargesalariale = $staff[0]->getCharges()[$key][1];
@@ -192,13 +209,20 @@ class StaffController extends AbstractController
        
          // dump($tvapatronale);die();
          foreach($value as $position=>$chiffre){
+           if($typeCommision == '1'){
+             if($chiffre >0){
+          $commisionAdm[$i][$position]= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 ;}
+          else{
+            $commisionAdm[$i][$position]= 0 ;
+          }
+        } 
           $totalsalairbrutAdm[$i][$position] += $chiffre * $salairebrut[$key][$i];
           $couttotalpersonemAdm[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
           $NetapayerAdm[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
           $DecchargesalarialesAdm[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
           //dump($staff[0]->getCharges()[$key][0]);die();
         }}}
-        //dump($totalsalairbrutAdm);die();
+        //dump($commisionAdm);die();
         for($i =0 ; $i<$years;$i++){
         for($x=0;$x<12;$x++){//calculer le decaissement mensuel
           
@@ -253,7 +277,7 @@ class StaffController extends AbstractController
         ,'ETP' => $this->ETP, 'id'=> $id,'salairebrut' => $salairebrut,
         'totalsalairbrutAdm' => $totalsalairbrutAdm, 'couttotalpersonemAdm' => $couttotalpersonemAdm,'NetapayerAdm'=> $NetapayerAdm,
          'TotalDecaissementAdm' =>$TotalDecaissementAdm,'horsgerant' =>$lastDecchargeemployeurhorsgerantAdm,
-         'chargesalariale'=> $lastDecchargesalarialesAdm,'charges'=> $lastDecchargesAdm,
+         'chargesalariale'=> $lastDecchargesalarialesAdm,'charges'=> $lastDecchargesAdm, 'commissionAdm' => $commisionAdm
             ]);
     }
     /**
@@ -406,8 +430,10 @@ class StaffController extends AbstractController
       $charges =  $staff[0]->getCharges()[$name];
       $Listcharges = $staff[0]->getCharges();
       $ListConditions = $staff[0]->getConditions();
-      $TypeCommission  = $staff[0]->getTypecommission(); 
-      $CA = $staff[0]->getPourcentageCA();
+      $TypeCommission  = $staff[0]->getTypecommission()[$name]; 
+      $CA = $staff[0]->getPourcentageCA()[$name];
+      $TypeCommisionall = $staff[0]->getTypecommission() ;
+      $CAall = $staff[0]->getPourcentageCA();
       $JEI = $condition[0];
       $TNS = $condition[1];
       $Grafitation = $condition[2];
@@ -422,7 +448,7 @@ class StaffController extends AbstractController
       }
      // dump($JEI);die();
       $form = $this->createForm(StaffEditFormType::class,['Department' => '0' ,'JEI' => $JEIstatus 
-      ,'TNS'=> $TNSstatus , 'Gratification'=>$GRAstatus
+      ,'TNS'=> $TNSstatus , 'Gratification'=>$GRAstatus ,'Typecommision' =>$TypeCommission[0] ,
       ]);
       
       $form->handleRequest($request);
@@ -449,13 +475,14 @@ class StaffController extends AbstractController
                 $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
                 $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
                 $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
-                $TypeCommission[$form->getData()['Name']] = $form->getData()['Typecommision'];
-                $CA[$form->getData()['Name']] = $form->getData()['CA'];
+                $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
+                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];
                 $staff[0]->setSalairebrut($salairebrut);
                 $staff[0]->setCharges($Listcharges);
                 $staff[0]->setConditions($ListConditions);
-                $staff[0]->setTypecommission($TypeCommission);
-                $staff[0]->setPourcentageCA($CA);
+                $staff[0]->setTypecommission($TypeCommisionall);
+                $staff[0]->setPourcentageCA($CAall);
+               
               }}
               $entityManager->flush();
         return $this->redirectToRoute('staff');
@@ -463,7 +490,7 @@ class StaffController extends AbstractController
 
 
       return $this->render('staff/edit.html.twig',[
-      'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct,
+      'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct, 'CA' =>  $CA,
       'form'=>$form->createView()
       ]);
     }
