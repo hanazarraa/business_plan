@@ -11,6 +11,12 @@ use App\Form\StaffFormType;
 use App\Form\StaffCreateFormType;
 use App\Form\StaffEditFormType;
 use App\Form\CollectionFormType;
+use App\Entity\Sales;
+use App\Entity\Salesdetailled;
+use App\Controller\SalesController;
+use App\Repository\SalesdetailledRepository;
+use App\Repository\SalesRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 /**
 * @Route("/{_locale}/dashboard/my-business-plan/Staff")
@@ -23,7 +29,7 @@ class StaffController extends AbstractController
     /**
      * @Route("/", name="staff")
      */
-    public function index(Request $request)
+    public function index(Request $request,ProductRepository $productRepository,SalesRepository $SalesRepository)
     {
 
         $businessSession =$this->container->get('session')->get('business');
@@ -44,7 +50,7 @@ class StaffController extends AbstractController
         $years = $businessSession->getNumberofyears();
         $rangeofglobal = $years - $rangeofdetail;
         for($i =0 ; $i<$years;$i++){
-        $this->detail($request,$i);}
+        $this->detail($request,$i,$productRepository,$SalesRepository);}
         foreach($this->ETP as $key=>$values){//Renverser la liste ETP avec saisie detailler
             foreach($values as $name=>$chiffre){
                 $newETPdetailled[$name][$key] = $chiffre;
@@ -86,7 +92,7 @@ class StaffController extends AbstractController
      /**
      * @Route("-year-{id}", name="staffdetail")
      */
-    public function detail(Request $request,$id){
+    public function detail(Request $request,$id,ProductRepository $productRepository,SalesRepository $SalesRepository){
         $businessSession =$this->container->get('session')->get('business');
         
         $entityManager = $this->getDoctrine()->getManager();
@@ -99,6 +105,20 @@ class StaffController extends AbstractController
           $keyadmin = array_keys($staffdetail[0]->getAdministration());
           $conditions = $staff[0]->getConditions();
         }
+        //-----------------------------Partie pour le tableau sales ------------------------------//
+        $salesdetail = $this->sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
+        $response = $this->forward('App\Controller\SalesController::sales', [
+          'request'  => $request,
+          'productRepository' => $productRepository,
+          'SalesRepository' => $SalesRepository,
+      ]);
+      $finalCA = SalesController::getfinalca();
+      // ----------------------- decouper la liste finalCA -----------------//
+
+      //------------------------fin de decoupage----------------------------//
+      //dump($finalCA);die();
+  
+        //-----------------------------Fin----------------------------------------------------------//
         //-----------------------------instantier les listes  pour le decaissement-------------------------//
         
        
@@ -387,6 +407,7 @@ class StaffController extends AbstractController
       $Listcharges = $staff[0]->getCharges();
       $ListConditions = $staff[0]->getConditions();
       $TypeCommission  = $staff[0]->getTypecommission(); 
+      $CA = $staff[0]->getPourcentageCA();
       $JEI = $condition[0];
       $TNS = $condition[1];
       $Grafitation = $condition[2];
@@ -429,10 +450,12 @@ class StaffController extends AbstractController
                 $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
                 $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
                 $TypeCommission[$form->getData()['Name']] = $form->getData()['Typecommision'];
+                $CA[$form->getData()['Name']] = $form->getData()['CA'];
                 $staff[0]->setSalairebrut($salairebrut);
                 $staff[0]->setCharges($Listcharges);
                 $staff[0]->setConditions($ListConditions);
                 $staff[0]->setTypecommission($TypeCommission);
+                $staff[0]->setPourcentageCA($CA);
               }}
               $entityManager->flush();
         return $this->redirectToRoute('staff');

@@ -107,14 +107,14 @@
 
 			</div>
 
-	<div class="form-element " id="choix_commission" style="display: none;">
+	<div class="form-element">
 		<label for="pourcentage_commission_ca">
 			Pourcentage commission CA <span class="rouge">*</span>
 			&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="Ce pourcentage est appliqué à la totalité du chiffre d'affaire
 "></i>		</label>
 
 		<div class="champ">
-			<input type="text" class="type-text" id="pourcentage_commission_ca" name="pourcentage_commission_ca" value="0">		</div>
+			{{ form_widget (form.CA, {'attr': {'type':'text','class':'type-text'}}) }}	</div>
 
 		<div class="clearer"></div>
 

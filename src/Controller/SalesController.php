@@ -287,6 +287,7 @@ class SalesController extends AbstractController
         //dump($CA);die();
         //dump( $this->listofparametre );die();
         $this->calculsum();
+        
         if($this->sales!=[]){
         $form = $this->createForm(SalesdetailledFormType::class,$this->sales[$id]);
         }

@@ -53,6 +53,7 @@ class StaffEditFormType extends AbstractType
                 
             )
         ))
+        ->add('CA',NumberType::class,[])
         ->add('submit', SubmitType::class);
     }
 }
