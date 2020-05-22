@@ -100,14 +100,14 @@
 
 		<div class="champ">
 		
-		{{ form_widget (form.Typecommision, {'attr': {'type':'text','class':'type-text'}}) }}
+		{{ form_widget (form.Typecommision, {'attr': {'type':'text','class':'type-text' ,'onchange':"yesnoCheck(this);"}}) }}
 		</div>
 
 		<div class="clearer"></div>
 
 			</div>
 
-	<div class="form-element">
+	<div class="form-element" id="CA">
 		<label for="pourcentage_commission_ca">
 			Pourcentage commission CA <span class="rouge">*</span>
 			&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="Ce pourcentage est appliqué à la totalité du chiffre d'affaire
@@ -120,7 +120,7 @@
 
 			</div>
 
-	<div class="form-element" id="choix_commission_produit" style="display: none;">
+	<div class="form-element" id="Produit" >
 		<label for="jei">
 			Commissions par produit		</label>
 
@@ -154,7 +154,7 @@
 <div class="clearer"></div>
 
 	<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/espace_client/salarie/delete/216427" class="btn btn-md btn-danger demande-confirmation">
+					<a href="" class="btn btn-md btn-danger demande-confirmation">
 				<i class="fa fa-trash-o"></i> &nbsp;Supprimer			</a>
 			</div>
 
@@ -164,4 +164,33 @@
 	</div>
 
 	<div class="clearer"></div>
+	<script>
+	var x = document.getElementById("staff_edit_form_Typecommision");
+	if(x.value == "1"){
+	    document.getElementById("CA").style.display = "block";
+		document.getElementById("Produit").style.display = "none";	
+	}
+	else if(that.value == "2"){
+ document.getElementById("CA").style.display = "none";
+		 document.getElementById("Produit").style.display = "block";
+	}
+	else{
+	document.getElementById("Produit").style.display = "none";
+		document.getElementById("CA").style.display = "none";
+	}
+	function yesnoCheck(that) {
+    if (that.value == "1") {
+
+        document.getElementById("CA").style.display = "block";
+		document.getElementById("Produit").style.display = "none";
+    } else if(that.value == "2") {
+        document.getElementById("CA").style.display = "none";
+		 document.getElementById("Produit").style.display = "block";
+    }
+	else{
+		document.getElementById("Produit").style.display = "none";
+		document.getElementById("CA").style.display = "none";
+	}
+}
+	</script>
 {{form_end(form)}}

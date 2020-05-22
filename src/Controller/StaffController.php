@@ -210,10 +210,10 @@ class StaffController extends AbstractController
          // dump($tvapatronale);die();
          foreach($value as $position=>$chiffre){
            if($typeCommision == '1'){
-             if($chiffre >0){
-          $commisionAdm[$i][$position]= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 ;}
+             if($chiffre >0 && $commisionAdm[$i][$position] == 0){
+          $commisionAdm[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
           else{
-            $commisionAdm[$i][$position]= 0 ;
+            $commisionAdm[$i][$position]+= 0 ;
           }
         } 
           $totalsalairbrutAdm[$i][$position] += $chiffre * $salairebrut[$key][$i];
@@ -237,7 +237,7 @@ class StaffController extends AbstractController
         for($i =0 ; $i<$years;$i++){
         for($x=0;$x<13;$x++){
           if($x<12){
-          $TotalDecaissementAdm[$i][$x] += $NetapayerAdm[$i][$x] + $DecchargesAdm[$i][$x];}
+          $TotalDecaissementAdm[$i][$x] += $NetapayerAdm[$i][$x] + $DecchargesAdm[$i][$x] + $commisionAdm[$i][$x];}
           else{
             
             $TotalDecaissementAdm[$i+1][0] += $DecchargesAdm[$i][$x];
