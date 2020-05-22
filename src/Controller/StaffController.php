@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Staff;
 use App\Entity\Staffdetail;
+use App\Entity\Product;
 use App\Form\StaffFormType;
 use App\Form\StaffCreateFormType;
 use App\Form\StaffEditFormType;
@@ -95,10 +96,12 @@ class StaffController extends AbstractController
         $keyadmin = [];
         $salairebrut = [];
         if($staffdetail != null){
-          $keyadmin = array_keys($staffdetail[0]->getAdministration());}
+          $keyadmin = array_keys($staffdetail[0]->getAdministration());
+          $conditions = $staff[0]->getConditions();
+        }
         //-----------------------------instantier les listes  pour le decaissement-------------------------//
         
-        
+       
           for($x = 0 ; $x < $years +1 ; $x++){    
         for($i = 0 ; $i < 12 ; $i++){
         $commisionAdm[$x][$i] = "0.00" ;
@@ -133,11 +136,46 @@ class StaffController extends AbstractController
        //----------------Debut de calcul de decaissement ----------------------------//
        for($i =0 ; $i<$years;$i++){
        foreach($staffdetail[$i]->getAdministration() as $key=>$value){
+          $tvapatronale = $staff[0]->getCharges()[$key][0];
+          $chargesalariale = $staff[0]->getCharges()[$key][1];
+          if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+            $tvapatronale = $staff[0]->getCharges()[$key][0];
+            $chargesalariale = $staff[0]->getCharges()[$key][1];
+          }
+          if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+            $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+          }
+          if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+            $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+            $chargesalariale  = 0 ; 
+          }
+          if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+            $chargesalariale  = 0 ;
+            $tvapatronale =  0 ;
+          }
+          if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+            $chargesalariale  = 0 ;
+            $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+          }
+          if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+            $chargesalariale  = 0 ;
+            $tvapatronale = 0 ;  
+          }
+          if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+            $chargesalariale  = 0 ;
+            $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+          }
+          if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+            $chargesalariale  = 0 ;
+            $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+          }
+       
+         // dump($tvapatronale);die();
          foreach($value as $position=>$chiffre){
           $totalsalairbrutAdm[$i][$position] += $chiffre * $salairebrut[$key][$i];
-          $couttotalpersonemAdm[$i][$position]+= ($chiffre * $salairebrut[$key][$i] * $staff[0]->getCharges()[$key][0]) /100 + $chiffre * $salairebrut[$key][$i];
-          $NetapayerAdm[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $staff[0]->getCharges()[$key][1]) /100 ;
-          $DecchargesalarialesAdm[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $staff[0]->getCharges()[$key][1]) /100 ;
+          $couttotalpersonemAdm[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
+          $NetapayerAdm[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+          $DecchargesalarialesAdm[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
           //dump($staff[0]->getCharges()[$key][0]);die();
         }}}
         //dump($totalsalairbrutAdm);die();
@@ -311,13 +349,18 @@ class StaffController extends AbstractController
       $entityManager = $this->getDoctrine()->getManager();
       $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
       $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
+      $products =$entityManager->getRepository(Product::class)->findByBusinessplan($businessSession);
+      $Listproduct =[];
       $years = $businessSession->getNumberofyears();
       for($i = 0 ; $i<$years;$i++){
         $Adminlist[$i] =  $staffdetail[$i]->getAdministration();
         $Productionlist[$i] = $staffdetail[$i]->getProduction();
         $CommercialList[$i] =  $staffdetail[$i]->getSales();
         $RechercheList[$i] =  $staffdetail[$i]->getRecherche();}
-        
+      foreach($products as $key=>$value){
+        array_push($Listproduct,$value->getName());
+      }
+      
         $status = '';
         if(array_key_exists($name, $Adminlist[0]) == true){
           $status = 'Administration';
@@ -343,6 +386,7 @@ class StaffController extends AbstractController
       $charges =  $staff[0]->getCharges()[$name];
       $Listcharges = $staff[0]->getCharges();
       $ListConditions = $staff[0]->getConditions();
+      $TypeCommission  = $staff[0]->getTypecommission(); 
       $JEI = $condition[0];
       $TNS = $condition[1];
       $Grafitation = $condition[2];
@@ -384,9 +428,11 @@ class StaffController extends AbstractController
                 $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
                 $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
                 $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
+                $TypeCommission[$form->getData()['Name']] = $form->getData()['Typecommision'];
                 $staff[0]->setSalairebrut($salairebrut);
                 $staff[0]->setCharges($Listcharges);
                 $staff[0]->setConditions($ListConditions);
+                $staff[0]->setTypecommission($TypeCommission);
               }}
               $entityManager->flush();
         return $this->redirectToRoute('staff');
@@ -394,7 +440,7 @@ class StaffController extends AbstractController
 
 
       return $this->render('staff/edit.html.twig',[
-      'name'=> $name , 'charges' => $charges,
+      'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct,
       'form'=>$form->createView()
       ]);
     }

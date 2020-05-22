@@ -99,11 +99,8 @@
 			Type commission		</label>
 
 		<div class="champ">
-			<select id="type_commission" name="type_commission">
-				<option value="" selected="selected"></option>
-				<option value="ca">Chiffre d'affaire</option>
-				<option value="produit">Produit</option>
-			</select>
+		
+		{{ form_widget (form.Typecommision, {'attr': {'type':'text','class':'type-text'}}) }}
 		</div>
 
 		<div class="clearer"></div>
@@ -129,6 +126,7 @@
 
 		<div class="champ">
 							<select id="produit_commission_ca_2" name="produit_commission_ca_2">
+										
 											<option value="261305">asus</option>
 											<option value="264760">dsd</option>
 											<option value="264441">fsdfs</option>

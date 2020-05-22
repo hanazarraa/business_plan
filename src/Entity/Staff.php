@@ -68,6 +68,21 @@ class Staff
      */
     private $charges = [];
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $typecommission = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $pourcentageCA = [];
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $commissionproduit = [];
+
     public function __construct()
     {
         $this->staffdetails = new ArrayCollection();
@@ -213,6 +228,42 @@ class Staff
     public function setCharges(array $charges): self
     {
         $this->charges = $charges;
+
+        return $this;
+    }
+
+    public function getTypecommission(): ?array
+    {
+        return $this->typecommission;
+    }
+
+    public function setTypecommission(?array $typecommission): self
+    {
+        $this->typecommission = $typecommission;
+
+        return $this;
+    }
+
+    public function getPourcentageCA(): ?array
+    {
+        return $this->pourcentageCA;
+    }
+
+    public function setPourcentageCA(?array $pourcentageCA): self
+    {
+        $this->pourcentageCA = $pourcentageCA;
+
+        return $this;
+    }
+
+    public function getCommissionproduit(): ?array
+    {
+        return $this->commissionproduit;
+    }
+
+    public function setCommissionproduit(?array $commissionproduit): self
+    {
+        $this->commissionproduit = $commissionproduit;
 
         return $this;
     }

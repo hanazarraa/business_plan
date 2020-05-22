@@ -45,6 +45,14 @@ class StaffEditFormType extends AbstractType
         ->add('ChargePatronale',NumberType::class,[])
         ->add('ChargeSalariales',NumberType::class,[])
      
+        ->add('Typecommision',ChoiceType::class,array(
+            'choices'=>array(
+                ''=>'0',
+                'Chiffre d\'affaire'=>'1',
+                'Produit'=>'2',
+                
+            )
+        ))
         ->add('submit', SubmitType::class);
     }
 }
