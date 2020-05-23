@@ -114,17 +114,17 @@
 			    			    </tr>
 			    <tr class="tr-292732">
 			    	<td class="not-survole"></td>
-			    					    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
 				</tr>
 
@@ -189,7 +189,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="https://www.montpellier-business-plan.com/espace_client/salarie/modal_salarie/0/292732" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -217,7 +217,7 @@
 			    
 						 Année {{i}}		    				    		<br />
 			    		<span class="saisie-detaillee-link">
-			    			<a href="https://www.montpellier-business-plan.com/mon-business-plan/personnel-annee-0" title="Gestion detaille">
+			    			<a href="{{path('staffdetail',{'id':i -1 })}}" title="Gestion detaille">
 								Saisie détaillée							</a>
 							<br />
 										    		</span>
@@ -236,7 +236,7 @@
 						<th> Année {{i}}
 						<br/>
 								<span class="saisie-detaillee-link">
-									<a href="{{path('investmentsdetail',{'id':i -1 })}}" title="Saisie détaillée">
+									<a href="{{path('staffdetail',{'id':i -1 })}}" title="Saisie détaillée">
 										Saisie détaillée
 									</a>
 									<br/>
@@ -246,21 +246,58 @@
 			    			    </tr>
 			    <tr class="tr-292733">
 			    	<td class="not-survole"></td>
-			    					    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
-			  	
+			{% for value in keypro %}					
+			  	<tr class="tr-292732" >
+				
+			  		<td class="soustitre not-survole">
+			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+			  				{{value}} <i class="fa fa-pencil"></i>
+						</a>
+					</td>
+			  		 {% for i in 0..rangeofdetail -1 %}	  		
+			  		<td class="aright massesalariale" id="massesalariale-0-216252-292732">
+			  			{{coutannuelpro[value][i]}}
+					</td>
+			  		<td class="aright">
+					 {{ form_widget (form.Salairebrut[value][i], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} 
+			  		
+					</td>
+			  		<td class="aright duplicate etpmoyen" id="etpmoyen-0-216252-292732">
+			  		{{ETPpro[i][value]}}
+					<input type="hidden" class="type-text" id="etp-216252-0" name="etp-216252-0" value="0"/>				  					  		
+					</td>
+			  		{% endfor %}			  		
+			  		{% if business.rangeofdetail < business.numberofyears  %}
+							
+							{% for s in 0..rangeofglobal - 1  %}
+							<td class="aright massesalariale" id="massesalariale-1-216252-292732">
+			  		      	{{coutannuelpro[value][s + rangeofdetail]}}</td>
+			  	        	<td class="aright">
+			  		        {{ form_widget (form.Salairebrut[value][s + rangeofdetail], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} </td>
+			  	        	<td class="aright duplicate etpmoyen" id="etpmoyen-1-216252-292732">
+			  				{{ form_widget (form.Production[value][s], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }}	</td>			  						  						  		</td>
+	                        {% endfor %}
+						   
+					{% endif %}
+
+
+			  		</tr>
+              
 			<tr>
+			  {% endfor %}
 				<td class="total wrap not-survole">Total Production</td>
 
 									<td colspan="2" class="total aright" id="massesalarialetotale-0-292733">
@@ -283,7 +320,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="https://www.montpellier-business-plan.com/espace_client/salarie/modal_salarie/0/292733" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -311,7 +348,7 @@
 			    
 						 Année {{i}}		    				    		<br />
 			    		<span class="saisie-detaillee-link">
-			    			<a href="https://www.montpellier-business-plan.com/mon-business-plan/personnel-annee-0" title="Gestion detaille">
+			    			<a href="{{path('staffdetail',{'id':i -1 })}}" title="Gestion detaille">
 								Saisie détaillée							</a>
 							<br />
 										    		</span>
@@ -330,7 +367,7 @@
 						<th> Année {{i}}
 						<br/>
 								<span class="saisie-detaillee-link">
-									<a href="{{path('investmentsdetail',{'id':i -1 })}}" title="Saisie détaillée">
+									<a href="{{path('staffdetail',{'id':i -1 })}}" title="Saisie détaillée">
 										Saisie détaillée
 									</a>
 									<br/>
@@ -340,21 +377,58 @@
 			    			    </tr>
 			    <tr class="tr-292734">
 			    	<td class="not-survole"></td>
-			    					    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
-			  	
+			{% for value in keycom %}					
+			  	<tr class="tr-292732" >
+				
+			  		<td class="soustitre not-survole">
+			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+			  				{{value}} <i class="fa fa-pencil"></i>
+						</a>
+					</td>
+			  		 {% for i in 0..rangeofdetail -1 %}	  		
+			  		<td class="aright massesalariale" id="massesalariale-0-216252-292732">
+			  			{{coutannuelcom[value][i]}}
+					</td>
+			  		<td class="aright">
+					 {{ form_widget (form.Salairebrut[value][i], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} 
+			  		
+					</td>
+			  		<td class="aright duplicate etpmoyen" id="etpmoyen-0-216252-292732">
+			  		{{ETPcom[i][value]}}
+					<input type="hidden" class="type-text" id="etp-216252-0" name="etp-216252-0" value="0"/>				  					  		
+					</td>
+			  		{% endfor %}			  		
+			  		{% if business.rangeofdetail < business.numberofyears  %}
+							
+							{% for s in 0..rangeofglobal - 1  %}
+							<td class="aright massesalariale" id="massesalariale-1-216252-292732">
+			  		      	{{coutannuelcom[value][s + rangeofdetail]}}</td>
+			  	        	<td class="aright">
+			  		        {{ form_widget (form.Salairebrut[value][s + rangeofdetail], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} </td>
+			  	        	<td class="aright duplicate etpmoyen" id="etpmoyen-1-216252-292732">
+			  				{{ form_widget (form.Sales[value][s], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }}	</td>			  						  						  		</td>
+	                        {% endfor %}
+						   
+					{% endif %}
+
+
+			  		</tr>
+              
 			<tr>
+			  {% endfor %}
 				<td class="total wrap not-survole">Total Commercial</td>
 
 									<td colspan="2" class="total aright" id="massesalarialetotale-0-292734">
@@ -377,7 +451,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="https://www.montpellier-business-plan.com/espace_client/salarie/modal_salarie/0/292734" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -405,7 +479,7 @@
 			    
 						 Année {{i}}		    				    		<br />
 			    		<span class="saisie-detaillee-link">
-			    			<a href="https://www.montpellier-business-plan.com/mon-business-plan/personnel-annee-0" title="Gestion detaille">
+			    			<a href="{{path('staffdetail',{'id':i -1 })}}" title="Gestion detaille">
 								Saisie détaillée							</a>
 							<br />
 										    		</span>
@@ -424,7 +498,7 @@
 						<th> Année {{i}}
 						<br/>
 								<span class="saisie-detaillee-link">
-									<a href="{{path('investmentsdetail',{'id':i -1 })}}" title="Saisie détaillée">
+									<a href="{{path('staffdetail',{'id':i -1 })}}" title="Saisie détaillée">
 										Saisie détaillée
 									</a>
 									<br/>
@@ -434,21 +508,62 @@
 			    			    </tr>
 			    <tr class="tr-292735">
 			    	<td class="not-survole"></td>
-			    					    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
-				    				    	<td class="soustitre">Coût annuel (en €)</td>
-				    	<td class="soustitre">Salaire brut mensuel (en €)</td>
+				    				    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
+				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
-			  	
+			{% for value in keyrec %}					
+			  	<tr class="tr-292732" >
+				
+			  		<td class="soustitre not-survole">
+			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+			  				{{value}} <i class="fa fa-pencil"></i>
+						</a>
+					</td>
+			  		 {% for i in 0..rangeofdetail -1 %}	  		
+			  		<td class="aright massesalariale" id="massesalariale-0-216252-292732">
+			  			{% if coutannuelrec !=[] %}
+						  {{coutannuelrec[value][i]}}{% endif %}
+					</td>
+			  		<td class="aright">
+					 {{ form_widget (form.Salairebrut[value][i], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} 
+			  		
+					</td>
+			  		<td class="aright duplicate etpmoyen" id="etpmoyen-0-216252-292732">
+			  		{% if ETPrec !=[] %}
+					  {{ETPrec[i][value]}}
+					  {% endif %}
+					<input type="hidden" class="type-text" id="etp-216252-0" name="etp-216252-0" value="0"/>				  					  		
+					</td>
+			  		{% endfor %}			  		
+			  		{% if business.rangeofdetail < business.numberofyears  %}
+							
+							{% for s in 0..rangeofglobal - 1  %}
+							<td class="aright massesalariale" id="massesalariale-1-216252-292732">
+			  		      	{% if coutannuelrec != [] %}
+								{{coutannuelrec[value][s + rangeofdetail]}} {% endif  %}</td>
+			  	        	<td class="aright">
+			  		        {{ form_widget (form.Salairebrut[value][s + rangeofdetail], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }} </td>
+			  	        	<td class="aright duplicate etpmoyen" id="etpmoyen-1-216252-292732">
+			  				{{ form_widget (form.Recherche[value][s], {'attr': {'type':'text','class':'type-text salairemensuel' }}) }}	</td>			  						  						  		</td>
+	                        {% endfor %}
+						   
+					{% endif %}
+
+
+			  		</tr>
+              
 			<tr>
+			  {% endfor %}
 				<td class="total wrap not-survole">Total Recherche & Développement</td>
 
 									<td colspan="2" class="total aright" id="massesalarialetotale-0-292735">
@@ -471,7 +586,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="https://www.montpellier-business-plan.com/espace_client/salarie/modal_salarie/0/292735" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>

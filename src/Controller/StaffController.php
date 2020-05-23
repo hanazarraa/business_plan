@@ -24,8 +24,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class StaffController extends AbstractController
 {
     private $ETP =[];
+    private $ETPpro =[];
+    private $ETPcom =[];
+    private $ETPrec =[];
     private $salairebrut = [];
-    
+    private $salairebrutpro = [];
+    private $salairebrutcom = [];
+    private $salairebrutrec = [];
     /**
      * @Route("/", name="staff")
      */
@@ -38,25 +43,64 @@ class StaffController extends AbstractController
         $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
         $keyadmin = [];
         $ETPglobal = [];
+        $ETPglobalpro = [];
+        $ETPglobalcom =[];
+        $ETPglobalrec = [];
         $coutannuel =[];
+        $coutannuelpro =[];
+        $coutannuelcom =[];
+        $coutannuelrec =[];
+        $newETPdetailled=[];
+        $newETPprodetailled=[];
+        $newETPcomdetailled = [];
+        $newETPrecdetailled =[];
         if($staffdetail != null){
-        $keyadmin = array_keys($staffdetail[0]->getAdministration());
+        $keyadmin = array_keys($staffdetail[0]->getAdministration());  //fomre cle -> valeur(nom) utilisé pour l'affichage seulement
+        $keypro = array_keys($staffdetail[0]->getProduction());
+        $keycom = array_keys($staffdetail[0]->getSales());
+        $keyrec = array_keys($staffdetail[0]->getRecherche());
+        $adminstrationkeys =  $staffdetail[0]->getAdministration() ; // pour l'intersection entre les salire brut et l'adminisration
+        $poductionkeys =  $staffdetail[0]->getProduction();
+        $commercialkeys =  $staffdetail[0]->getSales();
+        $recherchekeys =  $staffdetail[0]->getRecherche();
         $ETPglobal = $staff[0]->getAdministration();
-        $this->salairebrut = $staff[0]->getSalairebrut();
+        $ETPglobalpro = $staff[0]->getProduction();
+        $ETPglobalcom = $staff[0]->getSales();
+        $ETPglobalrec = $staff[0]->getRecherche();
+        $this->salairebrut = array_intersect_key($staff[0]->getSalairebrut(),$adminstrationkeys);// contient toutes les categorie
+        $this->salairebrutpro = array_intersect_key($staff[0]->getSalairebrut(),$poductionkeys);
+        $this->salairebrutcom = array_intersect_key($staff[0]->getSalairebrut(),$commercialkeys);
+        $this->salairebrutrec = array_intersect_key($staff[0]->getSalairebrut(),$recherchekeys);
         $charges =   $staff[0]->getCharges();
+        
         }
-       
+        
         $rangeofdetail = $businessSession->getRangeofdetail();
         $years = $businessSession->getNumberofyears();
         $rangeofglobal = $years - $rangeofdetail;
-        for($i =0 ; $i<$years;$i++){
-        $this->detail($request,$i,$productRepository,$SalesRepository);}
+        $this->calculETP();
+        //for($i =0 ; $i<$years;$i++){
+       // $this->detail($request,$i,$productRepository,$SalesRepository);}
         foreach($this->ETP as $key=>$values){//Renverser la liste ETP avec saisie detailler
             foreach($values as $name=>$chiffre){
                 $newETPdetailled[$name][$key] = $chiffre;
             }
-           // $newETP[$values][$key] = $values;
         }
+        foreach($this->ETPpro as $key=>$values){//Renverser la liste ETP avec saisie detailler
+          foreach($values as $name=>$chiffre){
+              $newETPprodetailled[$name][$key] = $chiffre;
+          }
+      }
+      foreach($this->ETPcom as $key=>$values){//Renverser la liste ETP avec saisie detailler
+        foreach($values as $name=>$chiffre){
+            $newETPcomdetailled[$name][$key] = $chiffre;
+        }
+    }
+    foreach($this->ETPrec as $key=>$values){//Renverser la liste ETP avec saisie detailler
+      foreach($values as $name=>$chiffre){
+          $newETPrecdetailled[$name][$key] = $chiffre;
+      }
+  }
        foreach($newETPdetailled as $key=>$value){ // merger les liste ETP globale et detailler
            for($i = $rangeofdetail ; $i<$years;$i++){
               
@@ -64,19 +108,52 @@ class StaffController extends AbstractController
             $newETPdetailled[$key][$i] = $value[$i];
            }    
        }
-       
+       foreach($newETPprodetailled as $key=>$value){ // merger les liste ETP globale et detailler
+        for($i = $rangeofdetail ; $i<$years;$i++){
+           
+         $value[$i]= $ETPglobalpro[$key][$i-$rangeofdetail];
+         $newETPprodetailled[$key][$i] = $value[$i];
+        }    
+    }
+    foreach($newETPcomdetailled as $key=>$value){ // merger les liste ETP globale et detailler
+      for($i = $rangeofdetail ; $i<$years;$i++){
+         
+       $value[$i]= $ETPglobalcom[$key][$i-$rangeofdetail];
+       $newETPcomdetailled[$key][$i] = $value[$i];
+        }    
+      }
+      foreach($newETPrecdetailled as $key=>$value){ // merger les liste ETP globale et detailler
+        for($i = $rangeofdetail ; $i<$years;$i++){
+           
+         $value[$i]= $ETPglobalrec[$key][$i-$rangeofdetail];
+         $newETPrecdetailled[$key][$i] = $value[$i];
+          }    
+        }
+      
         if($staffdetail != null){
             foreach($this->salairebrut as $key=>$values){
             for($i=0;$i<$years;$i++){
             $coutannuel[$key][$i] =  round((($newETPdetailled[$key][$i]*12) * $values[$i]) +(($newETPdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
             }}
+            foreach($this->salairebrutpro as $key=>$values){
+            for($i=0;$i<$years;$i++){
+            $coutannuelpro[$key][$i] =  round((($newETPprodetailled[$key][$i]*12) * $values[$i]) +(($newETPprodetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            }}
+            foreach($this->salairebrutcom as $key=>$values){
+            for($i=0;$i<$years;$i++){
+            $coutannuelcom[$key][$i] =  round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) +(($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            }}
+            foreach($this->salairebrutrec as $key=>$values){
+              for($i=0;$i<$years;$i++){
+              $coutannuelrec[$key][$i] =  round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) +(($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            }}
 
-            
             $form = $this->createForm(StaffFormType::class,$staff[0]);
         }
         else{
             $form = $this->createForm(StaffFormType::class);
         }
+        
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
      
@@ -84,10 +161,29 @@ class StaffController extends AbstractController
           return $this->redirectToRoute('staff');
          }
         return $this->render('staff/index.html.twig',[
-         'business'=> $businessSession,'form' => $form->createView(),'keyadmin' =>  $keyadmin,
+         'business'=> $businessSession,'form' => $form->createView(),'keyadmin' =>  $keyadmin,'keypro'=> $keypro , 'keycom'=> $keycom, 'keyrec' =>$keyrec, 
           'rangeofdetail'=>$rangeofdetail , 'rangeofglobal'=>$rangeofglobal,'ETP'=>$this->ETP,
-        'coutannuel' => $coutannuel
+        'coutannuel' => $coutannuel , 'coutannuelpro' => $coutannuelpro ,'coutannuelcom' => $coutannuelcom ,'coutannuelrec' => $coutannuelrec,
+        'ETPpro' => $this->ETPpro, 'ETPcom' => $this->ETPcom ,'ETPrec' => $this->ETPrec
           ]);
+    }
+    public function calculETP(){
+      $businessSession =$this->container->get('session')->get('business');
+      $entityManager = $this->getDoctrine()->getManager();
+      $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+      $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
+      $years = $businessSession->getNumberofyears();
+      for($i =0 ; $i<$years;$i++){
+        foreach($staffdetail[$i]->getAdministration() as $key=>$value ){
+            $this->ETP[$i][$key] = round(array_sum($value)/12 , 2);}
+        foreach($staffdetail[$i]->getProduction() as $key=>$value ){
+            $this->ETPpro[$i][$key] = round(array_sum($value)/12 , 2);}
+        foreach($staffdetail[$i]->getSales() as $key=>$value ){
+            $this->ETPcom[$i][$key] = round(array_sum($value)/12 , 2);}
+        foreach($staffdetail[$i]->getRecherche() as $key=>$value ){
+            $this->ETPrec[$i][$key] = round(array_sum($value)/12 , 2);}
+          }
+          
     }
      /**
      * @Route("-year-{id}", name="staffdetail")
@@ -100,10 +196,16 @@ class StaffController extends AbstractController
         $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
         $years = $businessSession->getNumberofyears();
         $keyadmin = [];
+        $keypro = [];
+        $keycom = [];
+        $keyrec = [];
         $salairebrut = [];
         $ListCommission =[];
         if($staffdetail != null){
           $keyadmin = array_keys($staffdetail[0]->getAdministration());
+          $keypro = array_keys($staffdetail[0]->getProduction());
+          $keycom = array_keys($staffdetail[0]->getSales());
+          $keyrec = array_keys($staffdetail[0]->getRecherche());
           $conditions = $staff[0]->getConditions();
           $commissionproduct = $staff[0]->getCommissionproduit();
         }
@@ -177,10 +279,9 @@ class StaffController extends AbstractController
         if($staffdetail != null){
         $keyadmin = array_keys($staffdetail[0]->getAdministration());
         
-       
-       for($i =0 ; $i<$years;$i++){
-        foreach($staffdetail[$i]->getAdministration() as $key=>$value ){
-            $this->ETP[$i][$key] = round(array_sum($value)/12 , 2);}}
+       //fonction pour le calcul ETP
+       $this->calculETP();
+          
         $salairebrut = $staff[0]->getSalairebrut();
        //----------------Debut de calcul de decaissement ----------------------------//
        for($i =0 ; $i<$years;$i++){
@@ -297,8 +398,8 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
             return $this->redirectToRoute('staffdetail',['id'=>$id]);
            }
         return $this->render('staff/detail.html.twig',[
-            'business'=> $businessSession , 'keyadmin' => $keyadmin,'form'=>$form->createView()
-        ,'ETP' => $this->ETP, 'id'=> $id,'salairebrut' => $salairebrut,
+            'business'=> $businessSession , 'keyadmin' => $keyadmin,'keypro'=>$keypro ,'keycom'=>$keycom,'keyrec'=>$keyrec,'form'=>$form->createView()
+        ,'ETP' => $this->ETP, 'ETPpro' => $this->ETPpro,'ETPcom' => $this->ETPcom   , 'ETPrec' => $this->ETPrec,'id'=> $id,'salairebrut' => $salairebrut,
         'totalsalairbrutAdm' => $totalsalairbrutAdm, 'couttotalpersonemAdm' => $couttotalpersonemAdm,'NetapayerAdm'=> $NetapayerAdm,
          'TotalDecaissementAdm' =>$TotalDecaissementAdm,'horsgerant' =>$lastDecchargeemployeurhorsgerantAdm,
          'chargesalariale'=> $lastDecchargesalarialesAdm,'charges'=> $lastDecchargesAdm, 'commissionAdm' => $commisionAdm
@@ -403,8 +504,125 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                            //$investments[0]->setBusinessplan($businessSession);
                            }
                     }
-                    $entityManager->flush();
+          if($form->getData()['Department']==1 ){
+            for($i =0 ;$i<$rangeofglobal;$i++){
+             $Production[$form->getData()['Name']][$i] = "0.00";}
+             for($i =0 ;$i<$years;$i++){
+              $salairebrut[$form->getData()['Name']][$i] = "0.00";}
+              $condition[$form->getData()['Name']][0]= ''.$form->getData()['JEI'];
+              $condition[$form->getData()['Name']][1]= ''.$form->getData()['TNS'];
+              $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
+              $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
+              $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+              for($i=0; $i<$years;$i++){
+              for($x=0 ; $x<12;$x++){
+              $Productiondetail[$i][$form->getData()['Name']][$x] = "0.00";}}
+              if($empty == true ){
+              $staff->setProduction($Production);
+              $staff->setSalairebrut($salairebrut);
+              $staff->setConditions($condition);
+              $staff->setCharges($charges);
+              $staff->setParametre($parametre);
+              $staff->setBusinessplan($businessSession);
+              $entityManager->merge($staff);
+              $entityManager->flush();
+              //dump($investments);die();
+              $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+              for($i=0; $i<$years;$i++){  
+              //dump($investments);die();
+              $staffdetail->setYear($i);
+              $staffdetail->setProduction($Productiondetail[$i]);
+              $staffdetail->setStaff($staff[0]);
+              $entityManager->merge($staffdetail);}}
+              else{
+              $staff[0]->setProduction($Production);
+              $staff[0]->setSalairebrut($salairebrut);
+              $staff[0]->setConditions($condition);
+              $staff[0]->setCharges($charges);
+              for($i=0; $i<$years;$i++){
+              $staffdetail[$i]->setProduction($Productiondetail[$i]);}
+              }
+              }
+              if($form->getData()['Department']==2 ){
+                for($i =0 ;$i<$rangeofglobal;$i++){
+                 $Commercial[$form->getData()['Name']][$i] = "0.00";}
+                 for($i =0 ;$i<$years;$i++){
+                  $salairebrut[$form->getData()['Name']][$i] = "0.00";}
+                  $condition[$form->getData()['Name']][0]= ''.$form->getData()['JEI'];
+                  $condition[$form->getData()['Name']][1]= ''.$form->getData()['TNS'];
+                  $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
+                  $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
+                  $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+                  for($i=0; $i<$years;$i++){
+                  for($x=0 ; $x<12;$x++){
+                  $Commercialdetail[$i][$form->getData()['Name']][$x] = "0.00";}}
+                  if($empty == true ){
+                  $staff->setSales($Commercial);
+                  $staff->setSalairebrut($salairebrut);
+                  $staff->setConditions($condition);
+                  $staff->setCharges($charges);
+                  $staff->setParametre($parametre);
+                  $staff->setBusinessplan($businessSession);
+                  $entityManager->merge($staff);
+                  $entityManager->flush();
+                  //dump($investments);die();
+                  $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+                  for($i=0; $i<$years;$i++){  
+                  //dump($investments);die();
+                  $staffdetail->setYear($i);
+                  $staffdetail->setSales($Commercialdetail[$i]);
+                  $staffdetail->setStaff($staff[0]);
+                  $entityManager->merge($staffdetail);}}
+                  else{
+                  $staff[0]->setSales($Commercial);
+                  $staff[0]->setSalairebrut($salairebrut);
+                  $staff[0]->setConditions($condition);
+                  $staff[0]->setCharges($charges);
+                  for($i=0; $i<$years;$i++){
+                  $staffdetail[$i]->setSales($Commercialdetail[$i]);}
+                  }
+                  } 
+                  if($form->getData()['Department']==3 ){
+                    for($i =0 ;$i<$rangeofglobal;$i++){
+                     $Recherche[$form->getData()['Name']][$i] = "0.00";}
+                     for($i =0 ;$i<$years;$i++){
+                      $salairebrut[$form->getData()['Name']][$i] = "0.00";}
+                      $condition[$form->getData()['Name']][0]= ''.$form->getData()['JEI'];
+                      $condition[$form->getData()['Name']][1]= ''.$form->getData()['TNS'];
+                      $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
+                      $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
+                      $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+                      for($i=0; $i<$years;$i++){
+                      for($x=0 ; $x<12;$x++){
+                      $Recherchedetail[$i][$form->getData()['Name']][$x] = "0.00";}}
+                      if($empty == true ){
+                      $staff->setRecherche($Recherche);
+                      $staff->setSalairebrut($salairebrut);
+                      $staff->setConditions($condition);
+                      $staff->setCharges($charges);
+                      $staff->setParametre($parametre);
+                      $staff->setBusinessplan($businessSession);
+                      $entityManager->merge($staff);
+                      $entityManager->flush();
+                      //dump($investments);die();
+                      $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+                      for($i=0; $i<$years;$i++){  
+                      //dump($investments);die();
+                      $staffdetail->setYear($i);
+                      $staffdetail->setRecherche($Recherchedetail[$i]);
+                      $staffdetail->setStaff($staff[0]);
+                      $entityManager->merge($staffdetail);}}
+                      else{
+                      $staff[0]->setRecherche($Recherche);
+                      $staff[0]->setSalairebrut($salairebrut);
+                      $staff[0]->setConditions($condition);
+                      $staff[0]->setCharges($charges);
+                      for($i=0; $i<$years;$i++){
+                      $staffdetail[$i]->setRecherche($Recherchedetail[$i]);}
+                      }
+                      }  
             }
+            $entityManager->flush();
             return $this->redirectToRoute('staff');
         }
         return $this->render('staff/position.html.twig',['form'=>$form->createView()]);

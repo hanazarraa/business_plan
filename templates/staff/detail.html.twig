@@ -158,7 +158,34 @@
 			    			    <th>Déc</th>
 			    			    <th>ETP moyen</th>
 			  </tr>
-			  	
+			  	{% for value in keypro %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  							  				-
+			  				
+			  			</td>
+                                                 {% for i in form.production[value] %}
+			  						  			<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  							  			{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  						  			{% endfor %}
+			  						  			<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  					{{ETPpro[id][value]}}							</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}		
 							<tr>
 					<td colspan="16" class="not-survole">
 						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292733">
@@ -194,7 +221,34 @@
 			    			    <th>Déc</th>
 			    			    <th>ETP moyen</th>
 			  </tr>
-			  	
+			  		{% for value in keycom %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  							  				-
+			  				
+			  			</td>
+                           {% for i in form.sales[value] %}
+			  				<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  				{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  				{% endfor %}
+			  				<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  				{{ETPcom[id][value]}}</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}	
 							<tr>
 					<td colspan="16" class="not-survole">
 						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292734">
@@ -230,7 +284,34 @@
 			    			    <th>Déc</th>
 			    			    <th>ETP moyen</th>
 			  </tr>
-			  	
+			  	{% for value in keyrec %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  							  				-
+			  				
+			  			</td>
+                           {% for i in form.recherche[value] %}
+			  				<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  				{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  				{% endfor %}
+			  				<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  				{{ETPrec[id][value]}}</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}	
 							<tr>
 					<td colspan="16" class="not-survole">
 						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292735">
