@@ -101,9 +101,11 @@ class StaffController extends AbstractController
         $years = $businessSession->getNumberofyears();
         $keyadmin = [];
         $salairebrut = [];
+        $ListCommission =[];
         if($staffdetail != null){
           $keyadmin = array_keys($staffdetail[0]->getAdministration());
           $conditions = $staff[0]->getConditions();
+          $commissionproduct = $staff[0]->getCommissionproduit();
         }
         //-----------------------------Partie pour le tableau sales ------------------------------//
         $salesdetail = $this->sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
@@ -113,7 +115,7 @@ class StaffController extends AbstractController
           'SalesRepository' => $SalesRepository,
       ]);
       $finalCA = SalesController::getfinalca();
-     
+      //------------------------Calcul par CA -------------------------//
         for($x = 0 ; $x < $years ; $x++){
          for($i = 0 ; $i < 12 ; $i++){
            $SumfinalCAperMouth[$x][$i] =  0 ;
@@ -127,11 +129,23 @@ class StaffController extends AbstractController
          }
         }     
       }
-      
-      // ----------------------- decouper la liste finalCA -----------------//
-
-      //------------------------fin de decoupage----------------------------//
-      //dump($finalCA);die();
+      //-------------------------Fin de Calcul -----------------------//
+      // ----------------------- Calclul par produit -----------------//
+      $Allproductnames = array_keys($finalCA);
+      foreach($Allproductnames as $cle=>$name){
+      foreach($commissionproduct as  $key=>$value){
+        foreach($value as $commission){
+          if(strpos($commission, $name) !== false){
+            
+            $ListCommission[$key][substr($commission, 0 , strlen($name) )]  = substr($commission, strlen($name) ) ;
+          }
+          //$ListCommission[$key] = 
+        }
+        
+      }}  
+     //dump($ListCommission);die();
+      //------------------------fin de Calcul----------------------------//
+      //dump($commissionproduct,$ListCommission);die();
   
         //-----------------------------Fin----------------------------------------------------------//
         //-----------------------------instantier les listes  pour le decaissement-------------------------//
@@ -175,6 +189,9 @@ class StaffController extends AbstractController
           $chargesalariale = $staff[0]->getCharges()[$key][1];
           $tvaCA = $staff[0]->getPourcentageCA()[$key][0];
           $typeCommision = $staff[0]->getTypecommission()[$key][0];
+          if(array_key_exists($key,$ListCommission)){
+          $Tvaparproduit = $ListCommission[$key];}
+          
           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
             $tvapatronale = $staff[0]->getCharges()[$key][0];
             $chargesalariale = $staff[0]->getCharges()[$key][1];
@@ -209,13 +226,20 @@ class StaffController extends AbstractController
        
          // dump($tvapatronale);die();
          foreach($value as $position=>$chiffre){
-           if($typeCommision == '1'){
+           if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
              if($chiffre >0 && $commisionAdm[$i][$position] == 0){
           $commisionAdm[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
           else{
             $commisionAdm[$i][$position]+= 0 ;
           }
-        } 
+         } 
+         if($typeCommision == '2'){//si le typecommission de type Produit
+          if($chiffre >0){
+           foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+$commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+         }}
+         else{ $commisionAdm[$i][$position]+= 0 ;}
+        }
           $totalsalairbrutAdm[$i][$position] += $chiffre * $salairebrut[$key][$i];
           $couttotalpersonemAdm[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
           $NetapayerAdm[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
@@ -434,6 +458,7 @@ class StaffController extends AbstractController
       $CA = $staff[0]->getPourcentageCA()[$name];
       $TypeCommisionall = $staff[0]->getTypecommission() ;
       $CAall = $staff[0]->getPourcentageCA();
+      $commisionproduct = $staff[0]->getCommissionproduit();
       $JEI = $condition[0];
       $TNS = $condition[1];
       $Grafitation = $condition[2];
@@ -471,18 +496,22 @@ class StaffController extends AbstractController
             }
             if($form->getData()['Name'] != '' && array_key_exists($form->getData()['Name'],$salairebrut) == false){
               if($form->getData()['Department']==0 ){
-
+                $commisionList =  explode(",",$form->getData()['product']);
+                
                 $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
                 $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
                 $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
                 $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
                 $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];
+                
+                $commisionproduct[$form->getData()['Name']] = $commisionList;
+                
                 $staff[0]->setSalairebrut($salairebrut);
                 $staff[0]->setCharges($Listcharges);
                 $staff[0]->setConditions($ListConditions);
                 $staff[0]->setTypecommission($TypeCommisionall);
                 $staff[0]->setPourcentageCA($CAall);
-               
+                $staff[0]->setCommissionproduit($commisionproduct);
               }}
               $entityManager->flush();
         return $this->redirectToRoute('staff');

@@ -132,13 +132,13 @@
 							</select>
 				Saisissez le pourcentage de commission :
 				<!-- <input type="text" class="type-text w-100" id="produit_commission_ca" name="produit_commission_ca" value="" />  -->
-				<input type="text" class="type-text w-50" id="produit_pourcentage_commission_ca" name="produit_pourcentage_commission_ca" maxlength="2" value=""> %
+				<input type="text" class="type-text w-50" id="produit_pourcentage_commission_ca" name="produit_pourcentage_commission_ca" maxlength="2" minlength="1"  value=""> %
 				<input type="button" class="type-text w-50" value="OK" id="ajouter_produit_pourcentage_commission_ca" name="ajouter_produit_pourcentage_commission_ca" onclick="ajouter()">
 						<ul id="liste_commision_produits">
 						
 						</ul>
 		</div>
-	{{ form_widget (form.product, {'attr': {'type':'text','class':'type-text'}}) }}
+	{{ form_widget (form.product, {'attr': {'type':'text','class':'type-text' ,'hidden':'hidden'}}) }}
 		<div class="clearer"></div>
 	</div>
 	<input type="hidden" name="sqda45bz" value="216427">
@@ -166,7 +166,7 @@
 	    document.getElementById("CA").style.display = "block";
 		document.getElementById("Produit").style.display = "none";	
 	}
-	else if(that.value == "2"){
+	else if(x.value == "2"){
  document.getElementById("CA").style.display = "none";
 		 document.getElementById("Produit").style.display = "block";
 	}
@@ -174,26 +174,39 @@
 	document.getElementById("Produit").style.display = "none";
 		document.getElementById("CA").style.display = "none";
 	}
+    function remove(s,tva){
+    li = document.getElementById(s);
+	li.parentNode.parentNode.removeChild(li.parentNode);
+	document.getElementById("staff_edit_form_product").value = document.getElementById("staff_edit_form_product").value.replace(s+tva+',','');
+     }
 	function ajouter(){
 		var list = document.getElementById('liste_commision_produits');
 		var name = document.getElementById("produit_commission_ca_2").value ;
 		var tva = document.getElementById("produit_pourcentage_commission_ca").value;
 		var entry = document.createElement('li');
 		var img = document.createElement('img');
+		var a = document.createElement('a');
 		var exsist = false ;
 		img.src = "{{ asset('images/design/cancel.png') }}";
 		img.alt = "Supprimer";
+		a.id = name ;
+		entry.id = ' '+name ;
+		a.href="javascript:remove('"+name+"',"+ tva +")";
 		entry.appendChild(document.createTextNode(name+ ' avec un pourcentage de ' +  tva ));
-        entry.appendChild(img);
-		for (i = 1; i < list.childNodes.length -1; i++) {
-        if(list.childNodes[i].innerText.indexOf(name)==-1){
+        
+		entry.appendChild(a);
+		a.appendChild(img);
+		
+		for (i = 1; i < list.childNodes.length ; i++) {
+        if(list.childNodes[i].innerText.indexOf(name)!=-1){
 			exsist = true;
         }
         }
-		if(exsist == true){
-	list.appendChild(entry);
+		if(exsist == false && tva !='' && isNaN(tva)== false){
+	    list.appendChild(entry);
+		document.getElementById("staff_edit_form_product").value =document.getElementById("staff_edit_form_product").value + name+tva+',';
 		}
-		document.getElementById("staff_edit_form_product").value = name;
+	
 	}
 	function yesnoCheck(that) {
     if (that.value == "1") {
@@ -209,5 +222,7 @@
 		document.getElementById("CA").style.display = "none";
 	}
 }
+ 
+   
 	</script>
 {{form_end(form)}}
