@@ -53,7 +53,12 @@ class StaffEditFormType extends AbstractType
                 
             )
         ))
-        ->add('CA',NumberType::class,[])
+        ->add('CA',NumberType::class,[
+            'required' => false ,
+        ])
+        ->add('product',TextType::class,[
+            'required' => false ,
+        ])
         ->add('submit', SubmitType::class);
     }
 }

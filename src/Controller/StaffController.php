@@ -404,7 +404,7 @@ class StaffController extends AbstractController
       foreach($products as $key=>$value){
         array_push($Listproduct,$value->getName());
       }
-      
+    
         $status = '';
         if(array_key_exists($name, $Adminlist[0]) == true){
           $status = 'Administration';
@@ -491,7 +491,7 @@ class StaffController extends AbstractController
 
       return $this->render('staff/edit.html.twig',[
       'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct, 'CA' =>  $CA,
-      'form'=>$form->createView()
+      'form'=>$form->createView() , 'product' => $Listproduct,
       ]);
     }
 }
