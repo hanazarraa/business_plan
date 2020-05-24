@@ -286,10 +286,13 @@ class StaffController extends AbstractController
        //----------------Debut de calcul de decaissement ----------------------------//
        for($i =0 ; $i<$years;$i++){
        foreach($staffdetail[$i]->getAdministration() as $key=>$value){
+          
           $tvapatronale = $staff[0]->getCharges()[$key][0];
           $chargesalariale = $staff[0]->getCharges()[$key][1];
-          $tvaCA = $staff[0]->getPourcentageCA()[$key][0];
-          $typeCommision = $staff[0]->getTypecommission()[$key][0];
+          if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+          $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+          if(array_key_exists($key,$staff[0]->getTypecommission())){
+          $typeCommision = $staff[0]->getTypecommission()[$key][0];}
           if(array_key_exists($key,$ListCommission)){
           $Tvaparproduit = $ListCommission[$key];}
           
@@ -442,6 +445,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
         $salairebrut = $staff[0]->getSalairebrut();
         $condition = $staff[0]->getConditions();
         $charges = $staff[0]->getCharges();
+        $typecommission = $staff[0]->getTypecommission();
+        $ca = $staff[0]->getPourcentageCA();
+        $commissionproduit = $staff[0]->getCommissionproduit();
         for($i=0; $i<$years;$i++){
           $Administrationdetail[$i] = $staffdetail[$i]->getAdministration();
           $Productiondetail[$i] =  $staffdetail[$i]->getProduction();
@@ -466,6 +472,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                       $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
                       $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
                       $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+                      $typecommission[$form->getData()['Name']] = ["0"];
+                      $ca[$form->getData()['Name']] = [""];
+                      $commissionproduit[$form->getData()['Name']]  = [""];
                       for($i=0; $i<$years;$i++){
                         for($x=0 ; $x<12;$x++){
                          $Administrationdetail[$i][$form->getData()['Name']][$x] = "0.00";}}
@@ -476,6 +485,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                             $staff->setCharges($charges);
                             $staff->setParametre($parametre);
                             $staff->setBusinessplan($businessSession);
+                            $staff->setTypecommission($typecommission);
+                            $staff->setPourcentageCA($ca);
+                            $staff->setCommissionproduit($commissionproduit);
                             $entityManager->merge($staff);
                             $entityManager->flush();
                             //dump($investments);die();
@@ -497,7 +509,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                            $staff[0]->setSalairebrut($salairebrut);
                            $staff[0]->setConditions($condition);
                            $staff[0]->setCharges($charges);
-  
+                           $staff[0]->setTypecommission($typecommission);
+                           $staff[0]->setPourcentageCA($ca);
+                           $staff[0]->setCommissionproduit($commissionproduit);
                            for($i=0; $i<$years;$i++){
                            $staffdetail[$i]->setAdministration($Administrationdetail[$i]);}
                                
@@ -514,6 +528,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
               $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
               $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
               $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+              $typecommission[$form->getData()['Name']] = ["0"];
+              $ca[$form->getData()['Name']] = [""];
+               $commissionproduit[$form->getData()['Name']]  = [""];
               for($i=0; $i<$years;$i++){
               for($x=0 ; $x<12;$x++){
               $Productiondetail[$i][$form->getData()['Name']][$x] = "0.00";}}
@@ -524,6 +541,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
               $staff->setCharges($charges);
               $staff->setParametre($parametre);
               $staff->setBusinessplan($businessSession);
+              $staff->setTypecommission($typecommission);
+              $staff->setPourcentageCA($ca);
+              $staff->setCommissionproduit($commissionproduit);
               $entityManager->merge($staff);
               $entityManager->flush();
               //dump($investments);die();
@@ -539,6 +559,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
               $staff[0]->setSalairebrut($salairebrut);
               $staff[0]->setConditions($condition);
               $staff[0]->setCharges($charges);
+              $staff[0]->setTypecommission($typecommission);
+              $staff[0]->setPourcentageCA($ca);
+              $staff[0]->setCommissionproduit($commissionproduit);
               for($i=0; $i<$years;$i++){
               $staffdetail[$i]->setProduction($Productiondetail[$i]);}
               }
@@ -553,6 +576,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
                   $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
                   $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+                  $typecommission[$form->getData()['Name']] = ["0"];
+                  $ca[$form->getData()['Name']] = [""];
+                   $commissionproduit[$form->getData()['Name']]  = [""];
                   for($i=0; $i<$years;$i++){
                   for($x=0 ; $x<12;$x++){
                   $Commercialdetail[$i][$form->getData()['Name']][$x] = "0.00";}}
@@ -563,6 +589,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $staff->setCharges($charges);
                   $staff->setParametre($parametre);
                   $staff->setBusinessplan($businessSession);
+                  $staff->setTypecommission($typecommission);
+                  $staff->setPourcentageCA($ca);
+                  $staff->setCommissionproduit($commissionproduit);
                   $entityManager->merge($staff);
                   $entityManager->flush();
                   //dump($investments);die();
@@ -578,6 +607,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $staff[0]->setSalairebrut($salairebrut);
                   $staff[0]->setConditions($condition);
                   $staff[0]->setCharges($charges);
+                  $staff[0]->setTypecommission($typecommission);
+                  $staff[0]->setPourcentageCA($ca);
+                  $staff[0]->setCommissionproduit($commissionproduit);
                   for($i=0; $i<$years;$i++){
                   $staffdetail[$i]->setSales($Commercialdetail[$i]);}
                   }
@@ -592,6 +624,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                       $condition[$form->getData()['Name']][2]= ''.$form->getData()['Gratification'];
                       $charges[$form->getData()['Name']][0]= ''.$form->getData()['ChargePatronale'];
                       $charges[$form->getData()['Name']][1]= ''.$form->getData()['ChargeSalariales'];
+                      $typecommission[$form->getData()['Name']] = ["0"];
+                      $ca[$form->getData()['Name']] = [""];
+                      $commissionproduit[$form->getData()['Name']]  = [""];
                       for($i=0; $i<$years;$i++){
                       for($x=0 ; $x<12;$x++){
                       $Recherchedetail[$i][$form->getData()['Name']][$x] = "0.00";}}
@@ -602,6 +637,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                       $staff->setCharges($charges);
                       $staff->setParametre($parametre);
                       $staff->setBusinessplan($businessSession);
+                      $staff->setTypecommission($typecommission);
+                      $staff->setPourcentageCA($ca);
+                      $staff->setCommissionproduit($commissionproduit);
                       $entityManager->merge($staff);
                       $entityManager->flush();
                       //dump($investments);die();
@@ -617,6 +655,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                       $staff[0]->setSalairebrut($salairebrut);
                       $staff[0]->setConditions($condition);
                       $staff[0]->setCharges($charges);
+                      $staff[0]->setTypecommission($typecommission);
+                      $staff[0]->setPourcentageCA($ca);
+                      $staff[0]->setCommissionproduit($commissionproduit);
                       for($i=0; $i<$years;$i++){
                       $staffdetail[$i]->setRecherche($Recherchedetail[$i]);}
                       }
@@ -637,6 +678,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
       $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
       $products =$entityManager->getRepository(Product::class)->findByBusinessplan($businessSession);
       $Listproduct =[];
+      $department ;
+      $TypeCommission[0]="0";
+      $CA[0] = "";
       $years = $businessSession->getNumberofyears();
       for($i = 0 ; $i<$years;$i++){
         $Adminlist[$i] =  $staffdetail[$i]->getAdministration();
@@ -651,18 +695,22 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
         if(array_key_exists($name, $Adminlist[0]) == true){
           $status = 'Administration';
           $AdminGlobalList = $staff[0]->getAdministration() ;
+          $department = "0";
          }
          if(array_key_exists($name, $Productionlist[0]) == true){
           $status = 'Production';
           $ProductionGlobalList = $staff[0]->getProduction() ;
+          $department = "1";
          }
          if(array_key_exists($name, $CommercialList[0]) == true){
           $status = 'Commercial';
           $CommercialGlobalList =  $staff[0]->getSales() ;
+          $department = "2";
          }
          if(array_key_exists($name, $RechercheList[0]) == true){
           $status = 'Recherche';
           $RechercheGlobalList =  $staff[0]->getRecherche() ;
+          $department = "3";
          }
       $JEIstatus = True ;
       $TNSstatus = True ;
@@ -672,8 +720,14 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
       $charges =  $staff[0]->getCharges()[$name];
       $Listcharges = $staff[0]->getCharges();
       $ListConditions = $staff[0]->getConditions();
-      $TypeCommission  = $staff[0]->getTypecommission()[$name]; 
-      $CA = $staff[0]->getPourcentageCA()[$name];
+      if(array_key_exists($name, $staff[0]->getTypecommission()) == true){
+      $TypeCommission  = $staff[0]->getTypecommission()[$name];}
+      if(array_key_exists($name, $staff[0]->getPourcentageCA()) == true){ 
+        $CA = $staff[0]->getPourcentageCA()[$name];}
+      if(array_key_exists($name, $staff[0]->getCommissionproduit()) == true){ 
+          $commisionproductone = $staff[0]->getCommissionproduit()[$name];}
+      
+      
       $TypeCommisionall = $staff[0]->getTypecommission() ;
       $CAall = $staff[0]->getPourcentageCA();
       $commisionproduct = $staff[0]->getCommissionproduit();
@@ -689,11 +743,11 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
       if($Grafitation == ""){
         $GRAstatus = false ;
       }
-     // dump($JEI);die();
-      $form = $this->createForm(StaffEditFormType::class,['Department' => '0' ,'JEI' => $JEIstatus 
+      //dump($TypeCommission);die();
+      $form = $this->createForm(StaffEditFormType::class,['Department' => $department ,'JEI' => $JEIstatus 
       ,'TNS'=> $TNSstatus , 'Gratification'=>$GRAstatus ,'Typecommision' =>$TypeCommission[0] ,
       ]);
-      
+    
       $form->handleRequest($request);
       if($form->isSubmitted() && $form->isValid()){
        
@@ -701,17 +755,116 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
             if($status == 'Administration' && $AdminGlobalList != []){
              ${"admin" . $name}=$AdminGlobalList[$name]; // conserver les valeurs  avant de supprimer
              ${"salaire".$name}= $salairebrut[$name];
-             
-             //unset($AdminGlobalList[$name]);
-             
+             ${"charge".$name}= $charges;
+             ${"condition".$name}= $condition;
+             ${"typecommision".$name} = $TypeCommission;
+             ${"chiffre".$name} = $CA;
+             ${"produit".$name} = $commisionproductone;
+             for($i = 0 ; $i<$years;$i++){    
+              ${"d" . $i} = $Adminlist[$i][$name];
+              unset($Adminlist[$i][$name]);
+              $staffdetail[$i]->setAdministration($Adminlist[$i]);
+            }
+             unset($AdminGlobalList[$name]);
              unset($salairebrut[$name]);
              unset($Listcharges[$name]);
              unset($ListConditions[$name]);
-             // $staff[0]->setAdministration($AdminGlobalList);
+             unset($commisionproduct[$name]);
+             unset($CAall[$name]);
+             unset($TypeCommisionall[$name]);
+              $staff[0]->setAdministration($AdminGlobalList);
               $staff[0]->setSalairebrut($salairebrut);
               $staff[0]->setCharges($Listcharges);
               $staff[0]->setConditions($ListConditions);
+              $staff[0]->setTypecommission($TypeCommisionall);
+              $staff[0]->setPourcentageCA($CAall);
+              $staff[0]->setCommissionproduit($commisionproduct);
             }
+            if($status == 'Production' && $ProductionGlobalList != []){
+              ${"admin" . $name}=$ProductionGlobalList[$name]; // conserver les valeurs  avant de supprimer
+              ${"salaire".$name}= $salairebrut[$name];
+              ${"charge".$name}= $charges;
+              ${"condition".$name}= $condition;
+              ${"typecommision".$name} = $TypeCommission;
+              ${"chiffre".$name} = $CA;
+              ${"produit".$name} = $commisionproductone;
+              for($i = 0 ; $i<$years;$i++){    
+               ${"d" . $i} = $Productionlist[$i][$name];
+               unset($Productionlist[$i][$name]);
+               $staffdetail[$i]->setProduction($Productionlist[$i]);
+             }
+              unset($ProductionGlobalList[$name]);
+              unset($salairebrut[$name]);
+              unset($Listcharges[$name]);
+              unset($ListConditions[$name]);
+              unset($commisionproduct[$name]);
+              unset($CAall[$name]);
+              unset($TypeCommisionall[$name]);
+               $staff[0]->setProduction($ProductionGlobalList);
+               $staff[0]->setSalairebrut($salairebrut);
+               $staff[0]->setCharges($Listcharges);
+               $staff[0]->setConditions($ListConditions);
+               $staff[0]->setTypecommission($TypeCommisionall);
+               $staff[0]->setPourcentageCA($CAall);
+               $staff[0]->setCommissionproduit($commisionproduct);
+             }
+             if($status == 'Commercial' && $CommercialGlobalList != []){
+              ${"admin" . $name}=$CommercialGlobalList[$name]; // conserver les valeurs  avant de supprimer
+              ${"salaire".$name}= $salairebrut[$name];
+              ${"charge".$name}= $charges;
+              ${"condition".$name}= $condition;
+              ${"typecommision".$name} = $TypeCommission;
+              ${"chiffre".$name} = $CA;
+              ${"produit".$name} = $commisionproductone;
+              for($i = 0 ; $i<$years;$i++){    
+               ${"d" . $i} = $CommercialList[$i][$name];
+               unset($CommercialList[$i][$name]);
+               $staffdetail[$i]->setSales($CommercialList[$i]);
+             }
+              unset($CommercialGlobalList[$name]);
+              unset($salairebrut[$name]);
+              unset($Listcharges[$name]);
+              unset($ListConditions[$name]);
+              unset($commisionproduct[$name]);
+              unset($CAall[$name]);
+              unset($TypeCommisionall[$name]);
+               $staff[0]->setSales($CommercialGlobalList);
+               $staff[0]->setSalairebrut($salairebrut);
+               $staff[0]->setCharges($Listcharges);
+               $staff[0]->setConditions($ListConditions);
+               $staff[0]->setTypecommission($TypeCommisionall);
+               $staff[0]->setPourcentageCA($CAall);
+               $staff[0]->setCommissionproduit($commisionproduct);
+             }
+             if($status == 'Recherche' && $RechercheGlobalList != []){
+              ${"admin" . $name}=$RechercheGlobalList[$name]; // conserver les valeurs  avant de supprimer
+              ${"salaire".$name}= $salairebrut[$name];
+              ${"charge".$name}= $charges;
+              ${"condition".$name}= $condition;
+              ${"typecommision".$name} = $TypeCommission;
+              ${"chiffre".$name} = $CA;
+              ${"produit".$name} = $commisionproductone;
+              for($i = 0 ; $i<$years;$i++){    
+               ${"d" . $i} = $RechercheList[$i][$name];
+               unset($RechercheList[$i][$name]);
+               $staffdetail[$i]->setRecherche($RechercheList[$i]);
+             }
+              unset($RechercheGlobalList[$name]);
+              unset($salairebrut[$name]);
+              unset($Listcharges[$name]);
+              unset($ListConditions[$name]);
+              unset($commisionproduct[$name]);
+              unset($CAall[$name]);
+              unset($TypeCommisionall[$name]);
+               $staff[0]->setRecherche($RechercheGlobalList);
+               $staff[0]->setSalairebrut($salairebrut);
+               $staff[0]->setCharges($Listcharges);
+               $staff[0]->setConditions($ListConditions);
+               $staff[0]->setTypecommission($TypeCommisionall);
+               $staff[0]->setPourcentageCA($CAall);
+               $staff[0]->setCommissionproduit($commisionproduct);
+             }
+           
             if($form->getData()['Name'] != '' && array_key_exists($form->getData()['Name'],$salairebrut) == false){
               if($form->getData()['Department']==0 ){
                 $commisionList =  explode(",",$form->getData()['product']);
@@ -720,8 +873,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                 $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
                 $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
                 $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
-                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];
-                
+                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];  
                 $commisionproduct[$form->getData()['Name']] = $commisionList;
                 
                 $staff[0]->setSalairebrut($salairebrut);
@@ -730,15 +882,170 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                 $staff[0]->setTypecommission($TypeCommisionall);
                 $staff[0]->setPourcentageCA($CAall);
                 $staff[0]->setCommissionproduit($commisionproduct);
-              }}
+                for($i = 0 ; $i<$years;$i++){
+                  $Adminlist[$i][$form->getData()['Name']] = ${"d" . $i};
+                  $staffdetail[$i]->setAdministration($Adminlist[$i]);
+                 } 
+                $AdminGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+                $staff[0]->setAdministration($AdminGlobalList);
+              }
+              if($form->getData()['Department']==1 ){
+                $commisionList =  explode(",",$form->getData()['product']);
+                
+                $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
+                $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
+                $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
+                $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
+                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];  
+                $commisionproduct[$form->getData()['Name']] = $commisionList;
+                
+                $staff[0]->setSalairebrut($salairebrut);
+                $staff[0]->setCharges($Listcharges);
+                $staff[0]->setConditions($ListConditions);
+                $staff[0]->setTypecommission($TypeCommisionall);
+                $staff[0]->setPourcentageCA($CAall);
+                $staff[0]->setCommissionproduit($commisionproduct);
+                for($i = 0 ; $i<$years;$i++){
+                  $Productionlist[$i][$form->getData()['Name']] = ${"d" . $i};
+                  $staffdetail[$i]->setProduction($Productionlist[$i]);
+                 } 
+                $ProductionGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+                
+                $staff[0]->setProduction($ProductionGlobalList);
+              }
+              if($form->getData()['Department']==2 ){
+                $commisionList =  explode(",",$form->getData()['product']);
+                
+                $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
+                $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
+                $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
+                $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
+                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];  
+                $commisionproduct[$form->getData()['Name']] = $commisionList;
+                
+                $staff[0]->setSalairebrut($salairebrut);
+                $staff[0]->setCharges($Listcharges);
+                $staff[0]->setConditions($ListConditions);
+                $staff[0]->setTypecommission($TypeCommisionall);
+                $staff[0]->setPourcentageCA($CAall);
+                $staff[0]->setCommissionproduit($commisionproduct);
+                for($i = 0 ; $i<$years;$i++){
+                  $CommercialList[$i][$form->getData()['Name']] = ${"d" . $i};
+                  $staffdetail[$i]->setSales($CommercialList[$i]);
+                 } 
+                $CommercialGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+                $staff[0]->setSales($CommercialGlobalList);
+              }
+              if($form->getData()['Department']==3 ){
+                $commisionList =  explode(",",$form->getData()['product']);
+                
+                $Listcharges[$form->getData()['Name']] = [''.$form->getData()['ChargePatronale'],''.$form->getData()['ChargeSalariales']];
+                $salairebrut[$form->getData()['Name']]= ${"salaire".$name} ; 
+                $ListConditions[$form->getData()['Name']]= [$form->getData()['JEI'],$form->getData()['TNS'],$form->getData()['Gratification']] ; 
+                $TypeCommisionall[$form->getData()['Name']] = [''.$form->getData()['Typecommision']];
+                $CAall[$form->getData()['Name']] = [''.$form->getData()['CA']];  
+                $commisionproduct[$form->getData()['Name']] = $commisionList;
+                
+                $staff[0]->setSalairebrut($salairebrut);
+                $staff[0]->setCharges($Listcharges);
+                $staff[0]->setConditions($ListConditions);
+                $staff[0]->setTypecommission($TypeCommisionall);
+                $staff[0]->setPourcentageCA($CAall);
+                $staff[0]->setCommissionproduit($commisionproduct);
+                for($i = 0 ; $i<$years;$i++){
+                  $RechercheList[$i][$form->getData()['Name']] = ${"d" . $i};
+                  $staffdetail[$i]->setRecherche($RechercheList[$i]);
+                 } 
+                $RechercheGlobalList[$form->getData()['Name']] = ${"admin" . $name};
+                $staff[0]->setRecherche($RechercheGlobalList);
+              }
+            }
               $entityManager->flush();
         return $this->redirectToRoute('staff');
       }
 
-
+     //dump($CA);die();
       return $this->render('staff/edit.html.twig',[
       'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct, 'CA' =>  $CA,
       'form'=>$form->createView() , 'product' => $Listproduct,
       ]);
+    }
+     /**
+     * @Route("/delete/{name}", name="staffdelete")
+     */
+    public function delete($name){
+      $entityManager = $this->getDoctrine()->getManager();
+      $businessSession =$this->container->get('session')->get('business');
+      $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+      $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
+      $rangeofdetail = $businessSession->getRangeofdetail();
+      $years = $businessSession->getNumberofyears();
+      $rangeofglobal = $years - $rangeofdetail;
+      $salairebrut = $staff[0]->getSalairebrut();
+      $conditon = $staff[0]->getConditions();
+      $charges = $staff[0]->getCharges();
+      $TypeCommission  = $staff[0]->getTypecommission(); 
+      $CA = $staff[0]->getPourcentageCA(); 
+      $commissionproduit = $staff[0]->getCommissionproduit();
+      for($i = 0 ; $i<$years;$i++){
+        $Adminlist[$i] =  $staffdetail[$i]->getAdministration();
+        $Productionlist[$i] = $staffdetail[$i]->getProduction();
+        $CommercialList[$i] =  $staffdetail[$i]->getSales();
+        $RechercheList[$i] =  $staffdetail[$i]->getRecherche();}
+        $status = '';
+        if(array_key_exists($name, $Adminlist[0]) == true){
+          $status = 'Administration';
+          $AdminGlobalList = $staff[0]->getAdministration() ;
+          unset($AdminGlobalList[$name]);
+          $staff[0]->setAdministration($AdminGlobalList);
+          for($i = 0 ; $i<$years;$i++){        
+            unset($Adminlist[$i][$name]);
+            $staffdetail[$i]->setAdministration($Adminlist[$i]);
+          }
+         }
+         if(array_key_exists($name, $Productionlist[0]) == true){
+          $status = 'Production';
+          $ProductionGlobalList = $staff[0]->getProduction() ;
+          unset($ProductionGlobalList[$name]);
+          $staff[0]->setProduction($ProductionGlobalList);
+          for($i = 0 ; $i<$years;$i++){        
+            unset($Productionlist[$i][$name]);
+            $staffdetail[$i]->setProduction($Productionlist[$i]);
+          }
+         }
+         if(array_key_exists($name, $CommercialList[0]) == true){
+          $status = 'Commercial';
+          $CommercialGlobalList =  $staff[0]->getSales() ;
+          unset($CommercialGlobalList[$name]);
+          $staff[0]->setSales($CommercialGlobalList);
+          for($i = 0 ; $i<$years;$i++){        
+            unset($CommercialList[$i][$name]);
+            $staffdetail[$i]->setSales($CommercialList[$i]);
+          }
+         }
+         if(array_key_exists($name, $RechercheList[0]) == true){
+          $status = 'Recherche';
+          $RechercheGlobalList =  $staff[0]->getRecherche() ;
+          unset($RechercheGlobalList[$name]);
+          $staff[0]->setRecherche($RechercheGlobalList);
+          for($i = 0 ; $i<$years;$i++){        
+            unset($RechercheList[$i][$name]);
+            $staffdetail[$i]->setRecherche($RechercheList[$i]);
+          }
+         }
+        unset($salairebrut[$name]);
+        unset($conditon[$name]);
+        unset($charges[$name]);
+        unset($TypeCommission[$name]);
+        unset($CA[$name]);
+        unset($commissionproduit[$name]);
+        $staff[0]->setSalairebrut($salairebrut);
+        $staff[0]->setConditions($conditon);
+        $staff[0]->setCharges($charges);
+        $staff[0]->setTypecommission($TypeCommission);
+        $staff[0]->setPourcentageCA($CA);
+        $staff[0]->setCommissionproduit($commissionproduit);
+        $entityManager->flush();
+        return $this->redirectToRoute('staff');
     }
 }
