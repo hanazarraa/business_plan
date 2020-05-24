@@ -31,7 +31,7 @@
 				</div>
 
 				<div class="fleft">
-					<a href="#" title="" class="btn btn-md btn-primary">
+					<a href="{{path('gestioncharge')}}" title="" class="btn btn-md btn-primary">
 						Gestion des charges liées au personnel					</a>
 				</div>
 
@@ -168,23 +168,12 @@
 			<tr>
 			  {% endfor %}
 				<td class="total wrap not-survole">Total Administration & Gestion</td>
-
+                      {% for i in 0..business.numberofyears  - 1 %}
 									<td colspan="2" class="total aright" id="massesalarialetotale-0-292732">
-						0.00					</td>
+						{{TotalcoutannuelAdm[i]}}					</td>
 					<td colspan="1" class="total aright" id="etptotale-0-292732">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-1-292732">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-1-292732">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-2-292732">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-2-292732">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-3-292732">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-3-292732">
-						0.00					</td>
+						{{TotalETPAdm[i]}}					</td>
+					   {% endfor %}
 							</tr>
 
 							<tr>
@@ -300,22 +289,12 @@
 			  {% endfor %}
 				<td class="total wrap not-survole">Total Production</td>
 
-									<td colspan="2" class="total aright" id="massesalarialetotale-0-292733">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-0-292733">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-1-292733">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-1-292733">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-2-292733">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-2-292733">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-3-292733">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-3-292733">
-						0.00					</td>
+				    {% for i in 0..business.numberofyears  - 1 %}
+					<td colspan="2" class="total aright" id="massesalarialetotale-0-292732">
+						{{TotalcoutannuelPro[i]}}	</td>
+					<td colspan="1" class="total aright" id="etptotale-0-292732">
+						{{TotalETPPro[i]}}					</td>
+					   {% endfor %}
 							</tr>
 
 							<tr>
@@ -431,22 +410,12 @@
 			  {% endfor %}
 				<td class="total wrap not-survole">Total Commercial</td>
 
-									<td colspan="2" class="total aright" id="massesalarialetotale-0-292734">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-0-292734">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-1-292734">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-1-292734">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-2-292734">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-2-292734">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-3-292734">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-3-292734">
-						0.00					</td>
+									{% for i in 0..business.numberofyears  - 1 %}
+					<td colspan="2" class="total aright" id="massesalarialetotale-0-292732">
+						{{TotalcoutannuelCom[i]}}	</td>
+					<td colspan="1" class="total aright" id="etptotale-0-292732">
+						{{TotalETPCom[i]}}					</td>
+					   {% endfor %}
 							</tr>
 
 							<tr>
@@ -566,22 +535,12 @@
 			  {% endfor %}
 				<td class="total wrap not-survole">Total Recherche & Développement</td>
 
-									<td colspan="2" class="total aright" id="massesalarialetotale-0-292735">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-0-292735">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-1-292735">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-1-292735">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-2-292735">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-2-292735">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="massesalarialetotale-3-292735">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="etptotale-3-292735">
-						0.00					</td>
+									{% for i in 0..business.numberofyears  - 1 %}
+					<td colspan="2" class="total aright" id="massesalarialetotale-0-292732">
+						{{TotalcoutannuelRec[i]}}	</td>
+					<td colspan="1" class="total aright" id="etptotale-0-292732">
+						{{TotalETPRec[i]}}					</td>
+					   {% endfor %}
 							</tr>
 
 							<tr>
@@ -599,69 +558,37 @@
 
 		<tr>
 			<td class="total not-survole">Total salaire brut </td>
+			    {% for i in 0..business.numberofyears -1  %}
 			  					<td colspan="2" class="total aright" >
-						0.00					</td>
+						{{Totalsalairebrut[i]}}					</td>
+			  
 					<td colspan="1" class="total aright">
 
 					</td>
-									<td colspan="2" class="total aright" >
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
-									<td colspan="2" class="total aright" >
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
-									<td colspan="2" class="total aright" >
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
+				{% endfor %}
+								
 						</tr>
 
 		<tr>
 			<td class="total not-survole">Total charges patronales </td>
-			  					<td colspan="2" class="total aright">
-						0.00					</td>
+			  	{% for i in 0..business.numberofyears - 1 %}				
+								  <td colspan="2" class="total aright">
+						{{Totalchargepatronale[i]}}					</td>
 					<td colspan="1" class="total aright">
 
 					</td>
-									<td colspan="2" class="total aright">
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
-									<td colspan="2" class="total aright">
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
-									<td colspan="2" class="total aright">
-						0.00					</td>
-					<td colspan="1" class="total aright">
-
-					</td>
+			    {% endfor %}
+								
 						</tr>
 		<tr>
 			<td class="total not-survole">Total masse salariale chargée </td>
+			      {% for i in 0..business.numberofyears - 1 %}
 			  					<td colspan="2" class="total aright" id="sommemassesalarialetotale-0">
-						0.00					</td>
+						{{Totalsalairebrut[i]	+ Totalchargepatronale[i]}}						</td>
 					<td colspan="1" class="total aright" id="sommeetptotale-0">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="sommemassesalarialetotale-1">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="sommeetptotale-1">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="sommemassesalarialetotale-2">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="sommeetptotale-2">
-						0.00					</td>
-									<td colspan="2" class="total aright" id="sommemassesalarialetotale-3">
-						0.00					</td>
-					<td colspan="1" class="total aright" id="sommeetptotale-3">
-						0.00					</td>
+						{{TotalETPAdm[i] + TotalETPPro[i] + TotalETPCom[i] + TotalETPRec[i]}}</td>
+				   {% endfor %}
+								
 						</tr>
 		</table>
 	</div>

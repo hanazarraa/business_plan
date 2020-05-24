@@ -106,7 +106,7 @@
 			  			{{salairebrut[value][id]}}			  			</td>
 
 			  			<td class="aright" id="etpn_1-216252">
-			  							  				-
+			  			  {% if id > 0 %} {{ETP[id - 1][value]}}	{% else %} -  {% endif  %}
 			  				
 			  			</td>
                                                  {% for i in form.Administration[value] %}
@@ -169,7 +169,7 @@
 			  			{{salairebrut[value][id]}}			  			</td>
 
 			  			<td class="aright" id="etpn_1-216252">
-			  							  				-
+			  			{% if id > 0 %} {{ETPpro[id - 1][value]}}	{% else %} -  {% endif  %}
 			  				
 			  			</td>
                                                  {% for i in form.production[value] %}
@@ -232,7 +232,7 @@
 			  			{{salairebrut[value][id]}}			  			</td>
 
 			  			<td class="aright" id="etpn_1-216252">
-			  							  				-
+			  			{% if id > 0 %} {{ETPcom[id - 1][value]}}	{% else %} -  {% endif  %}
 			  				
 			  			</td>
                            {% for i in form.sales[value] %}
@@ -295,7 +295,7 @@
 			  			{{salairebrut[value][id]}}			  			</td>
 
 			  			<td class="aright" id="etpn_1-216252">
-			  							  				-
+			  			{% if id > 0 %} {{ETPrec[id - 1][value]}}	{% else %} -  {% endif  %}
 			  				
 			  			</td>
                            {% for i in form.recherche[value] %}
@@ -731,7 +731,7 @@
 					Total				</td>
 
 							  {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	<td class="aright">{{TOTAL[id][i]}}</td>
 			    	{% endfor %}
 			    			</tr>
 		</table>

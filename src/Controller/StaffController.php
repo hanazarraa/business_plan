@@ -11,6 +11,7 @@ use App\Form\StaffFormType;
 use App\Form\StaffCreateFormType;
 use App\Form\StaffEditFormType;
 use App\Form\CollectionFormType;
+use App\Form\ChargesFormType;
 use App\Entity\Sales;
 use App\Entity\Salesdetailled;
 use App\Controller\SalesController;
@@ -74,9 +75,13 @@ class StaffController extends AbstractController
         $charges =   $staff[0]->getCharges();
         
         }
-        
-        $rangeofdetail = $businessSession->getRangeofdetail();
         $years = $businessSession->getNumberofyears();
+        for($i=0 ; $i <$years ;$i++){
+          $Totalsalairebrut[$i] = "0.00";
+          $Totalchargepatronale[$i] = "0.00";
+        }
+        $rangeofdetail = $businessSession->getRangeofdetail();
+        
         $rangeofglobal = $years - $rangeofdetail;
         $this->calculETP();
         //for($i =0 ; $i<$years;$i++){
@@ -129,26 +134,67 @@ class StaffController extends AbstractController
          $newETPrecdetailled[$key][$i] = $value[$i];
           }    
         }
-      
+     
         if($staffdetail != null){
             foreach($this->salairebrut as $key=>$values){
             for($i=0;$i<$years;$i++){
             $coutannuel[$key][$i] =  round((($newETPdetailled[$key][$i]*12) * $values[$i]) +(($newETPdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
-            }}
+            $Totalsalairebrut[$i] +=   round((($newETPdetailled[$key][$i]*12) * $values[$i]));
+            $Totalchargepatronale[$i] +=   round((($newETPdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+          }}
             foreach($this->salairebrutpro as $key=>$values){
             for($i=0;$i<$years;$i++){
             $coutannuelpro[$key][$i] =  round((($newETPprodetailled[$key][$i]*12) * $values[$i]) +(($newETPprodetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
-            }}
+            $Totalsalairebrut[$i] +=   round((($newETPprodetailled[$key][$i]*12) * $values[$i]));
+            $Totalchargepatronale[$i] +=   round((($newETPprodetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+          }}
             foreach($this->salairebrutcom as $key=>$values){
             for($i=0;$i<$years;$i++){
             $coutannuelcom[$key][$i] =  round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) +(($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
-            }}
+            $Totalsalairebrut[$i] +=   round((($newETPcomdetailled[$key][$i]*12) * $values[$i]));  
+            $Totalchargepatronale[$i] +=   round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+          }}
             foreach($this->salairebrutrec as $key=>$values){
               for($i=0;$i<$years;$i++){
               $coutannuelrec[$key][$i] =  round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) +(($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+              $Totalsalairebrut[$i] +=   round((($newETPrecdetailled[$key][$i]*12) * $values[$i]));  
+              $Totalchargepatronale[$i] +=   round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
             }}
+ //--------------------------------SommeETPtotal et Coutannuel------------------------------//
+      //insitialiser les listes
+      for($i=0 ; $i <$years ;$i++){
+        $TotalETPAdm[$i] = "0.00"; 
+        $TotalcoutannuelAdm[$i] = "0.00";
+        $TotalETPPro[$i] = "0.00";
+        $TotalcoutannuelPro[$i] = "0.00"; 
+        $TotalETPCom[$i] = "0.00";
+        $TotalcoutannuelCom[$i] = "0.00"; 
+        $TotalETPRec[$i] = "0.00";
+        $TotalcoutannuelRec[$i] = "0.00"; 
+        }
+         
+        foreach($keyadmin as $value){//insitialiser les listes
+          for($i=0 ; $i <$years ;$i++){
+          $TotalETPAdm[$i] += $newETPdetailled[$value][$i] ;
+          $TotalcoutannuelAdm[$i]+= $coutannuel[$value][$i];}}
+        foreach($keypro as $value){//insitialiser les listes
+          for($i=0 ; $i <$years ;$i++){
+          $TotalETPPro[$i] += $newETPprodetailled[$value][$i] ;
+          $TotalcoutannuelPro[$i]+= $coutannuelpro[$value][$i];}}
+        foreach($keycom as $value){//insitialiser les listes
+          for($i=0 ; $i <$years ;$i++){
+          $TotalETPCom[$i] += $newETPcomdetailled[$value][$i] ;
+          $TotalcoutannuelCom[$i]+= $coutannuelcom[$value][$i];}}
+        foreach($keyrec as $value){//insitialiser les listes
+          for($i=0 ; $i <$years ;$i++){
+          $TotalETPRec[$i] += $newETPrecdetailled[$value][$i] ;
+          $TotalcoutannuelRec[$i]+= $coutannuelrec[$value][$i];}}
+        
+        //--------------------------------FinSomme------------------------------------//
+        //-------------------------------TotalSalairebrut----------------------------//
 
-            $form = $this->createForm(StaffFormType::class,$staff[0]);
+        //-------------------------------FinTotalSalairebrut--------------------------//
+        $form = $this->createForm(StaffFormType::class,$staff[0]);
         }
         else{
             $form = $this->createForm(StaffFormType::class);
@@ -164,7 +210,9 @@ class StaffController extends AbstractController
          'business'=> $businessSession,'form' => $form->createView(),'keyadmin' =>  $keyadmin,'keypro'=> $keypro , 'keycom'=> $keycom, 'keyrec' =>$keyrec, 
           'rangeofdetail'=>$rangeofdetail , 'rangeofglobal'=>$rangeofglobal,'ETP'=>$this->ETP,
         'coutannuel' => $coutannuel , 'coutannuelpro' => $coutannuelpro ,'coutannuelcom' => $coutannuelcom ,'coutannuelrec' => $coutannuelrec,
-        'ETPpro' => $this->ETPpro, 'ETPcom' => $this->ETPcom ,'ETPrec' => $this->ETPrec
+        'ETPpro' => $this->ETPpro, 'ETPcom' => $this->ETPcom ,'ETPrec' => $this->ETPrec ,'TotalETPAdm' => $TotalETPAdm,'TotalETPPro' => $TotalETPPro,
+        'TotalETPCom' => $TotalETPCom,'TotalETPRec' => $TotalETPRec, 'Totalsalairebrut' => $Totalsalairebrut,'Totalchargepatronale' => $Totalchargepatronale,
+        'TotalcoutannuelAdm' => $TotalcoutannuelAdm ,'TotalcoutannuelPro' => $TotalcoutannuelPro ,'TotalcoutannuelCom' => $TotalcoutannuelCom ,'TotalcoutannuelRec' => $TotalcoutannuelRec 
           ]);
     }
     public function calculETP(){
@@ -320,6 +368,10 @@ class StaffController extends AbstractController
           $DecchargesCom[$x][$i] = "0.00";
           $DecchargesRec[$x][$i] = "0.00";
         }}
+        for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<12;$x++){
+            $TOTAL[$i][$x] = "0.00";
+          }}
         //-------------------------------Fin-----------------------------------------------//
         $years = $businessSession->getNumberofyears();
         if($staffdetail != null){
@@ -741,6 +793,12 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                 }
             }}
        //-----------------------------------FinRecherche----------------------------------//
+       //---------------------------------Calcul total decaissement-----------------------//
+       for($i =0 ; $i<$years;$i++){
+        for($x=0;$x<12;$x++){
+          $TOTAL[$i][$x] = $TotalDecaissementAdm[$i][$x] + $TotalDecaissementPro[$i][$x] + $TotalDecaissementCom[$i][$x] + $TotalDecaissementRec[$i][$x];
+        }}
+       //------------------------------------FinCalcul------------------------------------//
        // dump($lastDecchargeemployeurhorsgerantAdm,$lastDecchargesalarialesAdm,$lastDecchargesAdm);die();
      // ------------------------Fin de calcul --------------------------------------//
         $form = $this->createForm(CollectionFormType::class,$staffdetail[$id]);
@@ -765,6 +823,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
          'chargesalariale'=> $lastDecchargesalarialesAdm,'chargesalarialePro'=> $lastDecchargesalarialesPro,'chargesalarialeCom'=> $lastDecchargesalarialesCom,'chargesalarialeRec'=> $lastDecchargesalarialesRec,
          'charges'=> $lastDecchargesAdm,'chargesPro'=> $lastDecchargesPro,'chargesCom'=> $lastDecchargesCom,'chargesRec'=> $lastDecchargesRec, 
          'commissionAdm' => $commisionAdm ,'commissionPro' => $commisionPro , 'commissionCom' => $commisionCom , 'commissionRec' => $commisionRec
+         ,'TOTAL' => $TOTAL,
             ]);
     }
     /**
@@ -1418,5 +1477,35 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
         $staff[0]->setCommissionproduit($commissionproduit);
         $entityManager->flush();
         return $this->redirectToRoute('staff');
+    }
+    /**
+     * @Route("/manage_charges", name="gestioncharge")
+     */
+    public function gestion(Request $request){
+      $businessSession =$this->container->get('session')->get('business');
+      $entityManager = $this->getDoctrine()->getManager();
+      $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($businessSession);
+      $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
+      $parametre = $staff[0]->getParametre();
+      
+      $forfait = $parametre['forfait'];
+      $tauxmoyen = $parametre['tauxmoyen'];
+      $JEI  = $parametre['tauxJEI'];
+      $decaissement = $parametre['decaissement'];
+      $form = $this->createForm(ChargesFormType::class,[ 'Decaissement' => $decaissement ]); 
+      $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+          
+          $parametre['forfait'] = $form->getData()['forfait'];
+          $parametre['tauxmoyen'] = $form->getData()['Taux'];
+          $parametre['tauxJEI'] = $form->getData()['JEI'];
+          
+          $staff[0]->setParametre($parametre);
+          $entityManager->flush();
+          return $this->redirectToRoute('staff');
+        }
+      return $this->render('staff/gestioncharge.html.twig',['business' => $businessSession ,
+      'form' => $form->createView()  , 'forfait' => $forfait ,  'tauxmoyen' => $tauxmoyen , 'JEI'  => $JEI    
+       ]);
     }
 }
