@@ -256,13 +256,44 @@ class StaffController extends AbstractController
           for($x = 0 ; $x < $years +1 ; $x++){    
         for($i = 0 ; $i < 12 ; $i++){
         $commisionAdm[$x][$i] = "0.00" ;
+        $commisionPro[$x][$i] = "0.00" ;
+        $commisionCom[$x][$i] = "0.00" ;
+        $commisionRec[$x][$i] = "0.00" ;
+
         $totalsalairbrutAdm[$x][$i] = "0.00";
+        $totalsalairbrutPro[$x][$i] = "0.00";
+        $totalsalairbrutCom[$x][$i] = "0.00";
+        $totalsalairbrutRec[$x][$i] = "0.00";
+
         $couttotalpersonemAdm[$x][$i] = "0.00";
+        $couttotalpersonemPro[$x][$i] = "0.00";
+        $couttotalpersonemCom[$x][$i] = "0.00";
+        $couttotalpersonemRec[$x][$i] = "0.00";
+
         $NetapayerAdm[$x][$i] = "0.00";
-        $TotalDecaissementAdm[$x][$i] = "0.00"; 
+        $NetapayerPro[$x][$i] = "0.00";
+        $NetapayerCom[$x][$i] = "0.00";
+        $NetapayerRec[$x][$i] = "0.00";
+
+        $TotalDecaissementAdm[$x][$i] = "0.00";
+        $TotalDecaissementPro[$x][$i] = "0.00";
+        $TotalDecaissementCom[$x][$i] = "0.00";
+        $TotalDecaissementRec[$x][$i] = "0.00";
+
         $lastDecchargeemployeurhorsgerantAdm[$x][$i] ="0.00";
+        $lastDecchargeemployeurhorsgerantPro[$x][$i] ="0.00";
+        $lastDecchargeemployeurhorsgerantCom[$x][$i] ="0.00";
+        $lastDecchargeemployeurhorsgerantRec[$x][$i] ="0.00";
+
         $lastDecchargesalarialesAdm[$x][$i] = "0.00";
+        $lastDecchargesalarialesPro[$x][$i] = "0.00";
+        $lastDecchargesalarialesCom[$x][$i] = "0.00";
+        $lastDecchargesalarialesRec[$x][$i] = "0.00";
+
         $lastDecchargesAdm[$x][$i] = "0.00";
+        $lastDecchargesPro[$x][$i] = "0.00";
+        $lastDecchargesCom[$x][$i] = "0.00";
+        $lastDecchargesRec[$x][$i] = "0.00";
       }}
      
        
@@ -270,9 +301,24 @@ class StaffController extends AbstractController
       for($x = 0 ; $x < $years +1 ; $x++){ 
         for($i =0 ; $i<13 ; $i++){
           $DecchargegerantnonsalarieAdm[$x][$i]="0.00";
+          $DecchargegerantnonsalariePro[$x][$i]="0.00";
+          $DecchargegerantnonsalarieCom[$x][$i]="0.00";
+          $DecchargegerantnonsalarieRec[$x][$i]="0.00";
+
           $DecchargeemployeurhorsgerantAdm[$x][$i] = "0.00";
+          $DecchargeemployeurhorsgerantPro[$x][$i] = "0.00";
+          $DecchargeemployeurhorsgerantCom[$x][$i] = "0.00";
+          $DecchargeemployeurhorsgerantRec[$x][$i] = "0.00";
+
           $DecchargesalarialesAdm[$x][$i] = "0.00";
+          $DecchargesalarialesPro[$x][$i] = "0.00";
+          $DecchargesalarialesCom[$x][$i] = "0.00";
+          $DecchargesalarialesRec[$x][$i] = "0.00";
+
           $DecchargesAdm[$x][$i] = "0.00";
+          $DecchargesPro[$x][$i] = "0.00";
+          $DecchargesCom[$x][$i] = "0.00";
+          $DecchargesRec[$x][$i] = "0.00";
         }}
         //-------------------------------Fin-----------------------------------------------//
         $years = $businessSession->getNumberofyears();
@@ -386,8 +432,316 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                 $lastDecchargesAdm[$i+1][$i] += $DecchargesAdm[$i][$x];
               }
           }}
-
-     // dump($lastDecchargeemployeurhorsgerantAdm,$lastDecchargesalarialesAdm,$lastDecchargesAdm);die();
+        //----------------------------------Production---------------------------------//
+        for($i =0 ; $i<$years;$i++){
+          foreach($staffdetail[$i]->getProduction() as $key=>$value){
+             
+             $tvapatronale = $staff[0]->getCharges()[$key][0];
+             $chargesalariale = $staff[0]->getCharges()[$key][1];
+             if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+             $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+             if(array_key_exists($key,$staff[0]->getTypecommission())){
+             $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+             if(array_key_exists($key,$ListCommission)){
+             $Tvaparproduit = $ListCommission[$key];}
+             
+             if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+               $tvapatronale = $staff[0]->getCharges()[$key][0];
+               $chargesalariale = $staff[0]->getCharges()[$key][1];
+             }
+             if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+               $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+             }
+             if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+               $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+               $chargesalariale  = 0 ; 
+             }
+             if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+               $chargesalariale  = 0 ;
+               $tvapatronale =  0 ;
+             }
+             if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+               $chargesalariale  = 0 ;
+               $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+             }
+             if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+               $chargesalariale  = 0 ;
+               $tvapatronale = 0 ;  
+             }
+             if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+               $chargesalariale  = 0 ;
+               $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+             }
+             if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+               $chargesalariale  = 0 ;
+               $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+             }
+          
+            // dump($tvapatronale);die();
+            foreach($value as $position=>$chiffre){
+              if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+                if($chiffre >0 && $commisionPro[$i][$position] == 0){
+             $commisionPro[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
+             else{
+               $commisionPro[$i][$position]+= 0 ;
+             }
+            } 
+            if($typeCommision == '2'){//si le typecommission de type Produit
+             if($chiffre >0){
+              foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+   $commisionPro[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+            }}
+            else{ $commisionPro[$i][$position]+= 0 ;}
+           }
+             $totalsalairbrutPro[$i][$position] += $chiffre * $salairebrut[$key][$i];
+             $couttotalpersonemPro[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
+             $NetapayerPro[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+             $DecchargesalarialesPro[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+             //dump($staff[0]->getCharges()[$key][0]);die();
+           }}}
+           for($i =0 ; $i<$years;$i++){
+            for($x=0;$x<12;$x++){//calculer le decaissement mensuel
+              
+              $DecchargeemployeurhorsgerantPro[$i][$x+ 1] = $couttotalpersonemPro[$i][$x] - $totalsalairbrutPro[$i][$x];
+              
+            }}
+            for($i =0 ; $i<$years;$i++){
+            for($x=0;$x<13;$x++){
+              $DecchargesPro[$i][$x] = $DecchargesalarialesPro[$i][$x] + $DecchargeemployeurhorsgerantPro[$i][$x];
+            }}
+           //decaissement total
+            for($i =0 ; $i<$years;$i++){
+            for($x=0;$x<13;$x++){
+              if($x<12){
+              $TotalDecaissementPro[$i][$x] += $NetapayerPro[$i][$x] + $DecchargesPro[$i][$x] + $commisionPro[$i][$x];}
+              else{
+                
+                $TotalDecaissementPro[$i+1][0] += $DecchargesPro[$i][$x];
+              }
+            }}
+    
+            //reformuler les liste de decaissemnt 
+            for($i =0 ; $i<$years;$i++){
+              for($x=0;$x<13;$x++){
+                if($x<12){
+                  $lastDecchargeemployeurhorsgerantPro[$i][$x] += $DecchargeemployeurhorsgerantPro[$i][$x];
+                  $lastDecchargesalarialesPro[$i][$x] += $DecchargesalarialesPro[$i][$x];
+                  $lastDecchargesPro[$i][$x] += $DecchargesPro[$i][$x];}
+                  else{
+                   
+                    $lastDecchargeemployeurhorsgerantPro[$i+1][0] += $DecchargeemployeurhorsgerantPro[$i][$x] ;
+                    $lastDecchargesalarialesPro[$i+1][0] += $DecchargesalarialesPro[$i][$x];
+                    $lastDecchargesPro[$i+1][$i] += $DecchargesPro[$i][$x];
+                  }
+              }}
+        //----------------------------------FinProduction--------------------------------//
+       //------------------------------------Commercial----------------------------------//
+       for($i =0 ; $i<$years;$i++){
+        foreach($staffdetail[$i]->getSales() as $key=>$value){
+           
+           $tvapatronale = $staff[0]->getCharges()[$key][0];
+           $chargesalariale = $staff[0]->getCharges()[$key][1];
+           if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+           $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+           if(array_key_exists($key,$staff[0]->getTypecommission())){
+           $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+           if(array_key_exists($key,$ListCommission)){
+           $Tvaparproduit = $ListCommission[$key];}
+           
+           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+             $tvapatronale = $staff[0]->getCharges()[$key][0];
+             $chargesalariale = $staff[0]->getCharges()[$key][1];
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+             $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+           }
+           if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+             $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+             $chargesalariale  = 0 ; 
+           }
+           if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  0 ;
+           }
+           if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+           }
+           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale = 0 ;  
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+           }
+        
+          // dump($tvapatronale);die();
+          foreach($value as $position=>$chiffre){
+            if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+              if($chiffre >0 && $commisionCom[$i][$position] == 0){
+           $commisionCom[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
+           else{
+             $commisionCom[$i][$position]+= 0 ;
+           }
+          } 
+          if($typeCommision == '2'){//si le typecommission de type Produit
+           if($chiffre >0){
+            foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+ $commisionCom[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+          }}
+          else{ $commisionCom[$i][$position]+= 0 ;}
+         }
+           $totalsalairbrutCom[$i][$position] += $chiffre * $salairebrut[$key][$i];
+           $couttotalpersonemCom[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
+           $NetapayerCom[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+           $DecchargesalarialesCom[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+           //dump($staff[0]->getCharges()[$key][0]);die();
+         }}}
+         for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<12;$x++){//calculer le decaissement mensuel
+            
+            $DecchargeemployeurhorsgerantCom[$i][$x+ 1] = $couttotalpersonemCom[$i][$x] - $totalsalairbrutCom[$i][$x];
+            
+          }}
+          for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<13;$x++){
+            $DecchargesCom[$i][$x] = $DecchargesalarialesCom[$i][$x] + $DecchargeemployeurhorsgerantCom[$i][$x];
+          }}
+         //decaissement total
+          for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<13;$x++){
+            if($x<12){
+            $TotalDecaissementCom[$i][$x] += $NetapayerCom[$i][$x] + $DecchargesCom[$i][$x] + $commisionCom[$i][$x];}
+            else{
+              
+              $TotalDecaissementCom[$i+1][0] += $DecchargesCom[$i][$x];
+            }
+          }}
+  
+          //reformuler les liste de decaissemnt 
+          for($i =0 ; $i<$years;$i++){
+            for($x=0;$x<13;$x++){
+              if($x<12){
+                $lastDecchargeemployeurhorsgerantCom[$i][$x] += $DecchargeemployeurhorsgerantCom[$i][$x];
+                $lastDecchargesalarialesCom[$i][$x] += $DecchargesalarialesCom[$i][$x];
+                $lastDecchargesCom[$i][$x] += $DecchargesCom[$i][$x];}
+                else{
+                 
+                  $lastDecchargeemployeurhorsgerantCom[$i+1][0] += $DecchargeemployeurhorsgerantCom[$i][$x] ;
+                  $lastDecchargesalarialesCom[$i+1][0] += $DecchargesalarialesCom[$i][$x];
+                  $lastDecchargesCom[$i+1][$i] += $DecchargesCom[$i][$x];
+                }
+            }}
+       //-----------------------------------FinCommercial---------------------------------// 
+       //-----------------------------------Recherche-------------------------------------//
+       for($i =0 ; $i<$years;$i++){
+        foreach($staffdetail[$i]->getRecherche() as $key=>$value){
+           
+           $tvapatronale = $staff[0]->getCharges()[$key][0];
+           $chargesalariale = $staff[0]->getCharges()[$key][1];
+           if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+           $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+           if(array_key_exists($key,$staff[0]->getTypecommission())){
+           $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+           if(array_key_exists($key,$ListCommission)){
+           $Tvaparproduit = $ListCommission[$key];}
+           
+           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+             $tvapatronale = $staff[0]->getCharges()[$key][0];
+             $chargesalariale = $staff[0]->getCharges()[$key][1];
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+             $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+           }
+           if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+             $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+             $chargesalariale  = 0 ; 
+           }
+           if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  0 ;
+           }
+           if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+           }
+           if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale = 0 ;  
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+           }
+           if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+             $chargesalariale  = 0 ;
+             $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+           }
+        
+          // dump($tvapatronale);die();
+          foreach($value as $position=>$chiffre){
+            if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+              if($chiffre >0 && $commisionRec[$i][$position] == 0){
+           $commisionRec[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
+           else{
+             $commisionRec[$i][$position]+= 0 ;
+           }
+          } 
+          if($typeCommision == '2'){//si le typecommission de type Produit
+           if($chiffre >0){
+            foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+ $commisionRec[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+          }}
+          else{ $commisionRec[$i][$position]+= 0 ;}
+         }
+           $totalsalairbrutRec[$i][$position] += $chiffre * $salairebrut[$key][$i];
+           $couttotalpersonemRec[$i][$position]+= ($chiffre * $salairebrut[$key][$i] *$tvapatronale ) /100 + $chiffre * $salairebrut[$key][$i];
+           $NetapayerRec[$i][$position] += $chiffre * $salairebrut[$key][$i] - ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+           $DecchargesalarialesRec[$i][$position+ 1] +=  ($chiffre * $salairebrut[$key][$i] * $chargesalariale) /100 ;
+           //dump($staff[0]->getCharges()[$key][0]);die();
+         }}}
+         for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<12;$x++){//calculer le decaissement mensuel
+            
+            $DecchargeemployeurhorsgerantRec[$i][$x+ 1] = $couttotalpersonemRec[$i][$x] - $totalsalairbrutRec[$i][$x];
+            
+          }}
+          for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<13;$x++){
+            $DecchargesRec[$i][$x] = $DecchargesalarialesRec[$i][$x] + $DecchargeemployeurhorsgerantRec[$i][$x];
+          }}
+         //decaissement total
+          for($i =0 ; $i<$years;$i++){
+          for($x=0;$x<13;$x++){
+            if($x<12){
+            $TotalDecaissementRec[$i][$x] += $NetapayerRec[$i][$x] + $DecchargesRec[$i][$x] + $commisionRec[$i][$x];}
+            else{
+              
+              $TotalDecaissementRec[$i+1][0] += $DecchargesRec[$i][$x];
+            }
+          }}
+  
+          //reformuler les liste de decaissemnt 
+          for($i =0 ; $i<$years;$i++){
+            for($x=0;$x<13;$x++){
+              if($x<12){
+                $lastDecchargeemployeurhorsgerantRec[$i][$x] += $DecchargeemployeurhorsgerantRec[$i][$x];
+                $lastDecchargesalarialesRec[$i][$x] += $DecchargesalarialesRec[$i][$x];
+                $lastDecchargesRec[$i][$x] += $DecchargesRec[$i][$x];}
+                else{
+                 
+                  $lastDecchargeemployeurhorsgerantRec[$i+1][0] += $DecchargeemployeurhorsgerantRec[$i][$x] ;
+                  $lastDecchargesalarialesRec[$i+1][0] += $DecchargesalarialesRec[$i][$x];
+                  $lastDecchargesRec[$i+1][$i] += $DecchargesRec[$i][$x];
+                }
+            }}
+       //-----------------------------------FinRecherche----------------------------------//
+       // dump($lastDecchargeemployeurhorsgerantAdm,$lastDecchargesalarialesAdm,$lastDecchargesAdm);die();
      // ------------------------Fin de calcul --------------------------------------//
         $form = $this->createForm(CollectionFormType::class,$staffdetail[$id]);
         }
@@ -403,9 +757,14 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
         return $this->render('staff/detail.html.twig',[
             'business'=> $businessSession , 'keyadmin' => $keyadmin,'keypro'=>$keypro ,'keycom'=>$keycom,'keyrec'=>$keyrec,'form'=>$form->createView()
         ,'ETP' => $this->ETP, 'ETPpro' => $this->ETPpro,'ETPcom' => $this->ETPcom   , 'ETPrec' => $this->ETPrec,'id'=> $id,'salairebrut' => $salairebrut,
-        'totalsalairbrutAdm' => $totalsalairbrutAdm, 'couttotalpersonemAdm' => $couttotalpersonemAdm,'NetapayerAdm'=> $NetapayerAdm,
-         'TotalDecaissementAdm' =>$TotalDecaissementAdm,'horsgerant' =>$lastDecchargeemployeurhorsgerantAdm,
-         'chargesalariale'=> $lastDecchargesalarialesAdm,'charges'=> $lastDecchargesAdm, 'commissionAdm' => $commisionAdm
+        'totalsalairbrutAdm' => $totalsalairbrutAdm,'totalsalairbrutPro' => $totalsalairbrutPro,'totalsalairbrutCom' => $totalsalairbrutCom,'totalsalairbrutRec' => $totalsalairbrutRec,
+         'couttotalpersonemAdm' => $couttotalpersonemAdm,'couttotalpersonemPro' => $couttotalpersonemPro,'couttotalpersonemCom' => $couttotalpersonemCom,'couttotalpersonemRec' => $couttotalpersonemRec,
+         'NetapayerAdm'=> $NetapayerAdm,'NetapayerPro'=> $NetapayerPro,'NetapayerCom'=> $NetapayerCom,'NetapayerRec'=> $NetapayerRec,
+         'TotalDecaissementAdm' =>$TotalDecaissementAdm,'TotalDecaissementPro' =>$TotalDecaissementPro,'TotalDecaissementCom' =>$TotalDecaissementCom,'TotalDecaissementRec' =>$TotalDecaissementRec,
+         'horsgerant' =>$lastDecchargeemployeurhorsgerantAdm,'horsgerantPro' =>$lastDecchargeemployeurhorsgerantPro,'horsgerantCom' =>$lastDecchargeemployeurhorsgerantCom,'horsgerantRec' =>$lastDecchargeemployeurhorsgerantRec,
+         'chargesalariale'=> $lastDecchargesalarialesAdm,'chargesalarialePro'=> $lastDecchargesalarialesPro,'chargesalarialeCom'=> $lastDecchargesalarialesCom,'chargesalarialeRec'=> $lastDecchargesalarialesRec,
+         'charges'=> $lastDecchargesAdm,'chargesPro'=> $lastDecchargesPro,'chargesCom'=> $lastDecchargesCom,'chargesRec'=> $lastDecchargesRec, 
+         'commissionAdm' => $commisionAdm ,'commissionPro' => $commisionPro , 'commissionCom' => $commisionCom , 'commissionRec' => $commisionRec
             ]);
     }
     /**
@@ -886,6 +1245,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $Adminlist[$i][$form->getData()['Name']] = ${"d" . $i};
                   $staffdetail[$i]->setAdministration($Adminlist[$i]);
                  } 
+                if($staff[0]->getAdministration()!=[]){
+                  $AdminGlobalList = $staff[0]->getAdministration() ;
+                }
                 $AdminGlobalList[$form->getData()['Name']] = ${"admin" . $name};
                 $staff[0]->setAdministration($AdminGlobalList);
               }
@@ -909,6 +1271,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $Productionlist[$i][$form->getData()['Name']] = ${"d" . $i};
                   $staffdetail[$i]->setProduction($Productionlist[$i]);
                  } 
+                 if($staff[0]->getProduction()!=[]){
+                  $ProductionGlobalList = $staff[0]->getProduction() ;
+                }
                 $ProductionGlobalList[$form->getData()['Name']] = ${"admin" . $name};
                 
                 $staff[0]->setProduction($ProductionGlobalList);
@@ -932,7 +1297,10 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                 for($i = 0 ; $i<$years;$i++){
                   $CommercialList[$i][$form->getData()['Name']] = ${"d" . $i};
                   $staffdetail[$i]->setSales($CommercialList[$i]);
-                 } 
+                 }
+                if($staff[0]->getSales()!=[]){
+                  $CommercialGlobalList = $staff[0]->getSales() ;
+                }
                 $CommercialGlobalList[$form->getData()['Name']] = ${"admin" . $name};
                 $staff[0]->setSales($CommercialGlobalList);
               }
@@ -956,6 +1324,9 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
                   $RechercheList[$i][$form->getData()['Name']] = ${"d" . $i};
                   $staffdetail[$i]->setRecherche($RechercheList[$i]);
                  } 
+                if($staff[0]->getRecherche()!=[]){
+                  $RechercheGlobalList = $staff[0]->getRecherche() ;
+                }
                 $RechercheGlobalList[$form->getData()['Name']] = ${"admin" . $name};
                 $staff[0]->setRecherche($RechercheGlobalList);
               }

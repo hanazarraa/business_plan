@@ -444,11 +444,12 @@
 			    			    	<th>Déc</th>
 			    
 			</tr>
-			<tr>
+			
+            <tr>
 				<td class="soustitre aleft">
 					Commissions sur ventes				</td>
-							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionPro[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -456,16 +457,16 @@
 			<tr>
 				<td class="soustitre aleft">
 					Total salaire brut				</td>
-							    	  {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutPro[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 				 	Coût total personnel				</td>
-							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemPro[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -480,60 +481,33 @@
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges employeur hors gérant				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantPro[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges salariales				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialePro[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 				<tr>
 				<td class="soustitre aleft">
-					Décaissement Charges				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesPro[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 
 			<tr>
 				<td class="soustitre aleft">
 					Net à payer				</td>
-							    	  {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerPro[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -542,11 +516,10 @@
 				<td class="soustitre aleft">
 				Total décaissements				</td>
 							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	<td class="aright">{{TotalDecaissementPro[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
-
 			<tr>
 				<td class="separateur" colspan="13"></td>
 			</tr>
@@ -570,8 +543,8 @@
 			<tr>
 				<td class="soustitre aleft">
 					Commissions sur ventes				</td>
-							     {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionCom[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -579,14 +552,22 @@
 			<tr>
 				<td class="soustitre aleft">
 					Total salaire brut				</td>
-							     {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutCom[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 				 	Coût total personnel				</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges gérant non salarié				</td>
 							      {% for i in 0 ..11 %}
 							    	<td class="aright">0.00</td>
 			    	{% endfor %}
@@ -594,69 +575,34 @@
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
-					Décaissement charges gérant non salarié				</td>
-							     {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
-			    	{% endfor %}
-			    
-			</tr>
-			<tr>
-				<td class="soustitre aleft">
 					Décaissement charges employeur hors gérant				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantCom[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges salariales				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialeCom[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 				<tr>
 				<td class="soustitre aleft">
-					Décaissement Charges				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesCom[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 
 			<tr>
 				<td class="soustitre aleft">
 					Net à payer				</td>
-							   {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerCom[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -665,7 +611,7 @@
 				<td class="soustitre aleft">
 				Total décaissements				</td>
 							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	<td class="aright">{{TotalDecaissementCom[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -693,8 +639,8 @@
 			<tr>
 				<td class="soustitre aleft">
 					Commissions sur ventes				</td>
-							  {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionRec[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -702,23 +648,23 @@
 			<tr>
 				<td class="soustitre aleft">
 					Total salaire brut				</td>
-							   {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutRec[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 				 	Coût total personnel				</td>
-							  {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemRec[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges gérant non salarié				</td>
-							  {% for i in 0 ..11 %}
+							      {% for i in 0 ..11 %}
 							    	<td class="aright">0.00</td>
 			    	{% endfor %}
 			    
@@ -726,52 +672,25 @@
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges employeur hors gérant				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantRec[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 			<tr>
 				<td class="soustitre aleft">
 					Décaissement charges salariales				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialeRec[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 				<tr>
 				<td class="soustitre aleft">
-					Décaissement Charges				</td>
-							    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright">0</td>
-			    			    	<td class="aright"></td>
-			    			    	<td class="aright"></td>
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesRec[id][i]}}</td>
+			    			    {% endfor %}
 			    
 			</tr>
 
@@ -779,7 +698,7 @@
 				<td class="soustitre aleft">
 					Net à payer				</td>
 							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	<td class="aright">{{NetapayerRec[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
@@ -788,7 +707,7 @@
 				<td class="soustitre aleft">
 				Total décaissements				</td>
 							      {% for i in 0 ..11 %}
-							    	<td class="aright">0.00</td>
+							    	<td class="aright">{{TotalDecaissementRec[id][i]}}</td>
 			    	{% endfor %}
 			    
 			</tr>
