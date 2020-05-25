@@ -178,7 +178,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="{{path('staffposition')}}" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -189,7 +189,7 @@
 						<tr>
 					<th colspan="13" class="titre aleft">
 						<h2>
-							Production							<a href="#" class="masquertr fs-14" id="masquertr-292733">
+							Production							<a href="#" class="masquertr fs-14" id="masquertr-292734">
 								<span>(-Masquer)</span>
 								<span style="display:none">(+Afficher)</span>
 							</a>
@@ -198,7 +198,7 @@
 				</tr>
 
 
-			  <tr class="tr-292733">
+			  <tr class="tr-292734">
 			    <th class="w-150">Salarié</th>
 			    			  {% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
 						{% for i in 1..business.rangeofdetail  %}
@@ -233,7 +233,7 @@
 						{% endfor %}
 						{% endif %}
 			    			    </tr>
-			    <tr class="tr-292733">
+			    <tr class="tr-292734">
 			    	<td class="not-survole"></td>
 			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
 				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
@@ -249,7 +249,7 @@
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
 			{% for value in keypro %}					
-			  	<tr class="tr-292732" >
+			  	<tr class="tr-292734" >
 				
 			  		<td class="soustitre not-survole">
 			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
@@ -299,7 +299,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="{{path('staffposition')}}" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -310,7 +310,7 @@
 						<tr>
 					<th colspan="13" class="titre aleft">
 						<h2>
-							Commercial							<a href="#" class="masquertr fs-14" id="masquertr-292734">
+							Commercial							<a href="#" class="masquertr fs-14" id="masquertr-292735">
 								<span>(-Masquer)</span>
 								<span style="display:none">(+Afficher)</span>
 							</a>
@@ -319,7 +319,7 @@
 				</tr>
 
 
-			  <tr class="tr-292734">
+			  <tr class="tr-292735">
 			    <th class="w-150">Salarié</th>
 			    			   {% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
 						{% for i in 1..business.rangeofdetail  %}
@@ -354,7 +354,7 @@
 						{% endfor %}
 						{% endif %}
 			    			    </tr>
-			    <tr class="tr-292734">
+			    <tr class="tr-292735">
 			    	<td class="not-survole"></td>
 			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
 				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
@@ -370,7 +370,7 @@
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
 			{% for value in keycom %}					
-			  	<tr class="tr-292732" >
+			  	<tr class="tr-292735" >
 				
 			  		<td class="soustitre not-survole">
 			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
@@ -420,7 +420,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="{{path('staffposition')}}" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -431,7 +431,7 @@
 						<tr>
 					<th colspan="13" class="titre aleft">
 						<h2>
-							Recherche & Développement							<a href="#" class="masquertr fs-14" id="masquertr-292735">
+							Recherche & Développement							<a href="#" class="masquertr fs-14" id="masquertr-292737">
 								<span>(-Masquer)</span>
 								<span style="display:none">(+Afficher)</span>
 							</a>
@@ -440,7 +440,7 @@
 				</tr>
 
 
-			  <tr class="tr-292735">
+			  <tr class="tr-292737">
 			    <th class="w-150">Salarié</th>
 			    	{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
 						{% for i in 1..business.rangeofdetail  %}
@@ -475,7 +475,7 @@
 						{% endfor %}
 						{% endif %}
 			    			    </tr>
-			    <tr class="tr-292735">
+			    <tr class="tr-292737">
 			    	<td class="not-survole"></td>
 			    					    	<td class="soustitre">Coût annuel (en {{business.currency}})</td>
 				    	<td class="soustitre">Salaire brut mensuel (en {{business.currency}})</td>
@@ -491,7 +491,7 @@
 				    	<td class="soustitre">ETP moyen</td>
 				    			    </tr>
 			{% for value in keyrec %}					
-			  	<tr class="tr-292732" >
+			  	<tr class="tr-292737" >
 				
 			  		<td class="soustitre not-survole">
 			  			<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
@@ -545,7 +545,7 @@
 
 							<tr>
 					<td colspan="13" class="not-survole">
-						<a href="#" title="Créer un poste" class="open-modal btn btn-md btn-primary">
+						<a href="{{path('staffposition')}}" title="Créer un poste" class="open-modal btn btn-md btn-primary">
 							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
 					</td>
 				</tr>
@@ -584,7 +584,7 @@
 			<td class="total not-survole">Total masse salariale chargée </td>
 			      {% for i in 0..business.numberofyears - 1 %}
 			  					<td colspan="2" class="total aright" id="sommemassesalarialetotale-0">
-						{{Totalsalairebrut[i]	+ Totalchargepatronale[i]}}						</td>
+						{{TotalcoutannuelAdm[i] +  TotalcoutannuelPro[i]	+ TotalcoutannuelCom[i] + TotalcoutannuelRec[i] }}						</td>
 					<td colspan="1" class="total aright" id="sommeetptotale-0">
 						{{TotalETPAdm[i] + TotalETPPro[i] + TotalETPCom[i] + TotalETPRec[i]}}</td>
 				   {% endfor %}

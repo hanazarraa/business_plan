@@ -32,6 +32,10 @@ class StaffController extends AbstractController
     private $salairebrutpro = [];
     private $salairebrutcom = [];
     private $salairebrutrec = [];
+    private $SumcommisionAdm =[];
+    private $SumcommisionPro = [];
+    private $SumcommisionCom = [];
+    private $SumcommisionRec = [];
     /**
      * @Route("/", name="staff")
      */
@@ -73,7 +77,7 @@ class StaffController extends AbstractController
         $this->salairebrutcom = array_intersect_key($staff[0]->getSalairebrut(),$commercialkeys);
         $this->salairebrutrec = array_intersect_key($staff[0]->getSalairebrut(),$recherchekeys);
         $charges =   $staff[0]->getCharges();
-        
+        $conditions = $staff[0]->getConditions();
         }
         $years = $businessSession->getNumberofyears();
         for($i=0 ; $i <$years ;$i++){
@@ -134,31 +138,83 @@ class StaffController extends AbstractController
          $newETPrecdetailled[$key][$i] = $value[$i];
           }    
         }
-     
+        $this->calculCommision($businessSession,$entityManager,$staff,$staffdetail,$request,$productRepository,$SalesRepository);
         if($staffdetail != null){
             foreach($this->salairebrut as $key=>$values){
+            $tvapatronale = $charges[$key][0] ;
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "0" || $conditions[$key][1]=="false") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "0" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
             for($i=0;$i<$years;$i++){
-            $coutannuel[$key][$i] =  round((($newETPdetailled[$key][$i]*12) * $values[$i]) +(($newETPdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            $coutannuel[$key][$i] =  round((($newETPdetailled[$key][$i]*12) * $values[$i]) +(($newETPdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100 ) + $this->SumcommisionAdm[$key][$i] ;
             $Totalsalairebrut[$i] +=   round((($newETPdetailled[$key][$i]*12) * $values[$i]));
-            $Totalchargepatronale[$i] +=   round((($newETPdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+            $Totalchargepatronale[$i] +=   round((($newETPdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100) ;
           }}
             foreach($this->salairebrutpro as $key=>$values){
+              $tvapatronale = $charges[$key][0] ;
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "0" || $conditions[$key][1]=="false") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "0" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
             for($i=0;$i<$years;$i++){
-            $coutannuelpro[$key][$i] =  round((($newETPprodetailled[$key][$i]*12) * $values[$i]) +(($newETPprodetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            $coutannuelpro[$key][$i] =  round((($newETPprodetailled[$key][$i]*12) * $values[$i]) +(($newETPprodetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100 ) +  $this->SumcommisionPro[$key][$i];
             $Totalsalairebrut[$i] +=   round((($newETPprodetailled[$key][$i]*12) * $values[$i]));
-            $Totalchargepatronale[$i] +=   round((($newETPprodetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+            $Totalchargepatronale[$i] +=   round((($newETPprodetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100) ;
           }}
             foreach($this->salairebrutcom as $key=>$values){
+              $tvapatronale = $charges[$key][0] ;
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "0" || $conditions[$key][1]=="false") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "0" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
             for($i=0;$i<$years;$i++){
-            $coutannuelcom[$key][$i] =  round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) +(($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+            $coutannuelcom[$key][$i] =  round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) +(($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale/100 ) +  $this->SumcommisionCom[$key][$i];
             $Totalsalairebrut[$i] +=   round((($newETPcomdetailled[$key][$i]*12) * $values[$i]));  
-            $Totalchargepatronale[$i] +=   round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+            $Totalchargepatronale[$i] +=   round((($newETPcomdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100) ;
           }}
             foreach($this->salairebrutrec as $key=>$values){
+              $tvapatronale = $charges[$key][0] ;
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "0" || $conditions[$key][1]=="false") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = 0 ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
+              if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) &&  ($conditions[$key][2]== "0" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "1" || $conditions[$key][1]=="true") ){
+                $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;}
               for($i=0;$i<$years;$i++){
-              $coutannuelrec[$key][$i] =  round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) +(($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100 );
+              $coutannuelrec[$key][$i] =  round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) +(($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100 ) +  $this->SumcommisionRec[$key][$i];
               $Totalsalairebrut[$i] +=   round((($newETPrecdetailled[$key][$i]*12) * $values[$i]));  
-              $Totalchargepatronale[$i] +=   round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $charges[$key][0] /100) ;
+              $Totalchargepatronale[$i] +=   round((($newETPrecdetailled[$key][$i]*12) * $values[$i]) * $tvapatronale /100) ;
             }}
  //--------------------------------SommeETPtotal et Coutannuel------------------------------//
       //insitialiser les listes
@@ -192,7 +248,7 @@ class StaffController extends AbstractController
         
         //--------------------------------FinSomme------------------------------------//
         //-------------------------------TotalSalairebrut----------------------------//
-
+        
         //-------------------------------FinTotalSalairebrut--------------------------//
         $form = $this->createForm(StaffFormType::class,$staff[0]);
         }
@@ -233,6 +289,334 @@ class StaffController extends AbstractController
           }
           
     }
+    //cette fonction est pour minimiser le temp d'excution lors de calcul de commission  et pour ajouter dans le cout annuel (cette fonction eviter de lire toute la fonction detail)
+    public function calculCommision($businessSession,$entityManager,$staff,$staffdetail,Request $request,ProductRepository $productRepository,SalesRepository $SalesRepository){
+      $years = $businessSession->getNumberofyears();
+      $conditions = $staff[0]->getConditions();
+      $ListCommission =[];
+      if($staffdetail != null){
+        $commissionproduct = $staff[0]->getCommissionproduit();
+      }
+      foreach($staffdetail[0]->getAdministration() as $key=>$value){
+        for($x = 0 ; $x < $years +1 ; $x++){    
+          $this->SumcommisionAdm[$key][$x] = "0.00" ;
+          for($i = 0 ; $i < 12 ; $i++){ $commisionAdm[$key][$x][$i] = "0.00" ;
+          }}
+      }
+      foreach($staffdetail[0]->getProduction() as $key=>$value){
+        for($x = 0 ; $x < $years +1 ; $x++){    
+          $this->SumcommisionPro[$key][$x] = "0.00" ;
+          for($i = 0 ; $i < 12 ; $i++){  $commisionPro[$key][$x][$i] = "0.00"  ;
+          }}
+      }
+       
+      foreach($staffdetail[0]->getSales() as $key=>$value){
+        for($x = 0 ; $x < $years +1 ; $x++){
+          $this->SumcommisionCom[$key][$x] = "0.00" ;    
+          for($i = 0 ; $i < 12 ; $i++){   $commisionCom[$key][$x][$i] = "0.00" ; ;
+          }}
+      } 
+      foreach($staffdetail[0]->getRecherche() as $key=>$value){
+        for($x = 0 ; $x < $years +1 ; $x++){
+          $this->SumcommisionRec[$key][$x] = "0.00" ;    
+          for($i = 0 ; $i < 12 ; $i++){  $commisionRec[$key][$x][$i] = "0.00"  ;
+          }}
+      } 
+      
+   
+     
+        $salesdetail = $this->sales = $entityManager->getRepository(Salesdetailled::class)->findBy(['sales'=> $businessSession->getSales()->getId()]);
+        $response = $this->forward('App\Controller\SalesController::sales', [
+          'request'  => $request,
+          'productRepository' => $productRepository,
+          'SalesRepository' => $SalesRepository,
+      ]);
+      $finalCA = SalesController::getfinalca();
+      for($x = 0 ; $x < $years ; $x++){
+        for($i = 0 ; $i < 12 ; $i++){
+          $SumfinalCAperMouth[$x][$i] =  0 ;
+        }
+       }   
+     
+     foreach($finalCA as $key=>$value){
+       for($x = 0 ; $x < $years ; $x++){
+        for($i = 0 ; $i < 12 ; $i++){
+          $SumfinalCAperMouth[$x][$i] +=  $finalCA[$key][$x][$i] ;
+        }
+       }     
+     }
+     $Allproductnames = array_keys($finalCA);
+      foreach($Allproductnames as $cle=>$name){
+      foreach($commissionproduct as  $key=>$value){
+        foreach($value as $commission){
+          if(strpos($commission, $name) !== false){
+            
+            $ListCommission[$key][substr($commission, 0 , strlen($name) )]  = substr($commission, strlen($name) ) ;
+          }
+          //$ListCommission[$key] = 
+        }
+        
+      }}  
+    //-------------------------calcul commission------------------------------//
+    for($i =0 ; $i<$years;$i++){
+      foreach($staffdetail[$i]->getAdministration() as $key=>$value){
+         
+         $tvapatronale = $staff[0]->getCharges()[$key][0];
+         $chargesalariale = $staff[0]->getCharges()[$key][1];
+         if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+         $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+         if(array_key_exists($key,$staff[0]->getTypecommission())){
+         $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+         if(array_key_exists($key,$ListCommission)){
+         $Tvaparproduit = $ListCommission[$key];}
+         
+         if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+           $tvapatronale = $staff[0]->getCharges()[$key][0];
+           $chargesalariale = $staff[0]->getCharges()[$key][1];
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+           $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+         }
+         if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+           $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+           $chargesalariale  = 0 ; 
+         }
+         if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  0 ;
+         }
+         if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+         }
+         if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale = 0 ;  
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+         }
+      
+        // dump($tvapatronale);die();
+        foreach($value as $position=>$chiffre){
+          if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+            if($chiffre >0 ){
+         $commisionAdm[$key][$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;
+         $this->SumcommisionAdm[$key][$i]+=$commisionAdm[$key][$i][$position];}
+         else{
+           $commisionAdm[$key][$i][$position]+= 0 ;
+           $this->SumcommisionAdm[$key][$i]+=$commisionAdm[$key][$i][$position];
+          }
+        } 
+        if($typeCommision == '2'){//si le typecommission de type Produit
+         if($chiffre >0){
+          foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+$commisionAdm[$key][$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+$this->SumcommisionAdm[$key][$i]+=     $commisionAdm[$key][$i][$position];   
+}}
+        else{ $commisionAdm[$key][$i][$position]+= 0 ; $this->SumcommisionAdm[$key][$i]+=$commisionAdm[$key][$i][$position];  }
+       }}}}
+   //-------------------------------------------------------------------------//
+   for($i =0 ; $i<$years;$i++){
+    foreach($staffdetail[$i]->getProduction() as $key=>$value){
+       
+       $tvapatronale = $staff[0]->getCharges()[$key][0];
+       $chargesalariale = $staff[0]->getCharges()[$key][1];
+       if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+       $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+       if(array_key_exists($key,$staff[0]->getTypecommission())){
+       $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+       if(array_key_exists($key,$ListCommission)){
+       $Tvaparproduit = $ListCommission[$key];}
+       
+       if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+         $tvapatronale = $staff[0]->getCharges()[$key][0];
+         $chargesalariale = $staff[0]->getCharges()[$key][1];
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+         $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+       }
+       if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+         $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+         $chargesalariale  = 0 ; 
+       }
+       if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  0 ;
+       }
+       if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+       }
+       if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale = 0 ;  
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+       }
+    
+      // dump($tvapatronale);die();
+      foreach($value as $position=>$chiffre){
+        if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+          if($chiffre >0 ){
+       $commisionPro[$key][$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;
+       $this->SumcommisionPro[$key][$i]+=$commisionPro[$key][$i][$position];}
+       else{
+         $commisionPro[$key][$i][$position]+= 0 ;
+         $this->SumcommisionPro[$key][$i]+=$commisionPro[$key][$i][$position];
+       }
+      } 
+      if($typeCommision == '2'){//si le typecommission de type Produit
+       if($chiffre >0){
+        foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+$commisionPro[$key][$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+$this->SumcommisionPro[$key][$i]+= $commisionPro[$key][$i][$position];   
+}}
+      else{ $commisionPro[$key][$i][$position]+= 0 ;$this->SumcommisionPro[$key][$i] += $commisionPro[$key][$i][$position]; }
+     }}}}   
+  //-------------------------------------------------------------------------//
+  for($i =0 ; $i<$years;$i++){
+    foreach($staffdetail[$i]->getSales() as $key=>$value){
+       
+       $tvapatronale = $staff[0]->getCharges()[$key][0];
+       $chargesalariale = $staff[0]->getCharges()[$key][1];
+       if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+       $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+       if(array_key_exists($key,$staff[0]->getTypecommission())){
+       $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+       if(array_key_exists($key,$ListCommission)){
+       $Tvaparproduit = $ListCommission[$key];}
+       
+       if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+         $tvapatronale = $staff[0]->getCharges()[$key][0];
+         $chargesalariale = $staff[0]->getCharges()[$key][1];
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+         $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+       }
+       if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+         $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+         $chargesalariale  = 0 ; 
+       }
+       if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  0 ;
+       }
+       if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+       }
+       if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale = 0 ;  
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+       }
+       if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+         $chargesalariale  = 0 ;
+         $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+       }
+    
+      // dump($tvapatronale);die();
+      foreach($value as $position=>$chiffre){
+        if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+          if($chiffre >0 ){
+       $commisionCom[$key][$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;
+       $this->SumcommisionCom[$key][$i] +=$commisionCom[$key][$i][$position]; }
+       else{
+         $commisionCom[$key][$i][$position]+= 0 ;
+         $this->SumcommisionCom[$key][$i] +=$commisionCom[$key][$i][$position] ;}
+      } 
+      if($typeCommision == '2'){//si le typecommission de type Produit
+       if($chiffre >0){
+        foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+$commisionCom[$key][$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+$this->SumcommisionCom[$key][$i]+=   $commisionCom[$key][$i][$position];   
+}}
+      else{ $commisionCom[$key][$i][$position]+= 0 ; $this->SumcommisionCom[$key][$i]+=$commisionCom[$key][$i][$position];}
+     }}}}
+     //-----------------------------------------------------------------------//
+     for($i =0 ; $i<$years;$i++){
+      foreach($staffdetail[$i]->getRecherche() as $key=>$value){
+         
+         $tvapatronale = $staff[0]->getCharges()[$key][0];
+         $chargesalariale = $staff[0]->getCharges()[$key][1];
+         if(array_key_exists($key,$staff[0]->getPourcentageCA())){
+         $tvaCA = $staff[0]->getPourcentageCA()[$key][0];}
+         if(array_key_exists($key,$staff[0]->getTypecommission())){
+         $typeCommision = $staff[0]->getTypecommission()[$key][0];}
+         if(array_key_exists($key,$ListCommission)){
+         $Tvaparproduit = $ListCommission[$key];}
+         
+         if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false" ) &&  ($conditions[$key][2]== "" || $conditions[$key][2] =="false" ) && ($conditions[$key][1]== "" || $conditions[$key][1]=="false") ){
+           $tvapatronale = $staff[0]->getCharges()[$key][0];
+           $chargesalariale = $staff[0]->getCharges()[$key][1];
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "" || $conditions[$key][1] == "false" )){
+           $tvapatronale = $staff[0]->getParametre()['tauxJEI'] ; 
+         }
+         if( ($conditions[$key][0]== "0" || $conditions[$key][0] =="false" ) && ($conditions[$key][2]== "" || $conditions[$key][2] == "false") && ($conditions[$key][1]== "1" || $conditions[$key][1] == "true" )){
+           $tvapatronale = $staff[0]->getParametre()['tauxmoyen'] ;
+           $chargesalariale  = 0 ; 
+         }
+         if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true") && ($conditions[$key][0]== "" || $conditions[$key][0] =="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  0 ;
+         }
+         if( ($conditions[$key][2]== "1" || $conditions[$key][2] =="true" )  && ($conditions[$key][0]== "1" || $conditions[$key][0]  =="true") && ($conditions[$key][1]== "" || $conditions[$key][1]  =="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ;  
+         }
+         if( ($conditions[$key][0]== "" || $conditions[$key][0] =="false") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale = 0 ;  
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "" || $conditions[$key][2]=="false") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale = $staff[0]->getParametre()['tauxJEI']  ;  
+         }
+         if( ($conditions[$key][0]== "1" || $conditions[$key][0] =="true") && ( $conditions[$key][1]== "1" || $conditions[$key][1] =="true" ) && ($conditions[$key][2]== "1" || $conditions[$key][2]=="true") ){
+           $chargesalariale  = 0 ;
+           $tvapatronale =  $staff[0]->getParametre()['tauxJEI'] ; 
+         }
+      
+        // dump($tvapatronale);die();
+        foreach($value as $position=>$chiffre){
+          if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
+            if($chiffre >0 ){
+         $commisionRec[$key][$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;
+         $this->SumcommisionRec[$key][$i]+=$commisionRec[$key][$i][$position];}
+         else{
+           $commisionRec[$key][$i][$position]+= 0 ; $this->SumcommisionRec[$key][$i]+=$commisionRec[$key][$i][$position];
+         }
+        } 
+        if($typeCommision == '2'){//si le typecommission de type Produit
+         if($chiffre >0){
+          foreach($Tvaparproduit as $nomproduit=>$valueproduit){
+$commisionRec[$key][$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valueproduit) /100 +   ((($finalCA[$nomproduit][$i][$position] * $valueproduit) /100)* $tvapatronale) /100;
+$this->SumcommisionRec[$key][$i] +=     $commisionRec[$key][$i][$position];    
+}}
+        else{ $commisionRec[$key][$i][$position]+= 0 ;$this->SumcommisionRec[$key][$i] +=$commisionRec[$key][$i][$position]; }
+       }}}}
+    //dump($commisionPro,$SumcommisionPro);die();  
+   //----------------------------fin de calcul-------------------------------//
+   //----------------------------Somme commission----------------------------//
+   //----------------------------Fin Somme ----------------------------------// 
+    }
+
      /**
      * @Route("-year-{id}", name="staffdetail")
      */
@@ -429,7 +813,7 @@ class StaffController extends AbstractController
          // dump($tvapatronale);die();
          foreach($value as $position=>$chiffre){
            if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
-             if($chiffre >0 && $commisionAdm[$i][$position] == 0){
+             if($chiffre >0 ){
           $commisionAdm[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
           else{
             $commisionAdm[$i][$position]+= 0 ;
@@ -532,7 +916,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
             // dump($tvapatronale);die();
             foreach($value as $position=>$chiffre){
               if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
-                if($chiffre >0 && $commisionPro[$i][$position] == 0){
+                if($chiffre >0){
              $commisionPro[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
              else{
                $commisionPro[$i][$position]+= 0 ;
@@ -635,7 +1019,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
           // dump($tvapatronale);die();
           foreach($value as $position=>$chiffre){
             if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
-              if($chiffre >0 && $commisionCom[$i][$position] == 0){
+              if($chiffre >0 ){
            $commisionCom[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
            else{
              $commisionCom[$i][$position]+= 0 ;
@@ -738,7 +1122,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
           // dump($tvapatronale);die();
           foreach($value as $position=>$chiffre){
             if($typeCommision == '1'){//si le typecommision de tye Chiffre d'affaire
-              if($chiffre >0 && $commisionRec[$i][$position] == 0){
+              if($chiffre >0){
            $commisionRec[$i][$position]+= ($SumfinalCAperMouth[$i][$position] * $tvaCA)/100 + ((($SumfinalCAperMouth[$i][$position] * $tvaCA)/100)* $tvapatronale) /100 ;}
            else{
              $commisionRec[$i][$position]+= 0 ;
@@ -1097,6 +1481,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
       $products =$entityManager->getRepository(Product::class)->findByBusinessplan($businessSession);
       $Listproduct =[];
       $department ;
+      $parametre = $staff[0]->getParametre();
       $TypeCommission[0]="0";
       $CA[0] = "";
       $years = $businessSession->getNumberofyears();
@@ -1397,7 +1782,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
      //dump($CA);die();
       return $this->render('staff/edit.html.twig',[
       'name'=> $name , 'charges' => $charges,'Listproduct' => $Listproduct, 'CA' =>  $CA,
-      'form'=>$form->createView() , 'product' => $Listproduct,
+      'form'=>$form->createView() , 'product' => $Listproduct, 'JEI' => $parametre['tauxJEI'],
       ]);
     }
      /**
