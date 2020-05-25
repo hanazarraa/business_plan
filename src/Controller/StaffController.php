@@ -306,6 +306,7 @@ class StaffController extends AbstractController
       $years = $businessSession->getNumberofyears();
       $Tvaparproduit = [];
       $ListCommission =[];
+      $commissionproduct =[];
       if($staffdetail != null){
         $commissionproduct = $staff[0]->getCommissionproduit();
         $conditions = $staff[0]->getConditions();
@@ -650,6 +651,7 @@ $this->SumcommisionRec[$key][$i] +=     $commisionRec[$key][$i][$position];
         $Tvaparproduit = [];
         $salairebrut = [];
         $ListCommission =[];
+        $commissionproduct =[];
         if($staffdetail != null){
           $keyadmin = array_keys($staffdetail[0]->getAdministration());
           $keypro = array_keys($staffdetail[0]->getProduction());

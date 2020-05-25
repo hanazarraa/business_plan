@@ -9,6 +9,7 @@ use App\Repository\SalesdetailledRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use App\Repository\SalesRepository;
 use App\Controller\SalesController;
+
 /**
 * @Route("/{_locale}/dashboard/my-business-plan/purchase")
  */
@@ -21,6 +22,7 @@ class PurchaseController extends AbstractController
     private $businessSession;
     private $products;
     private $list;
+    static $puchaselist ;
     public function __construct(\Knp\Snappy\Pdf $knpSnappy) {
         
          $this->knpSnappy = $knpSnappy; }
@@ -35,11 +37,15 @@ class PurchaseController extends AbstractController
         $id=0;
         $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
        
-     
+        self::$puchaselist = $this->total ;
         //dump($SalesController->sales($request,$productRepository,$SalesRepository));die();
         return $this->render('purchase/index.html.twig', [
             'business' => $this->businessSession ,'products' => $this->products , 'Somme' => $this->Somme ,'total'=> $this->total 
         ]);
+    }
+    public function getlistpurchase(){
+    
+      return self::$puchaselist;
     }
         /**
      * @Route("/purchasedetailled-{id}", name="purchasedet")
