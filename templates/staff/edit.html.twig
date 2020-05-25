@@ -202,7 +202,7 @@
 			exsist = true;
         }
         }
-		if(exsist == false && tva !='' && isNaN(tva)== false){
+		if(exsist == false && tva !='' && isNaN(tva)== false && name !=''){
 	    list.appendChild(entry);
 		document.getElementById("staff_edit_form_product").value =document.getElementById("staff_edit_form_product").value + name+tva+',';
 		}

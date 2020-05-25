@@ -4,7 +4,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,22 +20,26 @@ class CollectionFormType extends AbstractType
         add('Administration',CollectionType::class,[
 
             'entry_type'=>CollectionType::class,
-            'label' => false 
+            'label' => false ,
+            'constraints' => [new Assert\All([new Assert\All([new Assert\PositiveOrZero()])])]
         ])
         ->add('production',CollectionType::class,[
 
             'entry_type'=>CollectionType::class,
-            'label' => false 
+            'label' => false ,
+            'constraints' => [new Assert\All([new Assert\All([new Assert\PositiveOrZero()])])]
         ])
         ->add('sales',CollectionType::class,[
 
             'entry_type'=>CollectionType::class,
-            'label' => false 
+            'label' => false ,
+            'constraints' => [new Assert\All([new Assert\All([new Assert\PositiveOrZero()])])]
         ])
         ->add('recherche',CollectionType::class,[
 
             'entry_type'=>CollectionType::class,
-            'label' => false 
+            'label' => false ,
+            'constraints' => [new Assert\All([new Assert\All([new Assert\PositiveOrZero()])])]
         ])
         ->add('submit', SubmitType::class);
     }

@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 class StaffCreateFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -41,8 +42,21 @@ class StaffCreateFormType extends AbstractType
             'required' => false, 
         ])
 
-        ->add('ChargePatronale',NumberType::class,[])
-        ->add('ChargeSalariales',NumberType::class,[])
+        ->add('ChargePatronale',NumberType::class,[
+            'constraints' => [new Assert\Range([
+                'min' => 0,
+                'max' => 100,
+                'minMessage' => 'valeur doit être entre 1 et 100',
+                'maxMessage' => 'valeur doit être entre 1 et 100'])
+                ]])
+        ->add('ChargeSalariales',NumberType::class,[
+            'constraints' => [new Assert\Range([
+                'min' => 0,
+                'max' => 100,
+                'minMessage' => 'valeur doit être entre 1 et 100',
+                'maxMessage' => 'valeur doit être entre 1 et 100'])
+                ]
+        ])
         
         ->add('submit', SubmitType::class);
     }
