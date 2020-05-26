@@ -20,7 +20,7 @@ use App\Repository\GeneralexpensesRepository;
  */
 class GeneralexpensesController extends AbstractController
 {
-
+    static $staticpurchase ;
     /**
      * @Route("/", name="generalexpenses")
      */
@@ -162,8 +162,22 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         $tvalistpro = $generalexpensses[0]->getTvalistproduction();
         $tvalistcom = $generalexpensses[0]->getTvalistcommercial();
         $tvalistrec = $generalexpensses[0]->getTvalistrecherche();
+
+    //merge les valeur globale avec les valeur detailler dans une seule liste 
+    $pos =0 ;
+    for($i=0 ; $i<$years ; $i++){
+        if($pos < $rangeofdetail){
+        $finalgeneralexpenses[$i] = $total[$i] + $totalpro[$i] + $totalcom[$i] + $totalrech[$i];
+        $pos ++;}
+        else{
+            $finalgeneralexpenses[$i]  = $globalTotal[$i-$rangeofdetail] + $globalTotalpro[$i-$rangeofdetail] +  $globalTotalcom[$i-$rangeofdetail] + $globalTotalrec[$i-$rangeofdetail];
+        }
+    }
+    self::$staticpurchase =$finalgeneralexpenses ; 
+    //-------------------------fin de merge ------------------------------//
         $form = $this->createForm(GeneralexpensesFormType::class, $generalexpensses[0]);
         $form->handleRequest($request);
+        //
         if($form->isSubmitted() && $form->isValid()){
 
             $generalexpensses=$form->getData();     
@@ -182,7 +196,10 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
          'globaltotalcom' => $globalTotalcom , 'sumrecherche' => $Sumrecherche , 'totalrecherche' => $totalrech
         ,'globaltotalrec' => $globalTotalrec ]); 
     }
-
+    public function getpurchase(){
+    
+        return self::$staticpurchase;
+      }
     /**
      * @Route("-year-{id}", name="generalexpensesdetail")
      */

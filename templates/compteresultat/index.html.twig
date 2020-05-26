@@ -91,59 +91,55 @@
 
 			<tr>
 				<td class="total">Total produits</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+				{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright total">{{totalproduit[i]}}</td>
+			    {% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Total achats consommés</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+								<td class="aright">{{totalachat[i]}}</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Total autres achats et charges externes</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+								{% for i in 0..business.numberofyears -1  %}
+								<td class="aright">{{generalexpense[i]}}</td>
+								{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="total">Total consommations intermédiaires</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+								{% for i in 0..business.numberofyears -1  %}
+								<td class="aright total">{{totalachat[i] + generalexpense[i]}}</td>
+									{% endfor %}
+								
 							</tr>
 
 			<tr>
 				<td class="total">Valeur ajoutée</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+								{% for i in 0..business.numberofyears -1  %}
+								<td class="aright total">{{totalproduit[i]  -  (totalachat[i] + generalexpense[i])}}</td>
+								{% endfor %}
+								
 							</tr>
 
 			<tr>
 				<td class="soustitre">Valeur ajoutée / Total produits</td>
-								<td class="aright">0.00 %</td>
-								<td class="aright">0.00 %</td>
-								<td class="aright">0.00 %</td>
-								<td class="aright">0.00 %</td>
+				{% for i in 0..business.numberofyears -1  %}
+								<td class="aright">{{((totalproduit[i]  -  (totalachat[i] + generalexpense[i])) * 100  / totalproduit[i])|round(2, 'floor')  }} %</td>
+				{% endfor %}
+							
 							</tr>
 
 
 			<tr>
 				<td class="soustitre">Personnel</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+								<td class="aright">{{staff[i]}}</td>
+				{% endfor %}
 							</tr>
 
 			<tr>

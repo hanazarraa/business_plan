@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\SalesRepository;
 use App\Repository\SalesdetailledRepository;
+use App\Repository\GeneralexpensesRepository;
 use App\Repository\ProductRepository;
 use App\Entity\CompteResultat;
 use App\Form\CompteResultatFormType;
@@ -18,7 +19,7 @@ class CompteresultatController extends AbstractController
     /**
      * @Route("/", name="compteresultat")
      */
-    public function index(Request $request ,ProductRepository $productRepository ,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository )
+    public function index(Request $request ,ProductRepository $productRepository ,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,GeneralexpensesRepository $generalrep )
     {
         $businessSession =$this->container->get('session')->get('business');
         $entityManager = $this->getDoctrine()->getManager();
@@ -36,8 +37,22 @@ class CompteresultatController extends AbstractController
             'request'  => $request,
             'SalesRepository' => $SalesRepository,
         ]);
+        $response = $this->forward('App\Controller\GeneralexpensesController::index', [
+            'request'  => $request,
+            'GeneralexpensesRepository'  => $generalrep,
+                
+        ]);
+        $response = $this->forward('App\Controller\StaffController::index', [
+            'request'  => $request,
+            'productRepository' => $productRepository,
+            'SalesRepository' => $SalesRepository,
+                
+        ]);
         $finalCA = SalesController::getfinalca();
         $purchase = PurchaseController::getlistpurchase();
+        $generalexpense = GeneralexpensesController::getpurchase();
+        $staff = StaffController::getstaff();
+        
         for($x = 0 ; $x < $years ; $x++){
             for($i = 0 ; $i < 12 ; $i++){
               $SumfinalCAperMouth[$x][$i] =  0 ;}}   
@@ -61,14 +76,17 @@ class CompteresultatController extends AbstractController
           $RD = $compteresultat[0]->getRD();
           $tauximport = $compteresultat[0]->getTauximpot();
           $creditimpot = $compteresultat[0]->getCreditimpot();
-           //Marge commercial 
+           //Marge commercial && total produit
         for($x = 0 ; $x < $years ; $x++){
             $margecommercial[$x] =  ($totalCA[$x] + $RD[$x] )- $purchase[$x]  ;
+            $totalproduit[$x] = $totalCA[$x] + $RD[$x] ; 
            }
+         
        //dump($margecommercial);die();
         return $this->render('compteresultat/index.html.twig', ['RD' => $RD,
             'business' => $businessSession, 'totalCA'=> $totalCA, 'margecommercial' => $margecommercial,
-            'form' => $form->createView() ,
+            'form' => $form->createView() , 'totalproduit' => $totalproduit, 'totalachat' => $purchase, 'generalexpense' => $generalexpense ,
+            'staff' => $staff,
             ]);
         
     }
