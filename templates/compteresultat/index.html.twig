@@ -57,10 +57,9 @@
 		<table class="tableau">
 			<tr>
 				<th></th>
-								<th>Année 1</th>
-								<th>Année 2</th>
-								<th>Année 3</th>
-								<th>Année 4</th>
+				{% for i in 0..business.numberofyears - 1 %}
+								<th>Année {{ i + 1}}</th>
+				{% endfor %}
 							</tr>
 
 			<tr>
@@ -129,7 +128,7 @@
 			<tr>
 				<td class="soustitre">Valeur ajoutée / Total produits</td>
 				{% for i in 0..business.numberofyears -1  %}
-								<td class="aright">{{((totalproduit[i]  -  (totalachat[i] + generalexpense[i])) * 100  / totalproduit[i])|round(2, 'floor')  }} %</td>
+					<td class="aright"> {% if totalproduit[i] != 0   %} {{((totalproduit[i]  -  (totalachat[i] + generalexpense[i])) * 100  / totalproduit[i])|round(2, 'floor')  }} % {% endif %}</td>
 				{% endfor %}
 							
 							</tr>
@@ -144,43 +143,38 @@
 
 			<tr>
 				<td class="soustitre">Impôts et taxes</td>
+				{% for i in 0..business.numberofyears -1  %}
 									<td class="aright">0.00</td>
-									<td class="aright">0.00</td>
-									<td class="aright">0.00</td>
-									<td class="aright">0.00</td>
+				{% endfor %}			
 				
 			</tr>
 
 			<tr>
 				<td class="total">EBE</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+								<td class="aright total"> {{totalproduit[i] - (totalachat[i] + generalexpense[i]	) - staff[i] }} </td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Frais financiers : sur emprunts</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+				<td class="aright">0.00</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Dotation aux amortissements</td>
-								<td class="aright">170.00</td>
-								<td class="aright">260.00</td>
-								<td class="aright">280.00</td>
-								<td class="aright">280.00</td>
+								{% for i in 0..business.numberofyears -1  %}
+								<td class="aright"> {{depreciation[i]}}</td>
+								{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="total">Résultats avant impôts</td>
-								<td class="aright total">-170.00</td>
-								<td class="aright total">-260.00</td>
-								<td class="aright total">-280.00</td>
-								<td class="aright total">-280.00</td>
+								{% for i in 0..business.numberofyears -1  %}
+								<td class="aright total"> {{(totalproduit[i] - (totalachat[i] + generalexpense[i]	) - staff[i] )  - depreciation[i] }} </td>
+								{% endfor %}
 							</tr>
 
 			<tr>
@@ -197,23 +191,11 @@
 
 			<tr>
 				<td class="soustitre">Impôt sur les Sociétés</td>
-				
+				{% for i in 0..business.numberofyears -1  %}
 				<td class="aright">
-					0.00									</td>
-
+					0.00</td>
+                {% endfor %}
 				
-				<td class="aright">
-					0.00									</td>
-
-				
-				<td class="aright">
-					0.00									</td>
-
-				
-				<td class="aright">
-					0.00									</td>
-
-							</tr>
 
 			<tr>
 				<td class="soustitre">Crédit impôt (Recherche, etc.) &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Les décaissements et encaissements lies à l’IS et aux Crédits d’Impôts sont renseignés dans le tableau spécifique Impôt sur les Sociétés.
@@ -229,42 +211,37 @@
 
 			<tr>
 				<td class="total">Résultat après impôts</td>
-									<td class="aright total">-170.00</td>
-									<td class="aright total">-260.00</td>
-									<td class="aright total">-280.00</td>
-									<td class="aright total">-280.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+									<td class="aright total"> {{ ((totalproduit[i] - (totalachat[i] + generalexpense[i]	) - staff[i] )  - depreciation[i]) + creditimpot[i]}}  </td>
+				{% endfor  %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Autofinancement</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% for i in 0..business.numberofyears -1  %}
+				<td class="aright"> {{(((totalproduit[i] - (totalachat[i] + generalexpense[i]	) - staff[i] )  - depreciation[i]) + creditimpot[i])+  depreciation[i]}} </td>
+				{% endfor  %}
 							</tr>
 
 			<tr>
 				<td class="total">Seuil rentabilité</td>
+			    {% for i in 0..business.numberofyears -1  %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+				{% endfor  %}
 							</tr>
 
 			<tr>
 				<td class="total">Point mort</td>
+				{% for i in 0..business.numberofyears -1  %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+				{% endfor  %}
 							</tr>
 
 			<tr>
 				<td class="total">Panier moyen</td>
+				{% for i in 0..business.numberofyears -1  %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
+				{% endfor  %}
 							</tr>
 		</table>
 	</div>

@@ -231,6 +231,7 @@ class StaffController extends AbstractController
  //--------------------------------SommeETPtotal et Coutannuel------------------------------//
       //insitialiser les listes
       for($i=0 ; $i <$years ;$i++){
+        
         $TotalETPAdm[$i] = "0.00"; 
         $TotalcoutannuelAdm[$i] = "0.00";
         $TotalETPPro[$i] = "0.00";

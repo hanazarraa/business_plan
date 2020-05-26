@@ -23,9 +23,23 @@ class CompteresultatController extends AbstractController
     {
         $businessSession =$this->container->get('session')->get('business');
         $entityManager = $this->getDoctrine()->getManager();
+        $exsist = True ;
         $compteresultat = $entityManager->getRepository(CompteResultat::class)->findByBusinessplan($businessSession);
-       
         $years = $businessSession->getNumberofyears();
+        for($x = 0 ; $x < $years ; $x++){
+        
+        $RD[$x] = "0.00";
+        $tauximport[$x] ="0.00";
+        $creditimpot[$x]  ="0.00";}
+        if($compteresultat ==[]){
+           $exsist = False ;
+           $compteresultat = new CompteResultat();
+           $compteresultat->setRD($RD);
+           $compteresultat->setTauximpot($tauximport);
+           $compteresultat->setCreditimpot($creditimpot);
+           $compteresultat->setBusinessplan($businessSession);
+       }
+        
         $response = $this->forward('App\Controller\SalesController::sales', [
             'request'  => $request,
             'productRepository' => $productRepository,
@@ -48,11 +62,21 @@ class CompteresultatController extends AbstractController
             'SalesRepository' => $SalesRepository,
                 
         ]);
+        $response = $this->forward('App\Controller\DepreciationController::index', [
+      
+        ]);
         $finalCA = SalesController::getfinalca();
         $purchase = PurchaseController::getlistpurchase();
         $generalexpense = GeneralexpensesController::getpurchase();
         $staff = StaffController::getstaff();
-        
+        $depreciation = DepreciationController::getdepreciation();
+        if($staff == null){ for($x = 0 ; $x < $years ; $x++){
+            $staff[$x] = "0.00";
+        }}
+        if($depreciation == null){ for($x = 0 ; $x < $years ; $x++){
+            $depreciation[$x] = "0.00";
+        }}
+
         for($x = 0 ; $x < $years ; $x++){
             for($i = 0 ; $i < 12 ; $i++){
               $SumfinalCAperMouth[$x][$i] =  0 ;}}   
@@ -65,17 +89,26 @@ class CompteresultatController extends AbstractController
               for($x = 0 ; $x < $years ; $x++){
                $totalCA[$x] = array_sum($SumfinalCAperMouth[$x]);
               }
-     
-           $form = $this->createForm(CompteResultatFormType::class , $compteresultat[0]);
-          $form->handleRequest($request);
+            
+            if($exsist == true){
+           $form = $this->createForm(CompteResultatFormType::class , $compteresultat[0]);}
+           else{
+        $form = $this->createForm(CompteResultatFormType::class , $compteresultat);
+           }
+          
+           $form->handleRequest($request);
           if($form->isSubmitted() && $form->isValid()){
               $compteresultat = $form->getData();
+              if($exsist == false){
+                $entityManager->merge($compteresultat);
+              }
               $entityManager->flush();
           }
           $compteresultat = $entityManager->getRepository(CompteResultat::class)->findByBusinessplan($businessSession);
+          if($compteresultat != []){
           $RD = $compteresultat[0]->getRD();
           $tauximport = $compteresultat[0]->getTauximpot();
-          $creditimpot = $compteresultat[0]->getCreditimpot();
+          $creditimpot = $compteresultat[0]->getCreditimpot();}
            //Marge commercial && total produit
         for($x = 0 ; $x < $years ; $x++){
             $margecommercial[$x] =  ($totalCA[$x] + $RD[$x] )- $purchase[$x]  ;
@@ -83,10 +116,10 @@ class CompteresultatController extends AbstractController
            }
          
        //dump($margecommercial);die();
-        return $this->render('compteresultat/index.html.twig', ['RD' => $RD,
+        return $this->render('compteresultat/index.html.twig', ['RD' => $RD, 'creditimpot' => $creditimpot,
             'business' => $businessSession, 'totalCA'=> $totalCA, 'margecommercial' => $margecommercial,
             'form' => $form->createView() , 'totalproduit' => $totalproduit, 'totalachat' => $purchase, 'generalexpense' => $generalexpense ,
-            'staff' => $staff,
+            'staff' => $staff, 'depreciation' => $depreciation,
             ]);
         
     }
