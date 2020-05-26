@@ -93,6 +93,7 @@ class StaffController extends AbstractController
         }
         $years = $businessSession->getNumberofyears();
         for($i=0 ; $i <$years ;$i++){
+          
           $Totalsalairebrut[$i] = "0.00";
           $Totalchargepatronale[$i] = "0.00";
         }
@@ -261,16 +262,17 @@ class StaffController extends AbstractController
         
         //--------------------------------FinSomme------------------------------------//
         //-------------------------------TotalSalairebrut----------------------------//
-        
+        for($i=0 ;$i<$years;$i++){
+          $STAFF[$i] =$TotalcoutannuelAdm[$i] + $TotalcoutannuelPro[$i] +  $TotalcoutannuelCom[$i] + $TotalcoutannuelRec[$i] ;        }
+          self::$staticstaff =$STAFF ;
         //-------------------------------FinTotalSalairebrut--------------------------//
         $form = $this->createForm(StaffFormType::class,$staff[0]);
         }
         else{
             $form = $this->createForm(StaffFormType::class);
         }
-        for($i=0 ;$i<$years;$i++){
-          $STAFF[$i] =$TotalcoutannuelAdm[$i] + $TotalcoutannuelPro[$i] +  $TotalcoutannuelCom[$i] + $TotalcoutannuelRec[$i] ;        }
-          self::$staticstaff =$STAFF ;
+    
+        
           
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){

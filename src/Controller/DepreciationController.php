@@ -49,6 +49,7 @@ class DepreciationController extends AbstractController
     $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' => $investments]);
     $L= [];
     $type=[];
+    $TOTAL =[];
     if($investments!= null){
       $keysAdministration =array_keys($investmentsdetail[0]->getAdministration());
       $keysProduction = array_keys($investmentsdetail[0]->getProduction());
@@ -92,9 +93,10 @@ class DepreciationController extends AbstractController
     foreach($keyRecherche as $key=>$value){
       $type[$value] = 'Recherche';
     }
+    if($this->Sommetotal != [] ){
     for($i =0 ;$i<$years ;$i++){
     $TOTAL[$i] = $this->Sommetotal[$i] + $this->GlobalAdm[$i] +$this->SommetotalPro [$i] + $this->GlobalPro[$i] + $this->SommetotalCom[$i] + $this->GlobalCom[$i]   + $this->SommetotalRec[$i] + $this->GlobalRec[$i]; 
-    }
+    }}
     self::$listdepreciation =$TOTAL ;
     return $this->render('depreciation/index.html.twig',['business'=> $businessSession, 'rangeofglobal'=>$rangeofglobal,
     'totalperName' => $this->totalFinalSumListperName,'totalperNamePro' => $this->totalFinalSumListperNamePro ,'totalperNameCom' => $this->totalFinalSumListperNameCom ,'totalperNameRec' => $this->totalFinalSumListperNameRec , 

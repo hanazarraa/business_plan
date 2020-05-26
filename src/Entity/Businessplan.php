@@ -97,6 +97,11 @@ class Businessplan
      */
     private $rangeofdetail;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Loans", mappedBy="businessplan")
+     */
+    private $loans;
+
 
 
    
@@ -104,6 +109,7 @@ class Businessplan
     function __construct()
     {
         $this->investments = new ArrayCollection();
+        $this->loans = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -297,6 +303,37 @@ public function getRangeofdetail(): ?int
 public function setRangeofdetail(int $rangeofdetail): self
 {
     $this->rangeofdetail = $rangeofdetail;
+
+    return $this;
+}
+
+/**
+ * @return Collection|Loans[]
+ */
+public function getLoans(): Collection
+{
+    return $this->loans;
+}
+
+public function addLoan(Loans $loan): self
+{
+    if (!$this->loans->contains($loan)) {
+        $this->loans[] = $loan;
+        $loan->setBusinessplan($this);
+    }
+
+    return $this;
+}
+
+public function removeLoan(Loans $loan): self
+{
+    if ($this->loans->contains($loan)) {
+        $this->loans->removeElement($loan);
+        // set the owning side to null (unless already changed)
+        if ($loan->getBusinessplan() === $this) {
+            $loan->setBusinessplan(null);
+        }
+    }
 
     return $this;
 }
