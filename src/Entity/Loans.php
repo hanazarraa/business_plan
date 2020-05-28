@@ -60,6 +60,11 @@ class Loans
      */
     private $businessplan;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +162,18 @@ class Loans
     public function setBusinessplan(?businessplan $businessplan): self
     {
         $this->businessplan = $businessplan;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

@@ -1,0 +1,285 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+{{parent()}}
+{% endblock %}
+  {% block nav %}
+  {{parent()}}
+  {% endblock %}
+ {% block sidebar %}
+ {{parent()}}
+{% endblock %}
+{% block menufooter %}
+{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+{{parent()}}
+{% endblock %}   
+{% block content %}
+
+<div class="right_col" role="main">
+                            {{form_start(form,{'attr': {'class': 'formulaire'}})}}
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Modifier un emprunt		</h1>
+
+		<div class="call-to-action fright">
+												<div class="fleft">
+                         {{ form_widget(form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+						
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+				<div class="clearer"></div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="date_premiere_echeance">
+					Nom <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					{{ form_widget (form.name, {'attr': {'type':'text','class':'type-text ' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="date_emprunt">
+					Date de l'emprunt <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+                {{ form_widget (form.loandate, {'attr': {'type':'text','class':'type-text' }}) }}
+										
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+                   
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="date_premiere_echeance">
+					Date première échéance <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+
+				 {{ form_widget (form.firstpaymentdate, {'attr': {'type':'text','class':'type-text' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">{{ form_errors(form.firstpaymentdate) }}
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="montant">
+					Montant <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+				{{ form_widget (form.amount, {'attr': {'type':'text','class':'type-text' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+                     {{ form_errors(form.amount) }}
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="taux_annuel">
+					Taux annuel <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					{{ form_widget (form.taux, {'attr': {'type':'text','class':'type-text' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+                     {{ form_errors(form.taux) }}
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="duree">
+					Durée en années <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					{{ form_widget (form.duration, {'attr': {'type':'text','class':'type-text' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+                     {{ form_errors(form.duration) }}
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+
+		<div class="form-element ">
+			<div class="fleft">
+				<label for="duree">
+					Nombre d'échéances <span class="rouge">*</span>
+				</label>
+
+				<div class="champ">
+					{{ form_widget (form.numberofpayment, {'attr': {'type':'text','class':'type-text' }}) }}
+				</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="fleft aide">
+					<div class="infos">
+
+					</div>
+
+					<div class="erreurs">
+											</div>
+			</div>
+			<div class="clearer"></div>
+		</div>
+	</div>
+{{form_end(form)}}
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="17" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+{% endblock %}
+       	{% block footer %}
+{{parent()}}
+{% endblock %}
+ {% block comment %}
+ {{parent()}} 
+ {% endblock %}

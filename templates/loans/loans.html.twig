@@ -23,12 +23,12 @@
 
 	<div class="call-to-action fright">
 					<div class="fleft">
-				<a href="https://www.montpellier-business-plan.com/mon-business-plan/creer-emprunt" title="Créer un emprunt" class="btn btn-md btn-primary">
+				<a href="{{path('createloans')}}" title="Créer un emprunt" class="btn btn-md btn-primary">
 					<i class="fa fa-plus-circle"></i> &nbsp;Créer un emprunt				</a>
 			</div>
 
 				<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?emprunt[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
@@ -51,28 +51,32 @@
 				<th>Montant échéance</th>
 				<th></th>
 			</tr>
-							<tr>
-					<td class="soustitre">karim</td>
-					<td class="aright">03/02/2020</td>
-					<td class="aright">12/02/2020</td>
-					<td class="aright">1 000.00</td>
-					<td class="aright">0.00</td>
-					<td class="aright">0</td>
-					<td class="aright">12</td>
-					<td class="aright">0.00</td>
+			{% for i in loans %}
+			{% set difference = i.firstpaymentdate|date("m")  -  i.loandate|date("m") %}
+			
+					<tr>
+					<td class="soustitre">{{i.name}}</td>
+					<td class="aright">{{i.loandate|date("d/m/Y")}}</td>
+					<td class="aright">{{i.firstpaymentdate|date("d/m/Y")}}</td>
+					<td class="aright">{{i.amount}}</td>
+					<td class="aright">{{i.taux}}</td>
+					<td class="aright">{{i.duration}}</td>
+					<td class="aright">{{i.numberofpayment}}</td>
+					<td class="aright">{{((i.amount * ((i.taux  / 100 )/ 12 ))  / (1 - ((1+ (i.taux / 100 / 12))** (- i.duration * 12  + difference )) ))|round(2, 'floor')   }}</td>
 					<td class="acenter fs-18">
-													<a href="https://www.montpellier-business-plan.com/mon-business-plan/modifier-emprunt-44263" class="tool-tip" title="Modifier">
+											<a href="{{path('editloans',{'code':i.code})}}" class="tool-tip" title="Modifier">
 								<i class="fa fa-pencil"></i>
 							</a>
 
-							<a href="https://www.montpellier-business-plan.com/mon-business-plan/recapitulatif-emprunt-44263" class="tool-tip" title="Afficher">
+							<a href="" class="tool-tip" title="Afficher">
 								<i class="fa fa-search"></i>
 							</a>
 							&nbsp;&nbsp;
-							<a href="https://www.montpellier-business-plan.com/espace_client/emprunt/delete/44263" class="demande-confirmation tool-tip" title="Supprimer">
+							<a href="{{path('deleteloans',{'code':i.code})}}" class="demande-confirmation tool-tip" title="Supprimer">
 								<i class="fa fa-trash-o"></i>
 							</a>
 											</td>
+				 {% endfor %}
 
 					</table>
 
