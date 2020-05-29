@@ -83,4 +83,139 @@ class LoansController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('loans');
     }
+    /**
+     * @Route("/show/{code}", name="showloans")
+     */
+    public function detail($code,Request $request){
+        $businessSession =$this->container->get('session')->get('business');
+        $entityManager = $this->getDoctrine()->getManager();
+        $loans = $entityManager->getRepository(Loans::class)->findByCode($code);
+        $years = $businessSession->getNumberofyears();
+        //---------------- variable de l'emprunt----------------------------// 
+        $dateemprunt = $loans[0]->getLoandate();
+        $startempruntM = $dateemprunt->format('m');
+        $startempruntY = $dateemprunt->format('Y');
+        $datefirstpayment = $loans[0]->getFirstpaymentdate();
+        $startposition = $datefirstpayment->format('m') ;
+        $startpositionY = $datefirstpayment->format('Y') ;
+        $amount = $loans[0]->getAmount();
+        $taux = $loans[0]->getTaux();
+        $duration = $loans[0]->getDuration();
+        $diffirence =  date_diff($datefirstpayment,$dateemprunt) ;
+        $diff = $diffirence->days/ 30.417;
+       
+        //------------------variable de business plan ---------------------//
+        $annedebut  = $businessSession->getStartyear();
+        $moisdebut  =   $businessSession->getStartmonth();
+        $moisdebutInteger = $this->transformMounth($moisdebut);
+        
+        //-----------------------Fin------------------------------//
+        //------------------------echeance-----------------------------------//
+        $echancetoppart = $amount * (($taux / 100)/12); //partie top de la formule de subdivision  (Formule Emprunt)
+        $echancedownpart = (1- pow((1+ ($taux/100/12)),-$duration*12+round($diff))); // partie down de la formule de subdivision 
+        $echance = round($echancetoppart / $echancedownpart,2);
+        
+        //--------------------------Fin echance-----------------------------// 
+        //initialiser les listes pour le capital rembourser & les frais financier
+        for($x=0 ;$x<12*$years; $x++ ){
+        $capitalrembourse[$x] = "0.00";
+        $fraisfinanciers[$x] = "0.00";
+        $capitalrestantdu[$x] = "0.00"  ;
+        }
+        for($i=0;$i<$years ; $i++){
+        for($x=0;$x<12;$x++){
+            $remboursmentsynchroniser[$i][$x] = "0.00" ;
+            $fraissynchroniser[$i][$x] =  "0.00"  ;
+            $restantsynchroniser[$i][$x] = "0.00" ;
+        }}
+      
+        //-----------------------------fin d'initialisation -------------------//
+       //----------------------------debut de calcul de remboursement si mensualite egale 12--------------------------//
+       $diffrenceBPandLoansYear=$startempruntY -  $annedebut   ;
+       $diffrenceechanceEmpruntandEmprunt = $startpositionY - $startempruntY ;
+       $capitalrestant = $amount ;
+       $compteurdepart = $startposition;//date debut echeance 
+       //$compteurfin = $startempruntM  +($duration * 12);  // durée a partie de date de debut l'emprunt 
+      
+       for($i=$startposition - 1 + ($diffrenceechanceEmpruntandEmprunt * 12) ;$i<$duration*12 + ($startempruntM - 1);$i++ ){
+        $capitalrembourse[$i] = $echance - round(($capitalrestant * (($taux/100)/12)),2);
+        $fraisfinanciers[$i]  = round(($capitalrestant * (($taux/100)/12)),2);
+        $capitalrestantdu[$i] = $capitalrestant;
+        $capitalrestant -= $capitalrembourse[$i] ;
+      }
+     // dump( $capitalrembourse);die();
+      
+       //----------------------------fin de calcul-----------------------------// 
+       //-----------------------reformuler les listes -------------------------//
+       $pos = 0 ;
+       $year = 0 ;
+       for($i =0; $i < $years*12; $i++){
+       $finalrembrousement[$year][$pos] = $capitalrembourse[$i] ;
+       $finalfrais[$year][$pos] = $fraisfinanciers[$i];
+       $finalrestant[$year][$pos] = $capitalrestantdu[$i];
+       $pos++;
+       if($pos == 12 ){
+       $pos = 0 ;
+       $year ++;}}
+     
+       //----------------------2eme reformulation (synchroniser avec le business plan) ----//
+       
+       $ye = $diffrenceBPandLoansYear  ;
+      // dump($finalrembrousement);die();
+       for($i = 0 ; $i< $years;$i++){
+           for($x = 0 ; $x < 12 ; $x++){
+         $remboursmentsynchroniser[$i + $ye][$x] = $finalrembrousement[$i][$x] ;
+         $remboursmentsynchroniserSum[$i + $ye] = array_sum($finalrembrousement[$i]);
+         $fraissynchroniser[$i + $ye][$x] = $finalfrais[$i][$x]; 
+         $fraissynchroniserSum[$i + $ye] = array_sum($finalfrais[$i]);
+         $restantsynchroniser[$i + $ye][$x]  = $finalrestant[$i][$x] ;
+         $restantsynchroniserSum[$i + $ye] = array_sum($finalrestant[$i]);
+       }}
+       //dump($remboursmentsynchroniser,$remboursmentsynchroniserSum,$fraissynchroniserSum);die();
+      //------------------------------fin--------------------------------------//
+       //dump($remboursmentsynchroniser);die();
+        return $this->render('loans/detail.html.twig' , ['business' =>$businessSession
+        ,'remboursment' => $remboursmentsynchroniser,'frais' =>$fraissynchroniser , 'restant' =>  $restantsynchroniser
+        ,'sumremboursment' => $remboursmentsynchroniserSum ,  'sumfrais' => $fraissynchroniserSum
+       ,'sumrestant' => $restantsynchroniserSum ,
+        ]);
+    }
+    public function transformMounth(String $input){
+    if($input ='Jan'){
+     return   1;
+    }
+    if($input ='Feb'){
+        return   2;
+       }
+       if($input ='March'){
+        return   3;
+       }
+       if($input ='April'){
+        return   4;
+       }
+       if($input ='May'){
+        return   5;
+       }
+       if($input ='June'){
+        return   6;
+       }
+       if($input ='July'){
+        return   7;
+       }
+       if($input ='Aug'){
+        return   8;
+       }
+       if($input ='Sep'){
+        return   9;
+       }
+       if($input ='Oct'){
+        return   10;
+       }
+       if($input ='Nov'){
+        return   11;
+       }
+       if($input ='Dec'){
+        return   12;
+       }
+    }
 }

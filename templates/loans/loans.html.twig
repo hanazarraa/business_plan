@@ -52,8 +52,8 @@
 				<th></th>
 			</tr>
 			{% for i in loans %}
-			{% set difference = i.firstpaymentdate|date("m")  -  i.loandate|date("m") %}
-			
+			{% set difference = date(i.firstpaymentdate).diff(date(i.loandate)) %}
+				
 					<tr>
 					<td class="soustitre">{{i.name}}</td>
 					<td class="aright">{{i.loandate|date("d/m/Y")}}</td>
@@ -62,13 +62,14 @@
 					<td class="aright">{{i.taux}}</td>
 					<td class="aright">{{i.duration}}</td>
 					<td class="aright">{{i.numberofpayment}}</td>
-					<td class="aright">{{((i.amount * ((i.taux  / 100 )/ 12 ))  / (1 - ((1+ (i.taux / 100 / 12))** (- i.duration * 12  + difference )) ))|round(2, 'floor')   }}</td>
+					<td class="aright">{{((i.amount * ((i.taux  / 100 )/ 12 ))  / (1 - ((1+ (i.taux / 100 / 12))** (- i.duration * 12  + difference.m )) ))|round(2, 'floor')   }}</td>
 					<td class="acenter fs-18">
+				
 											<a href="{{path('editloans',{'code':i.code})}}" class="tool-tip" title="Modifier">
 								<i class="fa fa-pencil"></i>
 							</a>
 
-							<a href="" class="tool-tip" title="Afficher">
+							<a href="{{path('showloans',{'code':i.code})}}" class="tool-tip" title="Afficher">
 								<i class="fa fa-search"></i>
 							</a>
 							&nbsp;&nbsp;
