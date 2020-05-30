@@ -40,28 +40,18 @@
 				<th>Emprunts</th>
 
 				<th>Année {{i + 1 }}</th>
-
-									<th>Janv</th>
-									<th>Fév</th>
-									<th>Mars</th>
-									<th>Avril</th>
-									<th>Mai</th>
-									<th>Juin</th>
-									<th>Juil</th>
-									<th>Aout</th>
-									<th>Sept</th>
-									<th>Oct</th>
-									<th>Nov</th>
-									<th>Déc</th>
+                {% for i in 0..11 %}
+									<th>{{MonthList[i]}}</th>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Dont capital remboursé</td>
 
-				<td>{{sumremboursment[i]}}</td>
-                {% for x in 0..11 %}
+				<td>0</td>
+                {% for key,value in MonthList %}
 				<td class="aright">
-				{{remboursment[i][x]}}
+				{{remboursmentforshow[i][value]}}
 				</td>
 				{% endfor %}
 				</tr>
