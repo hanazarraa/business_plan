@@ -108,7 +108,7 @@ class User implements UserInterface
     {
         $this->businessplans = new ArrayCollection();
         $this->enabled=false;
-        $this->roles=['ROLE_ADMIN'];
+        $this->roles=['ROLE_USER'];
     }
 
     public function getId(): ?int

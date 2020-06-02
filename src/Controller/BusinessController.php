@@ -15,7 +15,10 @@ use App\Entity\Generalexpenses;
 use App\Entity\Generalexpensesdetail;
 use App\Entity\Investments;
 use App\Entity\Investmentsdetail;
-
+use App\Entity\Staff;
+use App\Entity\Staffdetail;
+use App\Entity\CompteResultat;
+use App\Entity\Loans;
 class BusinessController extends AbstractController
 {
     
@@ -149,6 +152,10 @@ class BusinessController extends AbstractController
         $generalexpenssesdetail = $entityManager->getRepository(Generalexpensesdetail::class)->findBy(['generalexpenses' =>$generalexpensses] );
         $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($business[0]);
         $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' => $investments]);
+        $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($business[0]);
+        $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
+        $compteresultat = $entityManager->getRepository(CompteResultat::class)->findByBusinessplan($business[0]);
+        $emprunts = $entityManager->getRepository(Loans::class)->findByBusinessplan($business[0]);
         //dump(count($product));die();
         for($i = 0 ; $i<count($salesdetailled); $i++){
             $entityManager->remove($salesdetailled[$i]);
@@ -162,9 +169,22 @@ class BusinessController extends AbstractController
         for($i = 0 ; $i<count($investmentsdetail); $i++){
             $entityManager->remove($investmentsdetail[$i]);
         }
+        for($i = 0 ; $i<count($staffdetail); $i++){
+            $entityManager->remove($staffdetail[$i]);
+        }
         $entityManager->remove($business[0]);
         if($investments!=[]){
         $entityManager->remove($investments[0]);}
+        if($staff !=[]){
+        $entityManager->remove($staff[0]);
+        }
+        if($compteresultat != []){
+        $entityManager->remove($compteresultat[0]);
+        }
+        if($emprunts !=[]){
+        for ($i=0 ;$i <count($emprunts);$i++){
+        $entityManager->remove($emprunts[$i]);
+        }}
         $entityManager->remove($generalexpensses[0]);
         $entityManager->remove($sales);
         $entityManager->flush();
@@ -202,6 +222,7 @@ class BusinessController extends AbstractController
         $business = $entityManager->getRepository(Businessplan::class)->find($businessSession->getId());
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($business);
         $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($business);
+        $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($business);
         $oldrange = $businessSession->getRangeofdetail();
         //-----------------------variable des frais generaux-------------------//
         $oldlist = $generalexpensses[0]->getAdministration();
@@ -224,6 +245,17 @@ class BusinessController extends AbstractController
         $listInvcom=[];
         $listInvrec=[];
         //--------------------------fin--------------------------------------//
+        //--------------------------variables des Staff-----------------------------------//
+        if($staff!=null){
+            $oldliststaff = $staff[0]->getAdministration();
+            $oldliststaffpro = $staff[0]->getProduction();
+            $oldliststaffcom = $staff[0]->getSales();
+            $oldliststaffrec = $staff[0]->getRecherche();}
+            $liststaff=[];
+            $liststaffpro=[];
+            $liststaffcom=[];
+            $liststaffrec=[];
+        //-------------------------fin--------------------------------------//
         //-------------------------Push Frais Generaux----------------------//
         foreach($oldlist as $key=>$value){
             array_push($listdefrais,$key);
@@ -289,6 +321,38 @@ class BusinessController extends AbstractController
    $investments[0]->setSales($oldlistInvcom);
    $investments[0]->setRecherche($oldlistInvrec);}
        //----------------------------------Fin-----------------------------//
+       //---------------------------------Push Staff -----------------------//
+       if($staff!=null){ 
+        foreach($oldliststaff as $key=>$value){
+         array_push($liststaff,$key);
+     }
+     foreach($oldliststaffpro as $key=>$value){
+         array_push($liststaffpro,$key);
+     }
+     foreach($oldliststaffcom as $key=>$value){
+         array_push($liststaffcom,$key);
+     }
+     foreach($oldliststaffrec as $key=>$value){
+         array_push($liststaffrec,$key);
+     }
+ 
+     foreach($liststaff as $value){
+     array_shift($oldliststaff[$value]);
+    }
+    foreach($liststaffpro as $value){
+     array_shift($oldliststaffpro[$value]);
+    }
+    foreach($liststaffcom as $value){
+     array_shift($oldliststaffcom[$value]);
+    }
+    foreach($liststaffrec as $value){
+     array_shift($oldliststaffrec[$value]);
+    }
+    $staff[0]->setAdministration($oldliststaff);
+    $staff[0]->setProduction($oldliststaffpro);
+    $staff[0]->setSales($oldliststaffcom);
+    $staff[0]->setRecherche($oldliststaffrec);}
+       //---------------------------------Fin ----------------------------//
         $entityManager->flush();
         $this->container->get('session')->set('business', $business); 
         //dump(get_class_methods($this->container->get('session')));die();

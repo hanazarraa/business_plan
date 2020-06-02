@@ -1,0 +1,204 @@
+
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+{{parent()}}
+{% endblock %}
+  {% block nav %}
+  {{parent()}}
+  {% endblock %}
+ {% block sidebar %}
+ {{parent()}}
+{% endblock %}
+{% block menufooter %}
+{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+{{parent()}}
+{% endblock %}   
+{% block content %}
+   <div class="right_col" role="main">
+                            <div class="entete entete-min">
+	<h1 class="fleft">
+		Emprunts	</h1>
+
+	<div class="call-to-action fright">
+					<div class="fleft">
+				<a href="{{path('createloans')}}" title="Créer un emprunt" class="btn btn-md btn-primary">
+					<i class="fa fa-plus-circle"></i> &nbsp;Créer un emprunt				</a>
+			</div>
+
+				<div class="fleft">
+		<a href="" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+			</div>
+
+	<div class="clearer"></div>
+</div>
+
+<div class="x_panel">
+			<table class="tableau">
+			<tr>
+
+				<th></th>
+				<th>Date du prêt</th>
+				<th>Date première échéance</th>
+				<th>Montant</th>
+				<th>Taux annuel</th>
+				<th>Durée en années</th>
+				<th>Nombre d'échéances</th>
+				<th>Montant échéance</th>
+				<th></th>
+			</tr>
+			{% for i in loans %}
+			{% set difference = date(i.firstpaymentdate).diff(date(i.loandate)) %}
+		    {% set decalage = difference.days // 30.417 %}
+		    
+					<tr>
+					<td class="soustitre">{{i.name}}</td>
+					<td class="aright">{{i.loandate|date("d/m/Y")}}</td>
+					<td class="aright">{{i.firstpaymentdate|date("d/m/Y")}}</td>
+					<td class="aright">{{i.amount}}</td>
+					<td class="aright">{{i.taux}}</td>
+					<td class="aright">{{i.duration}}</td>
+					<td class="aright">{{i.numberofpayment}}</td>
+					<td class="aright">{{((i.amount * ((i.taux  / 100 )/ 12 ))  / (1 - ((1+ (i.taux / 100 / 12))** (- i.duration * 12  + decalage )) ))|round(2, 'floor')   }}</td>
+					<td class="acenter fs-18">
+				
+											<a href="{{path('editloans',{'code':i.code})}}" class="tool-tip" title="Modifier">
+								<i class="fa fa-pencil"></i>
+							</a>
+
+							<a href="{{path('showloans',{'code':i.code})}}" class="tool-tip" title="Afficher">
+								<i class="fa fa-search"></i>
+							</a>
+							&nbsp;&nbsp;
+							<a href="{{path('deleteloans',{'code':i.code})}}" class="demande-confirmation tool-tip" title="Supprimer">
+								<i class="fa fa-trash-o"></i>
+							</a>
+											</td>
+				 {% endfor %}
+
+					</table>
+
+		<h2 class="margeur-30">Total des remboursements annuels</h2>
+
+		<table class="tableau margeur-20">
+			<tr>
+				<th></th>
+				{% for i in 0..business.numberofyears - 1 %}
+				<th>
+				Année {{i + 1}}	
+				</th>
+				{% endfor %}					
+				</tr>
+
+			<tr>
+				<td class="soustitre">Capital emprunté</td>
+				{% for i in 0..business.numberofyears - 1 %}
+									<td class="aright">
+						{{Sommecapitalemprunte[i]}}					</td>
+				{% endfor %}
+							</tr>
+
+			<tr>
+				<td class="soustitre">Echéances annuelles</td>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{echanceannuel[i]}}
+						</td>
+						{% endfor %}
+									
+							</tr>
+
+			<tr>
+				<td class="soustitre" style="padding-left:40px">Dont capital remboursé</td>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{dontcapitalerem[i]}}
+						</td>
+						{% endfor %}
+				</tr>
+
+			<tr>
+				<td class="soustitre" style="padding-left:40px">Dont frais financiers</td>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{dontfraisfinancier[i]}}
+						</td>
+						{% endfor %}
+
+						</tr>
+		</table>
+	</div>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="16" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+
+
+ {% endblock %}
+       	{% block footer %}
+{{parent()}}
+{% endblock %}
+ {% block comment %}
+ {{parent()}} 
+ {% endblock %}

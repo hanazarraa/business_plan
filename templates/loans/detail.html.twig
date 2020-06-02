@@ -1,0 +1,95 @@
+
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+{{parent()}}
+{% endblock %}
+  {% block nav %}
+  {{parent()}}
+  {% endblock %}
+ {% block sidebar %}
+ {{parent()}}
+{% endblock %}
+{% block menufooter %}
+{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+{{parent()}}
+{% endblock %}   
+{% block content %}
+<div class="right_col" role="main">
+                            
+<h1>
+				<div class="fleft">
+		<a href="" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+	
+	Récapitulatif de l'emprunt test</h1>
+
+<div class="x_panel">
+	<table class="tableau no-highlight">
+    {% for i in 0..business.numberofyears - 1  %}
+					<tr>
+				<th class="titre aleft" colspan="13">
+					<h2>Année {{i + 1 }}</h2>
+				</th>
+			</tr>
+
+		    <tr>
+				<th>Emprunts</th>
+
+				<th>Année {{i + 1 }}</th>
+                {% for i in 0..11 %}
+									<th>{{MonthList[i]}}</th>
+				{% endfor %}
+							</tr>
+
+			<tr>
+				<td class="soustitre">Dont capital remboursé</td>
+
+				<td>{{sumremboursment[i]}}</td>
+                {% for key,value in MonthList %}
+				<td class="aright">
+				{{remboursmentforshow[i][value]}}
+				</td>
+				{% endfor %}
+				</tr>
+
+			<tr>
+				<td class="soustitre">Dont frais financiers</td>
+
+				<td>{{sumfrais[i]}}</td>
+                {% for key,value in MonthList %}
+				<td class="aright">
+				{{fraisforshow[i][value]}}
+				</td>
+				{% endfor %}					
+				
+			</tr>
+            <tr>
+				<td class="soustitre">Capital restant dû</td>
+
+				<td>{{sumrestant[i]}}</td>
+                 {% for key,value in MonthList %}
+				<td class="aright">
+				{{restantforshow[i][value]}}
+				</td>
+				{% endfor %}								
+			</tr>
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+			{% endfor %}	
+			</table>
+</div>
+                    </div>
+
+
+{% endblock %}
+{% block footer %}
+{{parent()}}
+{% endblock %}
+ {% block comment %}
+ {{parent()}} 
+ {% endblock %}

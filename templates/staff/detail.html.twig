@@ -1,0 +1,810 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+	{{parent()}}
+{% endblock %}
+{% block nav %}
+	{{parent()}}
+{% endblock %}
+{% block sidebar %}
+	{{parent()}}
+{% endblock %}
+{% block menufooter %}
+	{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+	{{parent()}}
+{% endblock %}
+{% block content %}
+
+ <div class="right_col" role="main">
+                            
+{{form_start(form)}}
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Personnel		</h1>
+
+					<div class="fleft margeur-l15">
+					<div class="pagination-periode">
+		{% for i in 0..business.rangeofdetail -1  %}
+					<a href="{{path('staffdetail',{'id':i  })}}" class="btn btn-primary btn-md btn-success" title="Année 1">
+				Année {{i + 1}}		</a>
+		{% endfor %}
+		
+
+	</div>
+			</div>
+		
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="" title="Créer un poste" class="open-modal btn btn-md btn-primary" id="openpopupsalarie-">
+						<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+				<div class="fleft">
+					<a href="" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
+					</a>
+				</div>
+
+									<div class="fleft">
+                                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+						
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	
+	<div class="x_panel">
+
+		<input type="hidden" name="post-salaires" value="true" />
+
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+		<table class="tableau navigate">
+							<tr>
+					<th colspan="16" class="titre aleft">
+						<h2>Administration & Gestion</h2>
+					</th>
+				</tr>
+
+			  <tr>
+			    <th>Salarié</th>
+			    <th class="soustitre nowrap fs-12">Salaire brut mensuel <br />(en {{business.currency}})</th>
+			    <th>ETP n-1</th>
+			    			    <th>Janv</th>
+			    			    <th>Fév</th>
+			    			    <th>Mars</th>
+			    			    <th>Avril</th>
+			    			    <th>Mai</th>
+			    			    <th>Juin</th>
+			    			    <th>Juil</th>
+			    			    <th>Aout</th>
+			    			    <th>Sept</th>
+			    			    <th>Oct</th>
+			    			    <th>Nov</th>
+			    			    <th>Déc</th>
+			    			    <th>ETP moyen</th>
+			  </tr>
+              {% for value in keyadmin %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  			  {% if id > 0 %} {{ETP[id - 1][value]}}	{% else %} -  {% endif  %}
+			  				
+			  			</td>
+                                                 {% for i in form.Administration[value] %}
+			  						  			<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  							  			{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  						  			{% endfor %}
+			  						  			<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  					{{ETP[id][value]}}							</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}		  	
+							<tr>
+					<td colspan="16" class="not-survole">
+						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292732">
+							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
+					</td>
+				</tr>
+			
+			<tr>
+				<td class="separateur" colspan="16"></td>
+			</tr>
+
+						<tr>
+					<th colspan="16" class="titre aleft">
+						<h2>Production</h2>
+					</th>
+				</tr>
+
+			  <tr>
+			    <th>Salarié</th>
+			    <th class="soustitre nowrap fs-12">Salaire brut mensuel <br />(en {{business.currency}})</th>
+			    <th>ETP n-1</th>
+			    			    <th>Janv</th>
+			    			    <th>Fév</th>
+			    			    <th>Mars</th>
+			    			    <th>Avril</th>
+			    			    <th>Mai</th>
+			    			    <th>Juin</th>
+			    			    <th>Juil</th>
+			    			    <th>Aout</th>
+			    			    <th>Sept</th>
+			    			    <th>Oct</th>
+			    			    <th>Nov</th>
+			    			    <th>Déc</th>
+			    			    <th>ETP moyen</th>
+			  </tr>
+			  	{% for value in keypro %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  			{% if id > 0 %} {{ETPpro[id - 1][value]}}	{% else %} -  {% endif  %}
+			  				
+			  			</td>
+                                                 {% for i in form.production[value] %}
+			  						  			<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  							  			{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  						  			{% endfor %}
+			  						  			<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  					{{ETPpro[id][value]}}							</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}		
+							<tr>
+					<td colspan="16" class="not-survole">
+						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292733">
+							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
+					</td>
+				</tr>
+			
+			<tr>
+				<td class="separateur" colspan="16"></td>
+			</tr>
+
+						<tr>
+					<th colspan="16" class="titre aleft">
+						<h2>Commercial</h2>
+					</th>
+				</tr>
+
+			  <tr>
+			    <th>Salarié</th>
+			    <th class="soustitre nowrap fs-12">Salaire brut mensuel <br />(en {{business.currency}})</th>
+			    <th>ETP n-1</th>
+			    			    <th>Janv</th>
+			    			    <th>Fév</th>
+			    			    <th>Mars</th>
+			    			    <th>Avril</th>
+			    			    <th>Mai</th>
+			    			    <th>Juin</th>
+			    			    <th>Juil</th>
+			    			    <th>Aout</th>
+			    			    <th>Sept</th>
+			    			    <th>Oct</th>
+			    			    <th>Nov</th>
+			    			    <th>Déc</th>
+			    			    <th>ETP moyen</th>
+			  </tr>
+			  		{% for value in keycom %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  			{% if id > 0 %} {{ETPcom[id - 1][value]}}	{% else %} -  {% endif  %}
+			  				
+			  			</td>
+                           {% for i in form.sales[value] %}
+			  				<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  				{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  				{% endfor %}
+			  				<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  				{{ETPcom[id][value]}}</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}	
+							<tr>
+					<td colspan="16" class="not-survole">
+						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292734">
+							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
+					</td>
+				</tr>
+			
+			<tr>
+				<td class="separateur" colspan="16"></td>
+			</tr>
+
+						<tr>
+					<th colspan="16" class="titre aleft">
+						<h2>Recherche & Développement</h2>
+					</th>
+				</tr>
+
+			  <tr>
+			    <th>Salarié</th>
+			    <th class="soustitre nowrap fs-12">Salaire brut mensuel <br />(en {{business.currency}})</th>
+			    <th>ETP n-1</th>
+			    			    <th>Janv</th>
+			    			    <th>Fév</th>
+			    			    <th>Mars</th>
+			    			    <th>Avril</th>
+			    			    <th>Mai</th>
+			    			    <th>Juin</th>
+			    			    <th>Juil</th>
+			    			    <th>Aout</th>
+			    			    <th>Sept</th>
+			    			    <th>Oct</th>
+			    			    <th>Nov</th>
+			    			    <th>Déc</th>
+			    			    <th>ETP moyen</th>
+			  </tr>
+			  	{% for value in keyrec %}
+			  				  		<tr class="ventilate-216252">
+			  			<td class="soustitre">
+							<a href="{{path('staffedit',{'name':value })}}" title="Modifier" class="open-modal tool-tip">
+				  				{{value}} <i class="fa fa-pencil"></i>
+							</a>
+			  			</td>
+			  			<td>
+			  			{{salairebrut[value][id]}}			  			</td>
+
+			  			<td class="aright" id="etpn_1-216252">
+			  			{% if id > 0 %} {{ETPrec[id - 1][value]}}	{% else %} -  {% endif  %}
+			  				
+			  			</td>
+                           {% for i in form.recherche[value] %}
+			  				<td class="aright duplicate etpdetaille etpdetaille-216252" id="etpdetaille-216252-0">
+			  				{{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}</td>
+			  				{% endfor %}
+			  				<td class="aright" id="moyenneetp-216252">
+							<span class="ventilate-total" name="{{value}}">
+			  				{{ETPrec[id][value]}}</span>
+							&nbsp;
+							<a href="#" class="open-modal tool-tip no_alert_a_sauvegarder" title="Ventilation sur 12 mois" data-modal-size="sm">
+								<i class="fa fa-edit"></i>
+							</a>
+			  			</td>
+			  		</tr>
+			  		{% endfor %}	
+							<tr>
+					<td colspan="16" class="not-survole">
+						<a href="" title="Créer un poste" class="open-popup-salarie btn btn-md btn-primary" id="openpopupsalarie-292735">
+							<i class="fa fa-plus-circle"></i> &nbsp;Créer un poste						</a>
+					</td>
+				</tr>
+			
+			<tr>
+				<td class="separateur" colspan="16"></td>
+			</tr>
+
+				</table>
+
+
+		<h1 class="margeur-50">Décaissement salaire Brut</h1>
+
+		<table class="tableau margeur-15">
+
+
+						<tr>
+				<th class="aleft">
+					Administration & Gestion				</th>
+							    	<th>Janv</th>
+			    			    	<th>Fév</th>
+			    			    	<th>Mars</th>
+			    			    	<th>Avril</th>
+			    			    	<th>Mai</th>
+			    			    	<th>Juin</th>
+			    			    	<th>Juil</th>
+			    			    	<th>Aout</th>
+			    			    	<th>Sept</th>
+			    			    	<th>Oct</th>
+			    			    	<th>Nov</th>
+			    			    	<th>Déc</th>
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Commissions sur ventes				</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionAdm[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Total salaire brut				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutAdm[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+				 	Coût total personnel				</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemAdm[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges gérant non salarié				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">0.00</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges employeur hors gérant				</td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerant[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges salariales				</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalariale[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+				<tr>
+				<td class="soustitre aleft">
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{charges[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Net à payer				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerAdm[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+				Total décaissements				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{TotalDecaissementAdm[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+						<tr>
+				<th class="aleft">
+					Production				</th>
+							    	<th>Janv</th>
+			    			    	<th>Fév</th>
+			    			    	<th>Mars</th>
+			    			    	<th>Avril</th>
+			    			    	<th>Mai</th>
+			    			    	<th>Juin</th>
+			    			    	<th>Juil</th>
+			    			    	<th>Aout</th>
+			    			    	<th>Sept</th>
+			    			    	<th>Oct</th>
+			    			    	<th>Nov</th>
+			    			    	<th>Déc</th>
+			    
+			</tr>
+			
+            <tr>
+				<td class="soustitre aleft">
+					Commissions sur ventes				</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionPro[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Total salaire brut				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutPro[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+				 	Coût total personnel				</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemPro[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges gérant non salarié				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">0.00</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges employeur hors gérant				</td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantPro[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges salariales				</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialePro[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+				<tr>
+				<td class="soustitre aleft">
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesPro[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Net à payer				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerPro[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+				Total décaissements				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{TotalDecaissementPro[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+						<tr>
+				<th class="aleft">
+					Commercial				</th>
+							    	<th>Janv</th>
+			    			    	<th>Fév</th>
+			    			    	<th>Mars</th>
+			    			    	<th>Avril</th>
+			    			    	<th>Mai</th>
+			    			    	<th>Juin</th>
+			    			    	<th>Juil</th>
+			    			    	<th>Aout</th>
+			    			    	<th>Sept</th>
+			    			    	<th>Oct</th>
+			    			    	<th>Nov</th>
+			    			    	<th>Déc</th>
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Commissions sur ventes				</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Total salaire brut				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+				 	Coût total personnel				</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges gérant non salarié				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">0.00</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges employeur hors gérant				</td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantCom[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges salariales				</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialeCom[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+				<tr>
+				<td class="soustitre aleft">
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesCom[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Net à payer				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+				Total décaissements				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{TotalDecaissementCom[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+						<tr>
+				<th class="aleft">
+					Recherche & Développement				</th>
+							    	<th>Janv</th>
+			    			    	<th>Fév</th>
+			    			    	<th>Mars</th>
+			    			    	<th>Avril</th>
+			    			    	<th>Mai</th>
+			    			    	<th>Juin</th>
+			    			    	<th>Juil</th>
+			    			    	<th>Aout</th>
+			    			    	<th>Sept</th>
+			    			    	<th>Oct</th>
+			    			    	<th>Nov</th>
+			    			    	<th>Déc</th>
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Commissions sur ventes				</td>
+                    {% for i in 0 ..11 %}
+							    	<td class="aright">{{commissionRec[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Total salaire brut				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{totalsalairbrutRec[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+				 	Coût total personnel				</td>
+							    	  {% for i in 0 ..11 %}
+							    	<td class="aright">{{couttotalpersonemRec[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges gérant non salarié				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">0.00</td>
+			    	{% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges employeur hors gérant				</td>
+							    {% for i in 0..11 %}
+									<td class="aright">{{horsgerantRec[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+			<tr>
+				<td class="soustitre aleft">
+					Décaissement charges salariales				</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesalarialeRec[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+				<tr>
+				<td class="soustitre aleft">
+					Décaissement Charges</td>
+							     {% for i in 0..11 %}
+									<td class="aright">{{chargesRec[id][i]}}</td>
+			    			    {% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+					Net à payer				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{NetapayerRec[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="soustitre aleft">
+				Total décaissements				</td>
+							      {% for i in 0 ..11 %}
+							    	<td class="aright">{{TotalDecaissementRec[id][i]}}</td>
+			    	{% endfor %}
+			    
+			</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+			
+
+						<tr>
+				<td class="soustitre">
+					Décaissement des charges antérieures				</td>
+
+			   				   {% for i in 0 ..11 %}
+							    	<td class="aright">0.00</td>
+			    	{% endfor %}
+			    			</tr>
+			
+			<tr>
+				<td class="total">
+					Total				</td>
+
+							  {% for i in 0 ..11 %}
+							    	<td class="aright">{{TOTAL[id][i]}}</td>
+			    	{% endfor %}
+			    			</tr>
+		</table>
+	</div>
+{{form_end(form)}}
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="11-0" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+<script>
+
+</script>
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+
+{% endblock %}
+{% block footer %}
+	{{parent()}}
+{% endblock %}
+{% block comment %}
+	{{parent()}}
+{% endblock %}

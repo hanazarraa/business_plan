@@ -1,0 +1,126 @@
+
+
+
+			<div class="dynamic-container"><div class="" style="">
+			 {{ form_start(form, {'attr': {'class': 'formulaire form-immo-container' , 'method':'post','action':path('staffposition') }}) }}
+
+		<input type="hidden" id="scrolltop" name="scrolltop" value="0">
+		<div class="form-element  margeur-20">
+	<label for="poste">
+		Poste <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		 {{ form_widget (form.Name, {'attr': {'type':'text','class':'type-text ' }}) }}	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="departement">
+		Département <span class="rouge">*</span>
+	</label>
+	<div class="champ">
+			{{ form_widget (form.Department, {'attr': {'type':'text','class':'type-text ' }}) }}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="jei">
+		JEI <span class="rouge">*</span>
+		&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="JEI : le statut de Jeune Entreprise Innovante donne droit aux entreprises qui dépensent plus de 15%  de leurs charges annuelles en R&amp;D à des exonérations de charges patronales (pour les salariés principalement affectés à la R&amp;D) et fiscales. Des démarches sont  à entreprendre pour obtenir ce statut très intéressant. Renseignez-vous auprès de vos conseils ou sur le site du Ministère de l’Enseignement Supérieur et de la Recherche.
+"></i>	</label>
+
+	<div class="champ">
+	
+		{{ form_widget (form.JEI)}} (18% de charges patronales)
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="tns">
+		TNS <span class="rouge">*</span>
+		&nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="" data-original-title="Le statut de Travailleur Non Salarié est notamment celui des gérants majoritaires ou égalitaires de SARL (ou des cogérants majoritaires ou égalitaires). Le taux de charge est inférieur à celui des salariés, et pendant les 12 premiers mois, le TNS est imposé sur une base forfaitaire (à renseigner).
+"></i>	</label>
+
+	<div class="champ">
+		{{ form_widget (form.TNS)}}
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="gratification">
+		Gratification <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.Gratification)}} (Aucune charge patronale)
+	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div id="charges_patronales_block" class="form-element ">
+	<label for="charges_patronales">
+		Charges patronales (en %) <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.ChargePatronale, {'attr': {'type':'text','class':'type-text ','value':'45' }}) }}	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+<div class="form-element ">
+	<label for="charges_patronales">
+		Charges salariales (en %) <span class="rouge">*</span>
+	</label>
+
+	<div class="champ">
+		{{ form_widget (form.ChargeSalariales, {'attr': {'type':'text','class':'type-text ','value':'22' }}) }}	</div>
+
+	<div class="clearer"></div>
+
+	</div>
+
+	<div class="form-element">
+		<label for="type_commission">
+			Type commission		</label>
+
+		<div class="champ">
+			Les commissions ne pourront être ajoutées qu'après avoir créé le salarie		</div>
+		<div class="clearer"></div>
+	</div>
+
+<div class="form-element fright aright">
+	<input type="hidden" name="post-salarie" value="true">
+</div>
+<div class="clearer"></div>
+
+	<div class="fleft">
+			</div>
+
+	<div class="fright">
+		{{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-success dont-print','value':'Valider'}}) }}
+		<div class="clearer"></div>
+	</div>
+
+	<div class="clearer"></div>
+{{form_end(form)}}
+</div>
+
+
+
+	

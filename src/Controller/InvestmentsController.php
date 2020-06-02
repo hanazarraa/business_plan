@@ -597,7 +597,7 @@ else{
             $investments[0]->setCategorie($categorielist);
             if($rangeofdetail < $rangeofglobal){ 
               if($investments[0]->getAdministration()!=[]){
-                $AdminGlobalList = $investments[0]->getProduction() ;
+                $AdminGlobalList = $investments[0]->getAdministration() ;
               }
               $AdminGlobalList[$form->getData()['Name']] = ${"admin" . $name};
              
