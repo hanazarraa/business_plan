@@ -37,6 +37,9 @@ class StaffController extends AbstractController
     private $SumcommisionCom = [];
     private $SumcommisionRec = [];
     static $staticstaff ;
+    static $staticlistCom ;
+    static $staticlistRD ;
+    static $staticlistAdm ;
     /**
      * @Route("/", name="staff")
      */
@@ -263,8 +266,12 @@ class StaffController extends AbstractController
         //--------------------------------FinSomme------------------------------------//
         //-------------------------------TotalSalairebrut----------------------------//
         for($i=0 ;$i<$years;$i++){
-          $STAFF[$i] =$TotalcoutannuelAdm[$i] + $TotalcoutannuelPro[$i] +  $TotalcoutannuelCom[$i] + $TotalcoutannuelRec[$i] ;        }
+          $STAFF[$i] = $TotalcoutannuelAdm[$i] + $TotalcoutannuelPro[$i] +  $TotalcoutannuelCom[$i] + $TotalcoutannuelRec[$i] ;        }
           self::$staticstaff =$STAFF ;
+          self::$staticlistCom = $TotalcoutannuelCom;
+          self::$staticlistRD = $TotalcoutannuelRec;
+          self::$staticlistAdm = $TotalcoutannuelAdm; 
+          //dump(self::$staticlistCom);die();
         //-------------------------------FinTotalSalairebrut--------------------------//
         $form = $this->createForm(StaffFormType::class,$staff[0]);
         }
@@ -292,6 +299,15 @@ class StaffController extends AbstractController
     public function getstaff(){
     
       return self::$staticstaff;
+    }
+    public function getstaffAdm(){
+      return self::$staticlistAdm;
+     }
+    public function getstaffRD(){
+      return self::$staticlistRD;
+    }
+    public function getstaffCom(){
+      return self::$staticlistCom;
     }
     public function calculETP(){
       $businessSession =$this->container->get('session')->get('business');

@@ -143,20 +143,20 @@
 		<tr>
 			<td class="soustitre">Charges exploitation</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright"> </td>
             {% endfor %}
 					</tr>
 
 		<tr>
 			<td class="soustitre"><u>Commercial</u></td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright"> </td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">Personnel</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-				<td class="aright">0.00 </td>
+				<td class="aright">{{staffCom[i]}} </td>
                 {% endfor %}
 					</tr>
 		<tr>
@@ -187,7 +187,7 @@
 		<tr>
 			<td class="soustitre">Personnel</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{staffRD[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr>
@@ -218,7 +218,7 @@
 		<tr>
 			<td class="soustitre">Personnel</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{staffAdm[i]}}  </td>
             {% endfor %}
 					</tr>
 		<tr>

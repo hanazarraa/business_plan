@@ -21,6 +21,9 @@ use App\Repository\GeneralexpensesRepository;
 class GeneralexpensesController extends AbstractController
 {
     static $staticpurchase ;
+    static $fraisAdmdetail;
+    static $fraisAdmglob ;
+
     /**
      * @Route("/", name="generalexpenses")
      */
@@ -174,6 +177,9 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         }
     }
     self::$staticpurchase =$finalgeneralexpenses ; 
+    self::$fraisAdmdetail  = $total ;
+    self::$fraisAdmglob = $globalTotal;
+  
     //-------------------------fin de merge ------------------------------//
         $form = $this->createForm(GeneralexpensesFormType::class, $generalexpensses[0]);
         $form->handleRequest($request);
@@ -199,7 +205,16 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     public function getpurchase(){
     
         return self::$staticpurchase;
-      }
+    }
+    public function getfraisAdmG(){
+    
+        return self::$fraisAdmdetail;
+    }
+    public function getfraisAdmD(){
+    
+        return self::$fraisAdmglob;
+    }
+    
     /**
      * @Route("-year-{id}", name="generalexpensesdetail")
      */

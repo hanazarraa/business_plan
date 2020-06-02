@@ -49,7 +49,12 @@ class ProfitandLossController extends AbstractController
         $purchase = PurchaseController::getlistpurchase();
         $staff = StaffController::getstaff();
         $generalexpense = GeneralexpensesController::getpurchase();
+        $generalexpenseAdmG = GeneralexpensesController::getfraisAdmG();
+        $generalexpenseAdmD = GeneralexpensesController::getfraisAdmD();
         $depreciation = DepreciationController::getdepreciation();
+        $staffAdm = StaffController::getstaffAdm();
+        $staffCom = StaffController::getstaffCom();
+        $staffRD = StaffController::getstaffRD();
         for($x = 0 ; $x < $years ; $x++){
             for($i = 0 ; $i < 12 ; $i++){
               $SumfinalCAperMouth[$x][$i] =  0 ;}} 
@@ -63,8 +68,8 @@ class ProfitandLossController extends AbstractController
                }
         
         return $this->render('profitand_loss/index.html.twig',['business'=>$businessSession
-        ,'totalventes'=> $totalCA , 'achat'=> $purchase, 'staff' => $staff, 'generalexpense'=> $generalexpense, 
-        'amortissement' => $depreciation,
+        ,'totalventes'=> $totalCA , 'achat'=> $purchase, 'staff' => $staff,  'staffAdm' => $staffAdm ,'staffCom' => $staffCom ,'staffRD'=> $staffRD,
+        'generalexpense'=> $generalexpense,'amortissement' => $depreciation, 
         ]);
     }
 }
