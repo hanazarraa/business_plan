@@ -48,7 +48,7 @@
 			<tr>
 				<td class="soustitre">Dont capital remboursé</td>
 
-				<td>0</td>
+				<td>{{sumremboursment[i]}}</td>
                 {% for key,value in MonthList %}
 				<td class="aright">
 				{{remboursmentforshow[i][value]}}
@@ -60,9 +60,9 @@
 				<td class="soustitre">Dont frais financiers</td>
 
 				<td>{{sumfrais[i]}}</td>
-                {% for x in 0..11 %}
+                {% for key,value in MonthList %}
 				<td class="aright">
-				{{frais[i][x]}}
+				{{fraisforshow[i][value]}}
 				</td>
 				{% endfor %}					
 				
@@ -71,9 +71,9 @@
 				<td class="soustitre">Capital restant dû</td>
 
 				<td>{{sumrestant[i]}}</td>
-                {% for x in 0..11 %}
+                 {% for key,value in MonthList %}
 				<td class="aright">
-				{{restant[i][x]}}
+				{{restantforshow[i][value]}}
 				</td>
 				{% endfor %}								
 			</tr>

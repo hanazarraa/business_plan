@@ -87,73 +87,49 @@
 		<table class="tableau margeur-20">
 			<tr>
 				<th></th>
-									<th>
-						Année 1					</th>
-									<th>
-						Année 2					</th>
-									<th>
-						Année 3					</th>
-									<th>
-						Année 4					</th>
-									<th>
-						Année 5					</th>
-							</tr>
+				{% for i in 0..business.numberofyears - 1 %}
+				<th>
+				Année {{i + 1}}	
+				</th>
+				{% endfor %}					
+				</tr>
 
 			<tr>
 				<td class="soustitre">Capital emprunté</td>
+				{% for i in 0..business.numberofyears - 1 %}
 									<td class="aright">
-						1 000.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+						{{Sommecapitalemprunte[i]}}					</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Echéances annuelles</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{echanceannuel[i]}}
+						</td>
+						{% endfor %}
+									
 							</tr>
 
 			<tr>
 				<td class="soustitre" style="padding-left:40px">Dont capital remboursé</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{dontcapitalerem[i]}}
+						</td>
+						{% endfor %}
+				</tr>
 
 			<tr>
 				<td class="soustitre" style="padding-left:40px">Dont frais financiers</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
+						{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
+						{{dontfraisfinancier[i]}}
+						</td>
+						{% endfor %}
+
+						</tr>
 		</table>
 	</div>
                             <input type="hidden" id="id_tableau" name="id_tableau" value="16" />

@@ -12,21 +12,37 @@ use App\Repository\LoansRepository;
  */
 class LoansController extends AbstractController
 {
+    private $Sommecapitalemprunte;
+    private $echanceannuel;
+    private $dontcaprembourse;
+    private $dontfraisfinancier;
     /**
      * @Route("/", name="loans")
      */
-    public function index(LoansRepository $loansrepository)
+    public function index(LoansRepository $loansrepository,Request $request)
     {
         $businessSession =$this->container->get('session')->get('business');
         $loans= $loansrepository->findBybusinessplan($businessSession);
-        
+        $years = $businessSession->getNumberofyears();
         if($loans == null){
         return $this->render('loans/index.html.twig', [
             'business' => $businessSession,
         ]);}
         else{
+        //-----------variable pour la partie total --------------------//
+        for($i=0 ;$i<$years;$i++){
+        $this->Sommecapitalemprunte[$i] = "0.00";
+        $this->echanceannuel[$i] = "0.00";
+        $this->dontcaprembourse[$i] ="0.00";
+        $this->dontfraisfinancier[$i] ="0.00";
+        }
+        foreach($loans as $value){
+        $this->detail($value->getCode(),$request);
+        }
+        //-----------fin----------------------------------------------//
             return $this->render('loans/loans.html.twig', [
-                'business' => $businessSession,'loans' => $loans
+                'business' => $businessSession,'loans' => $loans , 'Sommecapitalemprunte' => $this->Sommecapitalemprunte ,  
+                'echanceannuel' => $this->echanceannuel ,  'dontcapitalerem' => $this->dontcaprembourse , 'dontfraisfinancier' => $this->dontfraisfinancier,
             ]);
         }
     }
@@ -83,7 +99,8 @@ class LoansController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('loans');
     }
-    private $remb ;
+    private $frais ;
+    private $restant;
     /**
      * @Route("/show/{code}", name="showloans")
      */
@@ -92,6 +109,7 @@ class LoansController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $loans = $entityManager->getRepository(Loans::class)->findByCode($code);
         $years = $businessSession->getNumberofyears();
+        
         //---------------- variable de l'emprunt----------------------------// 
         $dateemprunt = $loans[0]->getLoandate();
         $startempruntM = $dateemprunt->format('m');
@@ -102,6 +120,7 @@ class LoansController extends AbstractController
         $amount = $loans[0]->getAmount();
         $taux = $loans[0]->getTaux();
         $duration = $loans[0]->getDuration();
+        $nombreecheance = $loans[0]->getNumberofpayment();
         $diffirence =  date_diff($datefirstpayment,$dateemprunt) ;
         $diff = (int) ($diffirence->days / 30.417);
         $listchange= false;
@@ -109,13 +128,13 @@ class LoansController extends AbstractController
         $annedebut  = $businessSession->getStartyear();
         $moisdebut  =   $businessSession->getStartmonth();
         $moisdebutInteger = $this->transformMounth($moisdebut);
-      
+        
         //-----------------------Fin------------------------------//
         //------------------------echeance-----------------------------------//
         $echancetoppart = $amount * (($taux / 100)/12); //partie top de la formule de subdivision  (Formule Emprunt)
         $echancedownpart = (1- pow((1+ ($taux/100/12)),-$duration*12+$diff)); // partie down de la formule de subdivision 
         $echance = round($echancetoppart / $echancedownpart,2);
-        
+       
         //--------------------------Fin echance-----------------------------// 
         //initialiser les listes pour le capital rembourser & les frais financier
         for($x=0 ;$x<12*$years; $x++ ){
@@ -127,32 +146,58 @@ class LoansController extends AbstractController
             $remboursmentsynchroniserSum[$i] = "0.00";
             $fraissynchroniserSum[$i] = "0.00";
             $restantsynchroniserSum[$i] = "0.00";
-        for($x=0;$x<12;$x++){
-            
-            $fraissynchroniser[$i][$x] =  "0.00"  ;
-            $restantsynchroniser[$i][$x] = "0.00" ;
-           
-        }}
+       }
         for($i=0;$i<$years+1 ; $i++){
             for($x=-1;$x<12;$x++){
                 $remboursmentsynchroniser[$i][$x] = "0.00" ;
+                $fraissynchroniser[$i][$x] ="0.00";
+                $restantsynchroniser[$i][$x] = "0.00" ;
         }}
         //-----------------------------fin d'initialisation -------------------//
+        //-----------------------------ajouter emprunt dans le variabe globale --//
+        if($this->Sommecapitalemprunte !=[]){
+        if($startempruntY >= $annedebut){
+        $this->Sommecapitalemprunte[$startempruntY - $annedebut]+=$amount;}}
+       
+        //-----------------------------fin de l'ajout----------------------------//
        //----------------------------debut de calcul de remboursement si mensualite egale 12--------------------------//
        $diffrenceBPandLoansYear=$startempruntY -  $annedebut   ;
        $diffrenceechanceEmpruntandEmprunt = $startpositionY - $startempruntY ;
        $capitalrestant = $amount ;
        $compteurdepart = $startposition;//date debut echeance 
        //$compteurfin = $startempruntM  +($duration * 12);  // durée a partie de date de debut l'emprunt 
-      
+       if($nombreecheance == 12){
        for($i=$startposition - 1 + ($diffrenceechanceEmpruntandEmprunt * 12) ;$i<$duration*12 + ($startempruntM - 1);$i++ ){
         $capitalrembourse[$i] = $echance - round(($capitalrestant * (($taux/100)/12)),2);
         $fraisfinanciers[$i]  = round(($capitalrestant * (($taux/100)/12)),2);
         $capitalrestantdu[$i] = $capitalrestant;
-        $capitalrestant -= $capitalrembourse[$i] ;
-      }
-     // dump( $capitalrembourse);die();
-      
+        $capitalrestant -= $capitalrembourse[$i] ;}
+       }
+      else if($nombreecheance == 4 ){
+        for($i=$startempruntM + 1 ; $i<$duration*12 -(11 - ($startempruntM + 1)) ; $i=$i+3){
+            $capitalrembourse[$i] = ($echance*3) -  round(($capitalrestant * (($taux/100)/12)),2);
+            $fraisfinanciers[$i]  = 3 * round(($capitalrestant * (($taux/100)/12)),2);
+            $capitalrestantdu[$i] = $capitalrestant;
+            $capitalrestant -= $capitalrembourse[$i] ;
+        }
+       }
+       else if($nombreecheance == 2 ){
+        for($i=$startempruntM + 1 ; $i<$duration*12 -(11 - ($startempruntM + 1)) ; $i=$i+6){
+            $capitalrembourse[$i] = ($echance*6) -  round(($capitalrestant * (($taux/100)/12)),2);
+            $fraisfinanciers[$i]  = 6 * round(($capitalrestant * (($taux/100)/12)),2);
+            $capitalrestantdu[$i] = $capitalrestant;
+            $capitalrestant -= $capitalrembourse[$i] ;
+        }
+       }
+       else if($nombreecheance == 1 ){
+        for($i=$startempruntM + 1 ; $i<$duration*12 -(11 - ($startempruntM + 1)) ; $i=$i+12){
+            $capitalrembourse[$i] = ($echance*12) -  round(($capitalrestant * (($taux/100)/12)),2);
+            $fraisfinanciers[$i]  = 12 * round(($capitalrestant * (($taux/100)/12)),2);
+            $capitalrestantdu[$i] = $capitalrestant;
+            $capitalrestant -= $capitalrembourse[$i] ;
+        }
+       }
+       
        //----------------------------fin de calcul-----------------------------//
        //-----------------------reformuler les listes -------------------------//
        $pos = 0 ;
@@ -182,31 +227,37 @@ class LoansController extends AbstractController
        }}
        
        //----------------------attacher les valeur avec le  mois correspendant ------------//
-       if(!($moisdebutInteger  == $startempruntM + 1 &&  $startempruntY == $annedebut)){
-           
-       
-            $Preparedremboursment = $this->decalage($remboursmentsynchroniser,$moisdebutInteger - 1,$years);
-        
-           
-        }
-           
-    
+       if(!($moisdebutInteger  == $startempruntM + 1 &&  $startempruntY == $annedebut)){          
+            $Preparedremboursment = $this->decalage($remboursmentsynchroniser,$fraissynchroniser,$restantsynchroniser,$moisdebutInteger - 1,$years); }    
        else {
            $listchange = true ;
-           $Preparedremboursment =   $this->exception($remboursmentsynchroniser,$moisdebutInteger - 1,$years);   
-           
-       }
-     
+           $Preparedremboursment =   $this->exception($remboursmentsynchroniser,$moisdebutInteger - 1,$years); }
+      
+      
+    
        $L = $this->preparelistmonth($moisdebutInteger - 1);
        $defaultlist =['Janv','Fév','Mars','Avril','Mai','Juin','Juil','Aout','Sept','Oct','Nov','Déc'] ;
-       
+      
        for($i = 0 ; $i< $years;$i++){
        foreach($defaultlist as $key=>$value){
           $remboursmentforshow[$i][$value] = $Preparedremboursment[$i][$key];
-               
+          
+          $fraisforshow[$i][$value] = $this->frais[$i][$key];
+          $restantforshow[$i][$value]  =  $this->restant[$i][$key];   
        }} 
-      
-      
+     
+       for($i = 0 ; $i< $years;$i++){
+        
+            $remboursmentforshowSum[$i] = array_sum($remboursmentforshow[$i]);
+            //$this->Sommecapitalemprunte[$i] += $remboursmentforshowSum[$i];
+            if($this->dontcaprembourse !=[]){
+            $this->dontcaprembourse[$i] += $remboursmentforshowSum[$i];}
+            $fraisforshowSum[$i] = array_sum($fraisforshow[$i]);
+            if($this->dontfraisfinancier !=[]){
+            $this->dontfraisfinancier[$i] += $fraisforshowSum[$i];
+            $this->echanceannuel[$i] += $remboursmentforshowSum[$i] + $fraisforshowSum[$i]  ; }
+            $restantforshowSum[$i] = array_sum($restantforshow[$i]);
+        }
       
        /* if(!($moisdebutInteger  == $startempruntM + 1 &&  $startempruntY == $annedebut)){
             for($i = 0 ; $i< $years;$i++){
@@ -220,26 +271,62 @@ class LoansController extends AbstractController
        //dump($remboursmentsynchroniser);die();
         return $this->render('loans/detail.html.twig' , ['business' =>$businessSession
         ,'remboursment' => $remboursmentsynchroniser,'frais' =>$fraissynchroniser , 'restant' =>  $restantsynchroniser
-        ,'sumremboursment' => $remboursmentsynchroniserSum ,  'sumfrais' => $fraissynchroniserSum ,'MonthList' => $L
-       ,'sumrestant' => $restantsynchroniserSum ,'remboursmentforshow' => $remboursmentforshow
-        ]);
+        ,'sumremboursment' => $remboursmentforshowSum ,  'sumfrais' => $fraisforshowSum ,'MonthList' => $L
+       ,'sumrestant' => $restantforshowSum ,'remboursmentforshow' => $remboursmentforshow ,'fraisforshow' => $fraisforshow
+       ,'restantforshow' => $restantforshow, 
+       ]);
     }
-    public function decalage(Array $Listadecaler , int $indice,int $years){//cette fonction permet de decaler une liste a partire la liste $L 
+    public function decalage(Array $Listadecaler , Array $Listfrais,Array $Listrestant,int $indice,int $years){//cette fonction permet de decaler une liste a partire la liste $L 
         for($x=0 ;$x<$years+1; $x++ ){
             for($i=0;$i< 12  ; $i++){
              $remboursment[$x][$i] = "0.00";
+             $this->frais[$x][$i] = "0.00";
+             $this->restant[$x][$i] = "0.00";
+
             }}
-          
+       
         for($i=0;$i<$years;$i++){
        for($x=0;$x<$indice;$x++){
             $remboursment[$i][$x] = $Listadecaler[$i+1][$x];
+            $this->frais[$i][$x]  = $Listfrais[$i+1][$x];
+            $this->restant[$i][$x]  = $Listrestant[$i+1][$x];
         }
-       
+  
         for($x=$indice;$x<12;$x++){
             $remboursment[$i][$x] = $Listadecaler[$i][$x];
+            $this->frais[$i][$x]  = $Listfrais[$i][$x];
+            $this->restant[$i][$x]  = $Listrestant[$i][$x];
         }
+        
     }
+  
     return $remboursment;
+    }
+    public function reformuler(Array $Listadecaler , int $indice,int $years){//cette fonction utilisé apres une exception
+        for($x=0 ;$x<$years+1; $x++ ){
+            for($i=-1;$i< 12  ; $i++){
+             $partiedroite[$x][$i] = "0.00";
+             $partiegauche[$x][$i] = "0.00";
+             $mergedlist[$x][$i] = "0.00";
+            }}
+      
+        for($i=0;$i<$years;$i++){               
+            for($x=0;$x<$indice;$x++){
+                $partiedroite[$i][$x] = $Listadecaler[$i][$x];
+            }
+            for ($x=$indice;$x<12;$x++){
+               $partiegauche[$i][$x] = $Listadecaler[$i][$x];
+            }
+        }
+        for($i=0;$i<$years;$i++){               
+            for($x=0;$x<12;$x++){
+                $mergedlist[$i][$x-$indice] = $partiegauche[$i][$x];
+            }
+            for($x=0;$x<$indice;$x++){
+                $mergedlist[$i][12-$indice] = $partiedroite[$i][$x];
+            }
+        }
+       return $mergedlist;
     }
     public function exception(Array $Listadecaler , int $indice,int $years){
         for($x=0 ;$x<$years+1; $x++ ){
@@ -247,11 +334,12 @@ class LoansController extends AbstractController
              $remboursment[$x][$i] = "0.00";}}
         for($i=0;$i<$years;$i++){               
         for($x=0;$x<$indice;$x++){
-            $remboursment[$i][$x] = $Listadecaler[$i][12-$indice];
+            $remboursment[$i][$x] = $Listadecaler[$i][(12-$indice)+ $x];
             }
+           
         for($x=$indice;$x<12;$x++){
          $remboursment[$i][$x] = $Listadecaler[$i][$x-1];}}        
-        
+      
  return  $remboursment ;
     }
     public function preparelistmonth(int $firstdate){ // cette fonction permet de decaler les mois  a partir de debut de mois d'un business plan
