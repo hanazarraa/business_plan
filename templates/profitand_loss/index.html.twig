@@ -1,0 +1,385 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+{{parent()}}
+{% endblock %}
+  {% block nav %}
+  {{parent()}}
+  {% endblock %}
+ {% block sidebar %}
+ {{parent()}}
+{% endblock %}
+{% block menufooter %}
+{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+{{parent()}}
+{% endblock %}   
+{% block content %}
+
+<div class="right_col" role="main">
+                            
+<div class="entete entete-min">
+	<h1 class="fleft">
+		Profit and Loss
+	</h1>
+
+	<div class="call-to-action fright">
+						<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+			</div>
+
+	<div class="clearer"></div>
+</div>
+
+<div class="x_panel">
+	<table class="tableau">
+		<tr>
+			<th></th>
+					{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="#" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="#" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+		<tr>
+			<td class="soustitre">Total ventes</td>
+            {% for i in 0..business.numberofyears - 1  %}
+						<td class="aright">{{totalventes[i]}}</td>
+			{% endfor %}
+					</tr>
+
+		<tr>
+			<td class="soustitre">Achats</td>
+				{% for i in 0..business.numberofyears - 1  %}
+						<td class="aright">{{achat[i]}}</td>
+				{% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Coût total Achats variables</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+						<td class="aright">{{achat[i]}}</td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">% des ventes totales</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{(achat[i]* 100 / totalventes[i])|round(2,'floor')}} %</td>
+                {% endfor %}
+				</tr>
+		<tr>
+			<td class="soustitre">Personnel</td>
+					{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{staff[i]}} </td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Frais généraux</td>
+					{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{generalexpense[i]}} </td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Amortissements</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{amortissement[i]}} </td>
+                {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Coût total Achats fixes</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{amortissement[i] + generalexpense[i] + staff[i]}}  </td>
+                {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Total coût d'achat</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{achat[i] + (amortissement[i] + generalexpense[i] + staff[i])}}  </td>
+                {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Marge brute</td>
+				{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))}} </td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">% des ventes totales</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">{{((totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i])))* 100 / totalventes[i] )|round(2,'floor') }} %</td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Charges exploitation</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+
+		<tr>
+			<td class="soustitre"><u>Commercial</u></td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Personnel</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright">0.00 </td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Frais généraux</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Amortissements</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Total Commercial</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+
+		<tr>
+			<td class="soustitre"><u>R&D</u></td>
+            {% for i in 0..business.numberofyears - 1  %}	
+				<td class="aright"></td>
+                {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Personnel</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Frais généraux</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Amortissements</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Total R&D</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+
+		<tr>
+			<td class="soustitre"><u>Administration & Gestion</u></td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright"> </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Personnel</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Frais généraux</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Amortissements</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Total Administration & Gestion</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Total charges d'exploitation</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">% des ventes totales</td>
+			{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+
+		<tr class="bold">
+			<td class="soustitre">Résultat d'opérations</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">% des ventes totales</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00  %</td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Frais financiers</td>
+	        {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr class="bold">
+			<td class="soustitre">Résultats avant impôts</td>
+		    {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Taux de l'impôt sur les sociétés</td>
+	     	{% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 %</td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Impôts</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">Crédit impôt (Recherche, etc.)</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+
+		<tr class="bold">
+			<td class="soustitre">Résultat après impôts</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 </td>
+            {% endfor %}
+					</tr>
+		<tr>
+			<td class="soustitre">% des ventes totales</td>
+            {% for i in 0..business.numberofyears - 1  %}	
+			<td class="aright">0.00 % </td>
+            {% endfor %}
+					</tr>
+	</table>
+</div>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="29" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+
+{% endblock %}
+{% block footer %}
+{{parent()}}
+{% endblock %}
+ {% block comment %}
+ {{parent()}} 
+ {% endblock %}
+
+
+
+
+

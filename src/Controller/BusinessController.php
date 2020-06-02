@@ -18,6 +18,7 @@ use App\Entity\Investmentsdetail;
 use App\Entity\Staff;
 use App\Entity\Staffdetail;
 use App\Entity\CompteResultat;
+use App\Entity\Loans;
 class BusinessController extends AbstractController
 {
     
@@ -154,6 +155,7 @@ class BusinessController extends AbstractController
         $staff = $entityManager->getRepository(Staff::class)->findByBusinessplan($business[0]);
         $staffdetail = $entityManager->getRepository(Staffdetail::class)->findBy(["staff" => $staff]);
         $compteresultat = $entityManager->getRepository(CompteResultat::class)->findByBusinessplan($business[0]);
+        $emprunts = $entityManager->getRepository(Loans::class)->findByBusinessplan($business[0]);
         //dump(count($product));die();
         for($i = 0 ; $i<count($salesdetailled); $i++){
             $entityManager->remove($salesdetailled[$i]);
@@ -179,6 +181,10 @@ class BusinessController extends AbstractController
         if($compteresultat != []){
         $entityManager->remove($compteresultat[0]);
         }
+        if($emprunts !=[]){
+        for ($i=0 ;$i <count($emprunts);$i++){
+        $entityManager->remove($emprunts[$i]);
+        }}
         $entityManager->remove($generalexpensses[0]);
         $entityManager->remove($sales);
         $entityManager->flush();
