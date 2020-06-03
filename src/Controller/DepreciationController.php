@@ -36,6 +36,14 @@ class DepreciationController extends AbstractController
   private $SommetotalRec;
   private $categorie;
   static $listdepreciation ;
+  static $depreciationAdmG ;
+  static $depreciationAdmD ;
+
+  static $depreciationComG ;
+  static $depreciationComD ;
+
+  static $depreciationRDG ;
+  static $depreciationRDD ; 
      /**
      * @Route("/", name="depreciation")
      */
@@ -98,6 +106,16 @@ class DepreciationController extends AbstractController
     $TOTAL[$i] = $this->Sommetotal[$i] + $this->GlobalAdm[$i] +$this->SommetotalPro [$i] + $this->GlobalPro[$i] + $this->SommetotalCom[$i] + $this->GlobalCom[$i]   + $this->SommetotalRec[$i] + $this->GlobalRec[$i]; 
     }}
     self::$listdepreciation =$TOTAL ;
+    self::$depreciationAdmD = $this->Sommetotal  ;
+    self::$depreciationComD = $this->SommetotalCom  ;
+    self::$depreciationRDD = $this->SommetotalRec  ;
+
+    self::$depreciationAdmG = $this->GlobalAdm  ;
+    self::$depreciationComG = $this->GlobalCom  ;
+    self::$depreciationRDG = $this->GlobalRec  ;
+
+ 
+    
     return $this->render('depreciation/index.html.twig',['business'=> $businessSession, 'rangeofglobal'=>$rangeofglobal,
     'totalperName' => $this->totalFinalSumListperName,'totalperNamePro' => $this->totalFinalSumListperNamePro ,'totalperNameCom' => $this->totalFinalSumListperNameCom ,'totalperNameRec' => $this->totalFinalSumListperNameRec , 
      'categorie' => $this->categorie,'nature'=>$L,'type' => $type,
@@ -111,6 +129,25 @@ class DepreciationController extends AbstractController
     
     return self::$listdepreciation;
   }
+  public function getdepAdmG(){
+    return self::$depreciationAdmG;
+  }
+  public function getdepComG(){
+    return self::$depreciationComG;
+  }
+  public function getdepRDG(){
+    return self::$depreciationRDG;
+  }
+  public function getdepAdmD(){
+    return self::$depreciationAdmD;
+  }
+  public function getdepComD(){
+    return self::$depreciationComD;
+  }
+  public function getdepRDD(){
+    return self::$depreciationRDD;
+  }
+
    /**
      * @Route("-year-{id}", name="depreciationdetail")
      */

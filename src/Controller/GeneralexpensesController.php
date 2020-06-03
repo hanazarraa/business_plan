@@ -22,7 +22,12 @@ class GeneralexpensesController extends AbstractController
 {
     static $staticpurchase ;
     static $fraisAdmdetail;
+    static $fraisComdetail ; 
+    static $fraisRDdetail ; 
+
     static $fraisAdmglob ;
+    static $fraisComglob ;
+    static $fraisRDglob ;
 
     /**
      * @Route("/", name="generalexpenses")
@@ -178,8 +183,13 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     }
     self::$staticpurchase =$finalgeneralexpenses ; 
     self::$fraisAdmdetail  = $total ;
+    self::$fraisComdetail = $totalcom ;
+    self::$fraisRDdetail = $totalrech ;
+
     self::$fraisAdmglob = $globalTotal;
-  
+    self::$fraisComglob = $globalTotalcom;
+    self::$fraisRDglob = $globalTotalrec;
+
     //-------------------------fin de merge ------------------------------//
         $form = $this->createForm(GeneralexpensesFormType::class, $generalexpensses[0]);
         $form->handleRequest($request);
@@ -208,11 +218,22 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     }
     public function getfraisAdmG(){
     
+        return self::$fraisAdmglob;
+    }
+    public function getfraisComG(){
+        return self::$fraisComglob;
+    }
+    public function getfraisRDG(){
+       return self::$fraisRDglob   ;
+    }
+    public function getfraisAdmD(){   
         return self::$fraisAdmdetail;
     }
-    public function getfraisAdmD(){
-    
-        return self::$fraisAdmglob;
+    public function getfraisComD(){
+        return self::$fraisComdetail;
+    }
+    public function getfraisRDD(){
+        return self::$fraisRDdetail;
     }
     
     /**

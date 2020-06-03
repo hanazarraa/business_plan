@@ -16,6 +16,7 @@ class LoansController extends AbstractController
     private $echanceannuel;
     private $dontcaprembourse;
     private $dontfraisfinancier;
+    static  $fraisfinancier ;
     /**
      * @Route("/", name="loans")
      */
@@ -258,7 +259,8 @@ class LoansController extends AbstractController
             $this->echanceannuel[$i] += $remboursmentforshowSum[$i] + $fraisforshowSum[$i]  ; }
             $restantforshowSum[$i] = array_sum($restantforshow[$i]);
         }
-      
+         self::$fraisfinancier = $fraisforshowSum;
+        
        /* if(!($moisdebutInteger  == $startempruntM + 1 &&  $startempruntY == $annedebut)){
             for($i = 0 ; $i< $years;$i++){
                 for($x = 0 ; $x < 12 ; $x++){
@@ -275,6 +277,9 @@ class LoansController extends AbstractController
        ,'sumrestant' => $restantforshowSum ,'remboursmentforshow' => $remboursmentforshow ,'fraisforshow' => $fraisforshow
        ,'restantforshow' => $restantforshow, 
        ]);
+    }
+    public function getfraisfinancier(){
+        return self::$fraisfinancier;
     }
     public function decalage(Array $Listadecaler , Array $Listfrais,Array $Listrestant,int $indice,int $years){//cette fonction permet de decaler une liste a partire la liste $L 
         for($x=0 ;$x<$years+1; $x++ ){

@@ -43,7 +43,8 @@
 						<th> Année {{i}}
 						<br/>
 								<span class="saisie-detaillee-link">
-									<a href="#" title="Saisie détaillée">
+								
+									<a href="{{path('profitandlossdetail',{'id':i -1})}}" title="Saisie détaillée">
 										Saisie détaillée
 									</a>
 									<br/>
@@ -162,19 +163,19 @@
 		<tr>
 			<td class="soustitre">Frais généraux</td>
             {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{generalexpenseCom[i]}}</td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">Amortissements</td>
             {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{amortissementCom[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr class="bold">
 			<td class="soustitre">Total Commercial</td>
             {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{staffCom[i] + generalexpenseCom[i] + amortissementCom[i]}}</td>
             {% endfor %}
 					</tr>
 
@@ -193,19 +194,19 @@
 		<tr>
 			<td class="soustitre">Frais généraux</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{generalexpenseRD[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">Amortissements</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{amortissementRD[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr class="bold">
 			<td class="soustitre">Total R&D</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{staffRD[i] + generalexpenseRD[i]  + amortissementRD[i]  }}  </td>
             {% endfor %}
 					</tr>
 
@@ -224,56 +225,56 @@
 		<tr>
 			<td class="soustitre">Frais généraux</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{generalexpenseAdm[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">Amortissements</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{amortissementAdm[i]}}</td>
             {% endfor %}
 					</tr>
 		<tr class="bold">
 			<td class="soustitre">Total Administration & Gestion</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr class="bold">
 			<td class="soustitre">Total charges d'exploitation</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{ (staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i]) }} </td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">% des ventes totales</td>
 			{% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{ (((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i])) * 100 / totalventes[i])|round(2,'floor')}}%</td>
             {% endfor %}
 					</tr>
 
 		<tr class="bold">
 			<td class="soustitre">Résultat d'opérations</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{(totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))) - ((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i]))}} </td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">% des ventes totales</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00  %</td>
+			<td class="aright">{{(((totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))) - ((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i])))* 100 / totalventes[i])|round(2,'floor')}}  %</td>
             {% endfor %}
 					</tr>
 		<tr>
 			<td class="soustitre">Frais financiers</td>
 	        {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{fraisfinancier[i]}} </td>
             {% endfor %}
 					</tr>
 		<tr class="bold">
 			<td class="soustitre">Résultats avant impôts</td>
 		    {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{(totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))) - ((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i])) - fraisfinancier[i] }} </td>
             {% endfor %}
 					</tr>
 		<tr>
@@ -298,13 +299,13 @@
 		<tr class="bold">
 			<td class="soustitre">Résultat après impôts</td>
             {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 </td>
+			<td class="aright">{{(totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))) - ((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i])) - fraisfinancier[i] }} </td>
             {% endfor %}
-					</tr>
+			</tr>
 		<tr>
 			<td class="soustitre">% des ventes totales</td>
             {% for i in 0..business.numberofyears - 1  %}	
-			<td class="aright">0.00 % </td>
+			<td class="aright">{{(((totalventes[i] - (achat[i] + (amortissement[i] + generalexpense[i] + staff[i]))) - ((staffAdm[i] + generalexpenseAdm[i] + amortissementAdm[i])  +  (staffRD[i] + generalexpenseRD[i]  + amortissementRD[i])  + (staffCom[i] + generalexpenseCom[i] + amortissementCom[i])) - fraisfinancier[i]) * 100 / totalventes[i])|round(2,'floor') }} % </td>
             {% endfor %}
 					</tr>
 	</table>
