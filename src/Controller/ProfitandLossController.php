@@ -15,6 +15,32 @@ use App\Repository\LoansRepository;
  */
 class ProfitandLossController extends AbstractController
 {
+     private $totalCA ;
+     private $purchase ;
+     private $staff;
+     private $staffAdm ;
+     private $staffCom ;
+     private $staffRD;
+     private $generalexpense;
+     private $generalexpenseAdmG;
+     private $generalexpenseComG;
+     private $generalexpenseRDG;
+     private $generalexpenseAdmD ;
+     private $generalexpenseComD;
+     
+     private $fraisAdm;
+     private $fraisCom;
+     private $fraisRD ;
+     private $depreciation;
+     private $depreciationAdmG ;
+     private $depreciationComG ; 
+     private $depreciationRDG;
+
+     private $amortissementAdm;
+     private  $amortissementCom;
+     private $amortissementRD;
+     private $fraisfinancier ;
+
     /**
      * @Route("/", name="profitandloss")
      */
@@ -52,9 +78,9 @@ class ProfitandLossController extends AbstractController
         ]);
         $response = $this->forward('App\Controller\DepreciationController::index', []);
         $finalCA = SalesController::getfinalca(); 
-        $purchase = PurchaseController::getlistpurchase();
-        $staff = StaffController::getstaff();
-        $generalexpense = GeneralexpensesController::getpurchase();
+        $this->purchase = PurchaseController::getlistpurchase();
+        $this->staff = StaffController::getstaff();
+        $this->generalexpense = GeneralexpensesController::getpurchase();
         $generalexpenseAdmG = GeneralexpensesController::getfraisAdmG();
         $generalexpenseComG = GeneralexpensesController::getfraisComG();
         $generalexpenseRDG = GeneralexpensesController::getfraisRDG();
@@ -63,7 +89,7 @@ class ProfitandLossController extends AbstractController
         $generalexpenseComD = GeneralexpensesController::getfraisComD();
         $generalexpenseRDD = GeneralexpensesController::getfraisRDD();
 
-        $depreciation = DepreciationController::getdepreciation();
+        $this->depreciation = DepreciationController::getdepreciation();
         $depreciationAdmG = DepreciationController::getdepAdmG();
         $depreciationComG = DepreciationController::getdepComG();
         $depreciationRDG = DepreciationController::getdepRDG();
@@ -73,11 +99,11 @@ class ProfitandLossController extends AbstractController
         $depreciationRDD = DepreciationController::getdepRDD();
 
 
-        $staffAdm = StaffController::getstaffAdm();
-        $staffCom = StaffController::getstaffCom();
-        $staffRD = StaffController::getstaffRD();
+        $this->staffAdm = StaffController::getstaffAdm();
+        $this->staffCom = StaffController::getstaffCom();
+        $this->staffRD = StaffController::getstaffRD();
 
-        $fraisfinancier = LoansController::getfraisfinancier();
+        $this->fraisfinancier = LoansController::getfraisfinancier();
        
        
         for($x = 0 ; $x < $years ; $x++){
@@ -89,44 +115,44 @@ class ProfitandLossController extends AbstractController
                $SumfinalCAperMouth[$x][$i] +=  $finalCA[$key][$x][$i] ;}}}
           
             for($x = 0 ; $x < $years ; $x++){
-                $totalCA[$x] = array_sum($SumfinalCAperMouth[$x]);}
+                $this->totalCA[$x] = array_sum($SumfinalCAperMouth[$x]);}
         //-------------------------generalexpenses        
         $pos = 0 ;
         for ($i=0 ; $i<$years;$i++){
         if($pos < $rangeofdetail){
-            $fraisAdm[$i] = $generalexpenseAdmD[$i];
-            $fraisCom[$i] = $generalexpenseComD[$i];
-            $fraisRD[$i] = $generalexpenseRDD[$i];
+            $this->fraisAdm[$i] = $generalexpenseAdmD[$i];
+            $this->fraisCom[$i] = $generalexpenseComD[$i];
+            $this->fraisRD[$i] = $generalexpenseRDD[$i];
             $pos++ ;
         }
         
         else if ($pos >= $rangeofdetail ){
-            $fraisAdm[$i] = $generalexpenseAdmG[$i - $rangeofdetail];
-            $fraisCom[$i] = $generalexpenseComG[$i - $rangeofdetail];
-            $fraisRD[$i] = $generalexpenseRDG[$i - $rangeofdetail];
+            $this->fraisAdm[$i] = $generalexpenseAdmG[$i - $rangeofdetail];
+            $this->fraisCom[$i] = $generalexpenseComG[$i - $rangeofdetail];
+            $this->fraisRD[$i] = $generalexpenseRDG[$i - $rangeofdetail];
             $pos++ ;
         }}
         //-------------------------depreciation-------------------
         for($i=0 ; $i<$years;$i++){
-            $amortissementAdm[$i] ="0.00";
-            $amortissementCom[$i] ="0.00";
-            $amortissementRD[$i] ="0.00";
+            $this->amortissementAdm[$i] ="0.00";
+            $this->amortissementCom[$i] ="0.00";
+            $this->amortissementRD[$i] ="0.00";
         }
         
         $pos = 0 ;
         for ($i=0 ; $i<$years;$i++){
     
-        $amortissementAdm[$i] += $depreciationAdmD[$i] + $depreciationAdmG[$i];
-        $amortissementCom[$i] += $depreciationComD[$i] + $depreciationComG[$i];
-        $amortissementRD[$i] += $depreciationRDD[$i] + $depreciationRDG[$i];      
+            $this->amortissementAdm[$i] += $depreciationAdmD[$i] + $depreciationAdmG[$i];
+            $this->amortissementCom[$i] += $depreciationComD[$i] + $depreciationComG[$i];
+            $this->amortissementRD[$i] += $depreciationRDD[$i] + $depreciationRDG[$i];      
     }
     
         
         return $this->render('profitand_loss/index.html.twig',['business'=>$businessSession
-        ,'totalventes'=> $totalCA , 'achat'=> $purchase, 'staff' => $staff,  'staffAdm' => $staffAdm ,'staffCom' => $staffCom ,'staffRD'=> $staffRD,
-        'generalexpense'=> $generalexpense, 'generalexpenseAdm' => $fraisAdm , 'generalexpenseCom' => $fraisCom, 'generalexpenseRD' => $fraisRD ,  
-        'amortissement' => $depreciation, 'amortissementAdm' => $amortissementAdm , 'amortissementCom' => $amortissementCom , 'amortissementRD' => $amortissementRD
-        ,'fraisfinancier' => $fraisfinancier,
+        ,'totalventes'=> $this->totalCA , 'achat'=> $this->purchase, 'staff' => $this->staff,  'staffAdm' => $this->staffAdm ,'staffCom' => $this->staffCom ,'staffRD'=> $this->staffRD,
+        'generalexpense'=> $this->generalexpense, 'generalexpenseAdm' => $this->fraisAdm , 'generalexpenseCom' => $this->fraisCom, 'generalexpenseRD' => $this->fraisRD ,  
+        'amortissement' => $this->depreciation, 'amortissementAdm' => $this->amortissementAdm , 'amortissementCom' => $this->amortissementCom , 'amortissementRD' => $this->amortissementRD
+        ,'fraisfinancier' => $this->fraisfinancier,
         
         ]);
 
@@ -134,8 +160,10 @@ class ProfitandLossController extends AbstractController
  /**
   * @Route("-year-{id}", name="profitandlossdetail")
   */
-  public function detail($id){
+  public function detail($id,Request $request ,ProductRepository $productRepository ,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,GeneralexpensesRepository $generalrep,LoansRepository $loansrepository){
     $businessSession =$this->container->get('session')->get('business');
+    $this->index($request,$productRepository,$SalesRepository,$SalesdetailledRepository,$generalrep,$loansrepository);
+    dump($this->totalCA);
     return $this->render('profitand_loss/detail.html.twig',['business' => $businessSession]);
   }
 }
