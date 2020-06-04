@@ -22,12 +22,19 @@ class GeneralexpensesController extends AbstractController
 {
     static $staticpurchase ;
     static $fraisAdmdetail;
+    static $fraisProdetail;
     static $fraisComdetail ; 
     static $fraisRDdetail ; 
 
     static $fraisAdmglob ;
+    static $fraisProglob ;
     static $fraisComglob ;
     static $fraisRDglob ;
+
+    static $listAdm ;
+    static $listPro ;
+    static $listCom ; 
+    static $listRD ;
 
     /**
      * @Route("/", name="generalexpenses")
@@ -183,10 +190,12 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     }
     self::$staticpurchase =$finalgeneralexpenses ; 
     self::$fraisAdmdetail  = $total ;
+    self::$fraisProdetail = $totalpro;
     self::$fraisComdetail = $totalcom ;
     self::$fraisRDdetail = $totalrech ;
 
     self::$fraisAdmglob = $globalTotal;
+    self::$fraisProglob = $globalTotalpro;
     self::$fraisComglob = $globalTotalcom;
     self::$fraisRDglob = $globalTotalrec;
 
@@ -220,6 +229,10 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     
         return self::$fraisAdmglob;
     }
+    public function getfraisProG(){
+    
+        return self::$fraisProglob;
+    }
     public function getfraisComG(){
         return self::$fraisComglob;
     }
@@ -228,6 +241,9 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     }
     public function getfraisAdmD(){   
         return self::$fraisAdmdetail;
+    }
+    public function getfraisProD(){   
+        return self::$fraisProdetail;
     }
     public function getfraisComD(){
         return self::$fraisComdetail;
@@ -342,8 +358,9 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         for($i=0 ; $i<12;$i++){
         $totalpermonth[$i]= $Sumpermonth[$i] + $SumpermonthProduction[$i] + $SumpermonthCommercial[$i]+$SumpermonthRecherche[$i];
         }
+        self::$listPro =  $SumpermonthProduction ; 
         //---------------------------Fin----------------------------------------------//
-    
+        
         $form = $this->createForm(GeneralexpensesdetailFormType::class, $generalexpenssesdetail[0]);
         $form->handleRequest($request);
         
@@ -363,6 +380,9 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         'sumcommercial'=>$Sumcommercial, 'sumrecherche' => $Sumrecherche , 'totalrecherche' => $totalRecherche,
         'totalsomme'=> $totalsomme ,'totalpermonth' =>$totalpermonth,
         ]);
+    }
+    public function getlistPro(){
+        return self::$listPro;
     }
     /**
      * @Route("/topic", name="topic")

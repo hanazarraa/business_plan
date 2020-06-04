@@ -36,7 +36,19 @@ class StaffController extends AbstractController
     private $SumcommisionPro = [];
     private $SumcommisionCom = [];
     private $SumcommisionRec = [];
+
+    static $couttotalAdm ; 
+    static $couttotalPro ;
+    static $couttotalCom ;
+    static $couttotalRD ;
+
+    static $commissionAdm ; 
+    static $commissionPro ;
+    static $commissionCom ;
+    static $commissionRD ;
+
     static $staticstaff ;
+    static $staticlistPro ;
     static $staticlistCom ;
     static $staticlistRD ;
     static $staticlistAdm ;
@@ -267,7 +279,8 @@ class StaffController extends AbstractController
         //-------------------------------TotalSalairebrut----------------------------//
         for($i=0 ;$i<$years;$i++){
           $STAFF[$i] = $TotalcoutannuelAdm[$i] + $TotalcoutannuelPro[$i] +  $TotalcoutannuelCom[$i] + $TotalcoutannuelRec[$i] ;        }
-          self::$staticstaff =$STAFF ;
+          self::$staticstaff = $STAFF ;
+          self::$staticlistPro =  $TotalcoutannuelPro ;
           self::$staticlistCom = $TotalcoutannuelCom;
           self::$staticlistRD = $TotalcoutannuelRec;
           self::$staticlistAdm = $TotalcoutannuelAdm; 
@@ -302,6 +315,9 @@ class StaffController extends AbstractController
     }
     public function getstaffAdm(){
       return self::$staticlistAdm;
+     }
+     public function getstaffPro(){
+      return self::$staticlistPro;
      }
     public function getstaffRD(){
       return self::$staticlistRD;
@@ -1242,6 +1258,16 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
             $entityManager->flush();
             return $this->redirectToRoute('staffdetail',['id'=>$id]);
            }
+        self::$couttotalAdm =$couttotalpersonemAdm ;
+        self::$couttotalPro =$couttotalpersonemPro ;
+        self::$couttotalCom = $couttotalpersonemCom;
+        self::$couttotalRD = $couttotalpersonemRec; 
+        self::$commissionAdm = $commisionAdm;
+        self::$commissionPro = $commisionPro;
+        self::$commissionCom = $commisionCom;
+        self::$commissionRD = $commisionRec;
+        
+           //dump($couttotalpersonemAdm);die();
         return $this->render('staff/detail.html.twig',[
             'business'=> $businessSession , 'keyadmin' => $keyadmin,'keypro'=>$keypro ,'keycom'=>$keycom,'keyrec'=>$keyrec,'form'=>$form->createView()
         ,'ETP' => $this->ETP, 'ETPpro' => $this->ETPpro,'ETPcom' => $this->ETPcom   , 'ETPrec' => $this->ETPrec,'id'=> $id,'salairebrut' => $salairebrut,
@@ -1255,6 +1281,30 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
          'commissionAdm' => $commisionAdm ,'commissionPro' => $commisionPro , 'commissionCom' => $commisionCom , 'commissionRec' => $commisionRec
          ,'TOTAL' => $TOTAL,
             ]);
+    }
+    public function getcoutAdm(){
+        return self::$couttotalAdm;
+    }
+    public function getcoutPro(){
+      return self::$couttotalPro;
+    }
+    public function getcoutCom(){
+      return self::$couttotalCom;
+    }
+    public function getcoutRD(){
+      return self::$couttotalRD;
+    }
+    public function getcommissionAdm(){
+      return self::$commissionAdm;
+    }
+    public function getcommissionPro(){
+      return self::$commissionPro;
+    }
+    public function getcommissionCom(){
+      return self::$commissionCom;
+    }
+    public function getcommissionRD(){
+      return self::$commissionRD;
     }
     /**
      * @Route("/position", name="staffposition")

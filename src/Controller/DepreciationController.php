@@ -39,11 +39,19 @@ class DepreciationController extends AbstractController
   static $depreciationAdmG ;
   static $depreciationAdmD ;
 
+  static $depreciationProG ;
+  static $depreciationProD ;
+
   static $depreciationComG ;
   static $depreciationComD ;
 
   static $depreciationRDG ;
   static $depreciationRDD ; 
+
+  static $depreciationdetailAdm ;
+  static $depreciationdetailPro ;
+  static $depreciationdetailCom ;
+  static $depreciationdetailRD ;
      /**
      * @Route("/", name="depreciation")
      */
@@ -107,10 +115,12 @@ class DepreciationController extends AbstractController
     }}
     self::$listdepreciation =$TOTAL ;
     self::$depreciationAdmD = $this->Sommetotal  ;
+    self::$depreciationProD = $this->SommetotalPro  ;
     self::$depreciationComD = $this->SommetotalCom  ;
     self::$depreciationRDD = $this->SommetotalRec  ;
 
     self::$depreciationAdmG = $this->GlobalAdm  ;
+    self::$depreciationProG = $this->GlobalPro  ;
     self::$depreciationComG = $this->GlobalCom  ;
     self::$depreciationRDG = $this->GlobalRec  ;
 
@@ -132,6 +142,9 @@ class DepreciationController extends AbstractController
   public function getdepAdmG(){
     return self::$depreciationAdmG;
   }
+  public function getdepProG(){
+    return self::$depreciationProG;
+  }
   public function getdepComG(){
     return self::$depreciationComG;
   }
@@ -141,11 +154,28 @@ class DepreciationController extends AbstractController
   public function getdepAdmD(){
     return self::$depreciationAdmD;
   }
+  public function getdepProD(){
+    return self::$depreciationProD;
+  }
   public function getdepComD(){
     return self::$depreciationComD;
   }
   public function getdepRDD(){
     return self::$depreciationRDD;
+  }
+
+  public function getdeplistAdm(){
+    return self::$depreciationdetailAdm;
+
+  }
+  public function getdeplistPro(){
+    return self::$depreciationdetailPro;
+  }
+  public function getdeplistCom(){
+    return self::$depreciationdetailCom;
+  }
+  public function getdeptlistRec(){
+    return self::$depreciationdetailRD;
   }
 
    /**
@@ -640,6 +670,10 @@ class DepreciationController extends AbstractController
       $FinalShowed=[];
       $this->Sommetotal = [];
     }
+    self::$depreciationdetailAdm = $FinalAdm ;
+    self::$depreciationdetailPro = $FinalPro ;
+    self::$depreciationdetailCom = $FinalCom ;
+    self::$depreciationdetailRD = $FinalRec ;
  //dump( $SumListperName,$FinalSumListperName,$totalFinalSumListperName);die();
       return $this->render('depreciation/detail.html.twig',['business'=> $businessSession,'id'=>$id,
      'sumtotal' => $FinalAdm,'sumtotalPro'=>$FinalPro,'sumtotalCom'=>$FinalCom,'sumtotalRec'=>$FinalRec, 'showed' => $FinalShowed,'showedpro' => $FinalShowedPro,'showedcom' => $FinalShowedCom, 'showedrec' => $FinalShowedRec

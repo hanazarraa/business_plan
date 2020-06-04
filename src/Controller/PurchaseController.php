@@ -23,6 +23,7 @@ class PurchaseController extends AbstractController
     private $products;
     private $list;
     static $puchaselist ;
+    static $purchasedetail;
     public function __construct(\Knp\Snappy\Pdf $knpSnappy) {
         
          $this->knpSnappy = $knpSnappy; }
@@ -166,6 +167,7 @@ class PurchaseController extends AbstractController
        
     }}
   }
+  self::$purchasedetail = $this->Sum;
     //dump($this->Somme,$total);die();
     //$this->knpSnappy->generate('http://127.0.0.1:8000/fr/dashboard/my-business-plan/purchase/purchasedetailled-0', 'C:/Users/ahmed/XXX.pdf');
        //dump($this->Somme); die();
@@ -174,6 +176,9 @@ class PurchaseController extends AbstractController
         ]);
     
     
+}
+public function getpurchasedetail(){
+  return self::$purchasedetail;
 }
  /**
      * @Route("/purchasedetailled-{id}/pdf", name="purchasedet-pdf")
