@@ -1,0 +1,420 @@
+{% extends 'business/monbuisness.html.twig' %}
+{% block head %}
+{{parent()}}
+{% endblock %}
+  {% block nav %}
+  {{parent()}}
+  {% endblock %}
+ {% block sidebar %}
+ {{parent()}}
+{% endblock %}
+{% block menufooter %}
+{{parent()}}
+{% endblock %}
+{% block topnavigation %}
+{{parent()}}
+{% endblock %}   
+{% block content %}
+
+<div class="right_col" role="main">
+                            
+<form class="formulaire" method="post" action="">
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			TVA		</h1>
+
+					<div class="fleft margeur-l15">
+					<div class="pagination-periode">
+			{% for i in 0..business.rangeofdetail -1  %}
+					<a href="{{path('tva',{'id': i})}}" class="btn btn-primary btn-md" title="Année 1">
+				Année {{i +  1}}			</a>
+			{% endfor %}
+		
+				<!--<a href="" class="btn btn-md">
+			&raquo;
+		</a>-->
+		
+
+	</div>
+			</div>
+		
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
+						Éléments antérieurs					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+									<div class="fleft">
+						<input type="submit" class="btn btn-md btn-success dont-print" value="Valider" />
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+					<div class="select-stock fleft">
+				<div>
+					Votre politique de décaissement de TVA :
+				</div>
+
+				<div>
+										
+
+				<div>
+											<span >Mensuel</span>
+									</div>
+
+				<div class="clearer"></div>
+			</div>
+
+			<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+		<div class="clearer"></div>
+
+		<table class="tableau margeur-20">
+		    <tr>
+				<th></th>
+
+									<th>Janv</th>
+									<th>Fév</th>
+									<th>Mars</th>
+									<th>Avril</th>
+									<th>Mai</th>
+									<th>Juin</th>
+									<th>Juil</th>
+									<th>Aout</th>
+									<th>Sept</th>
+									<th>Oct</th>
+									<th>Nov</th>
+									<th>Déc</th>
+				
+			</tr>
+
+			<tr>
+				<td class="soustitre">TVA sur les ventes</td>
+
+									<td class="aright">
+						500.00					</td>
+									<td class="aright">
+						300.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						200.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+
+			<tr>
+				<td class="soustitre">TVA sur les achats</td>
+
+									<td class="aright">
+						560.00					</td>
+									<td class="aright">
+						240.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						20.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						160.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+
+			<tr>
+				<td class="soustitre">TVA sur les immobilisations</td>
+
+									<td class="aright">
+						40.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						20.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						40.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						20.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Crédit de TVA</td>
+
+									<td class="aright">
+						100.00					</td>
+									<td class="aright">
+						40.00					</td>
+									<td class="aright">
+						60.00					</td>
+									<td class="aright">
+						60.00					</td>
+									<td class="aright">
+						120.00					</td>
+									<td class="aright">
+						120.00					</td>
+									<td class="aright">
+						80.00					</td>
+									<td class="aright">
+						80.00					</td>
+									<td class="aright">
+						100.00					</td>
+									<td class="aright">
+						100.00					</td>
+									<td class="aright">
+						100.00					</td>
+									<td class="aright">
+						100.00					</td>
+							</tr>
+
+			<tr>
+				<td class="soustitre">TVA à décaisser</td>
+
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Demande de remboursement TVA &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="En fonction de votre crédit de TVA, vous avez la possibilité d’en demander le remboursement, lors de votre déclaration (mensuelle ou trimestrielle)
+"></i></td>
+
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-0" name="valeur-0" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-1" name="valeur-1" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-2" name="valeur-2" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-3" name="valeur-3" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-4" name="valeur-4" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-5" name="valeur-5" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-6" name="valeur-6" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-7" name="valeur-7" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-8" name="valeur-8" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-9" name="valeur-9" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-10" name="valeur-10" value="0.00" />					</td>
+									<td class="aright duplicate">
+												<input type="text" class="type-text" id="valeur-11" name="valeur-11" value="0.00" />					</td>
+							</tr>
+
+			<tr>
+				<td class="separateur" colspan="13"></td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">TVA remboursées</td>
+
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+
+			<tr>
+				<td class="soustitre">TVA décaissée</td>
+
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+									<td class="aright">
+						0.00					</td>
+							</tr>
+		</table>
+	</div>
+</form>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="21" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
+
+
+
+{% endblock %}
+{% block footer %}
+{{parent()}}
+{% endblock %}
+{% block comment %}
+{{parent()}} 
+{% endblock %}

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SalesController extends AbstractController
 {
   private $var;
+  static $listCAforexport;
     /**
      * @Route("/", name="sales")
      */
@@ -285,9 +286,9 @@ class SalesController extends AbstractController
         $this->finalCA= array_merge($this->finalCA,$this->intersect);//merger les deux tableau pour calculer la somme total
         //dump($this->finalCA);die();
         //dump($CA);die();
-        //dump( $this->listofparametre );die();
+        //dump($this->listofparametre);die();
         $this->calculsum();
-        
+       
         if($this->sales!=[]){
         $form = $this->createForm(SalesdetailledFormType::class,$this->sales[$id]);
         }
@@ -307,8 +308,13 @@ class SalesController extends AbstractController
     
             return $this->redirectToRoute('sales');
             }
+            self::$listCAforexport = $this->finalCA;
+            
         return $this->render('sales/test.html.twig' , ['form' => $form->createView(), 'listofprice' => $listofprice, 'id' => $id, 'listofreccuring' =>$listofreccuring,'finalCA' => $this->finalCA,
          'business' => $businessSession ,'listofparametre' => $this->listofparametre,'products' => $products , 'type' => $listoftype , 'listofname' => $listofname , 'total' =>$this->total ]);
+    }
+    public function getlist(){
+      return self::$listCAforexport;
     }
     public function calculsum(){
       foreach($this->finalCA as $key => $value){
