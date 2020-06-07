@@ -10,6 +10,7 @@ use App\Repository\SalesdetailledRepository;
 use App\Repository\GeneralexpensesRepository;
 use App\Repository\ProductRepository;
 use App\Repository\LoansRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 /**
      * @Route("/{_locale}/dashboard/my-business-plan/profitandloss")
  */
@@ -58,6 +59,12 @@ class ProfitandLossController extends AbstractController
      private $amortissementRD;
      private $fraisfinancier ;
 
+     private $session;
+
+     public function __construct(SessionInterface $session)
+     {
+         $this->session = $session;
+     }
     /**
      * @Route("/", name="profitandloss")
      */
@@ -83,6 +90,7 @@ class ProfitandLossController extends AbstractController
             'SalesRepository' => $SalesRepository,
                 
         ]);
+        
         $response = $this->forward('App\Controller\GeneralexpensesController::index', [
             'request'  => $request,
             'GeneralexpensesRepository'  => $generalrep,
@@ -108,8 +116,7 @@ class ProfitandLossController extends AbstractController
         $generalexpenseProD = GeneralexpensesController::getfraisProD();
         $generalexpenseComD = GeneralexpensesController::getfraisComD();
         $generalexpenseRDD = GeneralexpensesController::getfraisRDD();
-
-        
+      
 
         $this->depreciation = DepreciationController::getdepreciation();
         $depreciationAdmG = DepreciationController::getdepAdmG();
@@ -173,7 +180,7 @@ class ProfitandLossController extends AbstractController
             $this->amortissementCom[$i] ="0.00";
             $this->amortissementRD[$i] ="0.00";
         }
-        
+       if($depreciationAdmD != []){
         $pos = 0 ;
         for ($i=0 ; $i<$years;$i++){
     
@@ -181,9 +188,21 @@ class ProfitandLossController extends AbstractController
             $this->amortissementPro[$i] += $depreciationProD[$i] + $depreciationProG[$i];
             $this->amortissementCom[$i] += $depreciationComD[$i] + $depreciationComG[$i];
             $this->amortissementRD[$i] += $depreciationRDD[$i] + $depreciationRDG[$i];      
+    }}
+    if ($this->staffPro == null){
+        for ($i=0 ; $i<$years;$i++){
+        $this->staffAdm[$i] ="0.00";
+        $this->staffPro[$i] ="0.00";
+        $this->staffCom[$i] ="0.00";
+        $this->staffRD[$i] ="0.00";
+        }
     }
-    
-        
+    if($this->fraisfinancier == null){
+        for ($i=0 ; $i<$years;$i++){
+            $this->fraisfinancier[$i] ="0.00";
+            }
+    }
+
         return $this->render('profitand_loss/index.html.twig',['business'=>$businessSession
         ,'totalventes'=> $this->totalCA , 'achat'=> $this->purchase, 'staff' => $this->staffPro,  'staffAdm' => $this->staffAdm ,'staffCom' => $this->staffCom ,'staffRD'=> $this->staffRD,
         'generalexpense'=> $this->fraisPro, 'generalexpenseAdm' => $this->fraisAdm , 'generalexpenseCom' => $this->fraisCom, 'generalexpenseRD' => $this->fraisRD ,  
@@ -198,13 +217,14 @@ class ProfitandLossController extends AbstractController
   */
   public function detail($id,Request $request ,ProductRepository $productRepository ,SalesRepository $SalesRepository,SalesdetailledRepository $SalesdetailledRepository,GeneralexpensesRepository $generalrep,LoansRepository $loansrepository){
     $businessSession =$this->container->get('session')->get('business');
+    
     $this->index($request,$productRepository,$SalesRepository,$SalesdetailledRepository,$generalrep,$loansrepository);
     $response = $this->forward('App\Controller\GeneralexpensesController::detail', [
         'id'  => $id,
         'GeneralexpensesRepository'  => $generalrep,
             
     ]);
-    
+  
     $generalexpenselistPro = GeneralexpensesController::getlistPro();
     
     return $this->render('profitand_loss/detail.html.twig',['id'=>$id,'business' => $businessSession , 'totalventes' => $this->totalCA[$id] , 'SumfinalCAperMouth' => $this->SumfinalCAperMouth[$id]  

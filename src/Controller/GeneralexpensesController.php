@@ -36,6 +36,11 @@ class GeneralexpensesController extends AbstractController
     static $listCom ; 
     static $listRD ;
 
+    static $generalAdmwithaname;
+    static $generalProwithaname;
+    static $generalComwithaname;
+    static $generalRecwithaname;
+
     /**
      * @Route("/", name="generalexpenses")
      */
@@ -264,6 +269,14 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
         $years = $businessSession->getNumberofyears();
         $generalexpenssesdetail = $entityManager->getRepository(Generalexpensesdetail::class)->findBy(['year' => $id ,'generalexpenses' =>$generalexpensses] ); // il faut deux parametre ici (annes et ID)
+        $generalexpenssesdetailallyears = $entityManager->getRepository(Generalexpensesdetail::class)->findBy (['generalexpenses' =>$generalexpensses] ); // il faut deux parametre ici (annes et ID)
+        for($i = 0 ; $i < $years ;$i++){//cette boucle pour exporter les donnée dans la partie TVA 
+        $geneAdm[$i] = $generalexpenssesdetailallyears[$i]->getDetail();
+        $genePro[$i] = $generalexpenssesdetailallyears[$i]->getDetailProduction();
+        $geneCom[$i] = $generalexpenssesdetailallyears[$i]->getDetailCommercial();
+        $geneRec[$i] = $generalexpenssesdetailallyears[$i]->getDetailRecherche();
+        }
+         
         //------------------------GENERER LISTE TOPIC--------------------------------------
         $originallist ;
         $listdefrais =["eau","autre","loyers","assurance","honorairec","honorairej","impotettax","proprietes","deplacement","posteettelecom","fournitureentretient","fournitureadmenstrative"];
@@ -286,6 +299,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         $diffpro=  array_diff_key($generalexpenssesdetail[0]->getDetailProduction(),$originallistpro);
         $diffcom =  array_diff_key($generalexpenssesdetail[0]->getDetailCommercial(),$originallistcom);
         $diffrec =  array_diff_key($generalexpenssesdetail[0]->getDetailRecherche(),$originallistrec);
+        
         //------------------------FIN------------------------------------------------------
         //------------------------CALCUL DE SOMME------------------------------------------
         $total=0;
@@ -359,6 +373,10 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
         $totalpermonth[$i]= $Sumpermonth[$i] + $SumpermonthProduction[$i] + $SumpermonthCommercial[$i]+$SumpermonthRecherche[$i];
         }
         self::$listPro =  $SumpermonthProduction ; 
+        self::$generalAdmwithaname = $geneAdm;
+        self::$generalProwithaname = $genePro;
+        self::$generalComwithaname = $geneCom;
+        self::$generalRecwithaname = $geneRec;
         //---------------------------Fin----------------------------------------------//
         
         $form = $this->createForm(GeneralexpensesdetailFormType::class, $generalexpenssesdetail[0]);
@@ -374,6 +392,7 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
               $entityManager->flush();
       
               return $this->redirectToRoute('generalexpenses');}
+              //dump(self::$listPro);die();
         return $this->render('generalexpenses/detailled.html.twig',['business'=>$businessSession,'form' => $form->createView(),
         'id'=> $id,'somme'=>$Sum ,'total'=>$total,'sumpermonth'=>$Sumpermonth ,'sumpermonthproduction'=>$SumpermonthProduction  , 'sumpermonthcommercial'=>$SumpermonthCommercial
         ,'diff'=> $diff ,'diffpro'=> $diffpro,'diffcom'=>$diffcom,'diffrec'=>$diffrec ,'sommeproduction' => $Sumproduction , 'totalproduction' => $totalProduction, 'totalcommercial' =>$totalCommercial,'sumpermonthrecherche' =>$SumpermonthRecherche,
@@ -384,6 +403,20 @@ for ($i=0 ; $i<$rangeofglobal ; $i++){
     public function getlistPro(){
         return self::$listPro;
     }
+    public function getlistAdmwithname(){
+    return self::$generalAdmwithaname ;
+    }
+    public function getlistProwithname(){
+    return self::$generalProwithaname ;
+    }
+    public function getlistComwithname(){
+    return self::$generalComwithaname ;
+    }
+    public function getlistRecwithname(){
+    return self::$generalRecwithaname ;
+    }
+
+    
     /**
      * @Route("/topic", name="topic")
      */

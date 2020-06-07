@@ -102,60 +102,18 @@
 
 			<tr>
 				<td class="soustitre">TVA sur les ventes</td>
-
+                {% for i in tvasurventes[id] %}
 									<td class="aright">
-						500.00					</td>
-									<td class="aright">
-						300.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						200.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+						{{i}}					</td>
+				{% endfor %}
 							</tr>
 
-			<tr>
+			<tr>   
 				<td class="soustitre">TVA sur les achats</td>
-
+                {% for x in fraisgenerauxetachat[id] %}
 									<td class="aright">
-						560.00					</td>
-									<td class="aright">
-						240.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						20.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						160.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+					{{x}}					</td>
+				{% endfor %}				
 							</tr>
 
 			<tr>

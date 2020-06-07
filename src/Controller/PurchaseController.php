@@ -24,6 +24,7 @@ class PurchaseController extends AbstractController
     private $list;
     static $puchaselist ;
     static $purchasedetail;
+    static $purchasedetailwithname ;
     public function __construct(\Knp\Snappy\Pdf $knpSnappy) {
         
          $this->knpSnappy = $knpSnappy; }
@@ -39,6 +40,7 @@ class PurchaseController extends AbstractController
         $this->detail($SalesdetailledRepository,$productRepository,$id,$request,$SalesRepository);
        
         self::$puchaselist = $this->total ;
+        
         //dump($SalesController->sales($request,$productRepository,$SalesRepository));die();
         return $this->render('purchase/index.html.twig', [
             'business' => $this->businessSession ,'products' => $this->products , 'Somme' => $this->Somme ,'total'=> $this->total 
@@ -153,6 +155,7 @@ class PurchaseController extends AbstractController
         foreach ($this->list as $key => $value){
           
      $this->Somme[substr($key,0,strlen($key)-1)][$index] = array_sum($value);
+     $this->Sommeavecnom[substr($key,0,strlen($key)-1)][$index] = $value ;
      $index++;
      if($index==$years){
      $index = 0 ;
@@ -168,6 +171,8 @@ class PurchaseController extends AbstractController
     }}
   }
   self::$purchasedetail = $this->Sum;
+  self::$purchasedetailwithname = $this->Sommeavecnom ;
+  //dump($this->Sommeavecnom);die();
     //dump($this->Somme,$total);die();
     //$this->knpSnappy->generate('http://127.0.0.1:8000/fr/dashboard/my-business-plan/purchase/purchasedetailled-0', 'C:/Users/ahmed/XXX.pdf');
        //dump($this->Somme); die();
@@ -176,6 +181,9 @@ class PurchaseController extends AbstractController
         ]);
     
     
+}
+public function getpurchasedetailwithname(){
+  return self::$purchasedetailwithname;
 }
 public function getpurchasedetail(){
   return self::$purchasedetail;
