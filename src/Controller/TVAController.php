@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\SalesdetailledRepository;
 use App\Repository\SalesRepository;
 use App\Entity\Generalexpenses;
+use App\Entity\Investments;
+use App\Entity\Investmentsdetail;
 class TVAController extends AbstractController
 {
     /**
@@ -22,7 +24,9 @@ class TVAController extends AbstractController
         $years = $businessSession->getNumberofyears();
         $defaultTVA = $businessSession->getDefaultVAT();
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
-       
+        $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
+        $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
+        
         $response = $this->forward('App\Controller\SalesController::test', [
             'request'  => $request,
             'id' => $id,
@@ -54,6 +58,7 @@ class TVAController extends AbstractController
             $tvasurlesachat[$i][$x]= "0.00"; 
             $fraisgeneraux[$i][$x] = "0.00";
             $fraisgenerauxetachat[$i][$x] = "0.00";
+            $tvasurimmobilisation[$i][$x] = "0.00";
             }}
         foreach($products as $key=>$value ){
         $pos=0;
@@ -172,10 +177,32 @@ class TVAController extends AbstractController
         $fraisgenerauxetachat[$i][$x] = $tvasurlesachat[$i][$x] +$fraisgeneraux[$i][$x] ;
        }
       }
+      //------------------tva sur immobilisation-----------------------------//
+      for($i = 0 ; $i<$years ;$i++){
+      foreach($investmentsdetail[$i]->getAdministration() as $key=>$value){
+        $tva = $investments[0]->getTvalist()[$key][0];
+      foreach($value as $position=>$chiffre){
+        $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}
+     
+      foreach($investmentsdetail[$i]->getProduction() as $key=>$value){
+          $tva = $investments[0]->getTvalist()[$key][0];
+        foreach($value as $position=>$chiffre){
+        $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}  
+
+      foreach($investmentsdetail[$i]->getSales() as $key=>$value){
+          $tva = $investments[0]->getTvalist()[$key][0];
+        foreach($value as $position=>$chiffre){
+        $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}
       
-     // dump($fraisgeneraux,$newPurchaseList);die();
+        foreach($investmentsdetail[$i]->getRecherche() as $key=>$value){
+          $tva = $investments[0]->getTvalist()[$key][0];
+        foreach($value as $position=>$chiffre){
+        $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}    
+    
+    }
+    
         return $this->render('tva/index.html.twig', [
-            'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,
+            'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,'tvasurimmobilisation'=>$tvasurimmobilisation ,
         ]);
     }
 }
