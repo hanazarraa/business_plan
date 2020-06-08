@@ -18,7 +18,7 @@
 
 <div class="right_col" role="main">
                             
-<form class="formulaire" method="post" action="">
+{{form_start(form)}}
 	<div class="entete entete-min">
 		<h1 class="fleft">
 			TVA		</h1>
@@ -51,7 +51,8 @@
 	</div>
 
 									<div class="fleft">
-						<input type="submit" class="btn btn-md btn-success dont-print" value="Valider" />
+									{{form_widget (form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
+						
 					</div>
 									</div>
 
@@ -119,10 +120,10 @@
 
 			<tr>
 				<td class="soustitre">TVA sur les immobilisations</td>
-{% for s in tvasurimmobilisation[id] %}
+                {% for s in 0..11 %}
 				<td class="aright">
 				
-						{{s}}					</td>
+						{{tvasurimmobilisation[id][s]}}					</td>
 				{% endfor %}		
 							</tr>
 
@@ -132,60 +133,20 @@
 
 			<tr>
 				<td class="soustitre">Crédit de TVA</td>
-
-									<td class="aright">
-						100.00					</td>
-									<td class="aright">
-						40.00					</td>
-									<td class="aright">
-						60.00					</td>
-									<td class="aright">
-						60.00					</td>
-									<td class="aright">
-						120.00					</td>
-									<td class="aright">
-						120.00					</td>
-									<td class="aright">
-						80.00					</td>
-									<td class="aright">
-						80.00					</td>
-									<td class="aright">
-						100.00					</td>
-									<td class="aright">
-						100.00					</td>
-									<td class="aright">
-						100.00					</td>
-									<td class="aright">
-						100.00					</td>
+                {% for i in creditTVA[id] %}
+				<td class="aright">
+				{{i}}
+				</td>
+				{% endfor %}					
 							</tr>
 
 			<tr>
 				<td class="soustitre">TVA à décaisser</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+                {% for x in tvaadecaisser[id]  %}
+				<td class="aright">
+				{{x}}
+				</td>
+				{% endfor %}				
 							</tr>
 
 			<tr>
@@ -195,32 +156,15 @@
 			<tr>
 				<td class="soustitre">Demande de remboursement TVA &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="En fonction de votre crédit de TVA, vous avez la possibilité d’en demander le remboursement, lors de votre déclaration (mensuelle ou trimestrielle)
 "></i></td>
-
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-0" name="valeur-0" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-1" name="valeur-1" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-2" name="valeur-2" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-3" name="valeur-3" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-4" name="valeur-4" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-5" name="valeur-5" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-6" name="valeur-6" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-7" name="valeur-7" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-8" name="valeur-8" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-9" name="valeur-9" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-10" name="valeur-10" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="valeur-11" name="valeur-11" value="0.00" />					</td>
-							</tr>
+                         
+                       
+						   	{% for s in form.remboursement  %}
+						  <td class="aright duplicate">
+						  {{ form_widget (s, {'attr': {'type':'text','class':'type-text ' }}) }}
+						  </td>
+						  {% endfor %}
+						</tr>
+						
 
 			<tr>
 				<td class="separateur" colspan="13"></td>
@@ -285,7 +229,7 @@
 							</tr>
 		</table>
 	</div>
-</form>
+{{form_end(form)}}
                             <input type="hidden" id="id_tableau" name="id_tableau" value="21" />
 
 <div class="bloc-commentaires margeur-50" id="notes">

@@ -11,6 +11,8 @@ use App\Repository\SalesRepository;
 use App\Entity\Generalexpenses;
 use App\Entity\Investments;
 use App\Entity\Investmentsdetail;
+use App\Entity\TVA;
+use App\Form\TVAFormType;
 class TVAController extends AbstractController
 {
     /**
@@ -26,7 +28,14 @@ class TVAController extends AbstractController
         $generalexpensses = $entityManager->getRepository(Generalexpenses::class)->findBybusinessplan($businessSession);
         $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
         $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
-        
+        $TVAentity = $entityManager->getRepository(TVA::class)->findBy(['businessplan' => $businessSession , 'year'=> $id]);
+     
+        $exsist = True ;
+         if($TVAentity == []){
+            $TVAentity = new TVA();
+            $TVAentity->setBusinessplan($businessSession);
+            $exsist = false ;
+        }
         $response = $this->forward('App\Controller\SalesController::test', [
             'request'  => $request,
             'id' => $id,
@@ -58,8 +67,15 @@ class TVAController extends AbstractController
             $tvasurlesachat[$i][$x]= "0.00"; 
             $fraisgeneraux[$i][$x] = "0.00";
             $fraisgenerauxetachat[$i][$x] = "0.00";
-            $tvasurimmobilisation[$i][$x] = "0.00";
+            
+            $creditTVA[$i][$x] = "0.00" ;
+            $tvaadecaisser[$i][$x] = "0.00";
             }}
+        for($i = 0 ; $i  < $years + 1 ; $i++){
+        for($x = 0 ; $x  < 13 ; $x++){
+            $tvasurimmobilisation[$i][$x] = "0.00";
+        }
+        }
         foreach($products as $key=>$value ){
         $pos=0;
             $TVA = $value->getVAT();
@@ -178,6 +194,7 @@ class TVAController extends AbstractController
        }
       }
       //------------------tva sur immobilisation-----------------------------//
+     
       for($i = 0 ; $i<$years ;$i++){
       foreach($investmentsdetail[$i]->getAdministration() as $key=>$value){
         $tva = $investments[0]->getTvalist()[$key][0];
@@ -198,11 +215,47 @@ class TVAController extends AbstractController
           $tva = $investments[0]->getTvalist()[$key][0];
         foreach($value as $position=>$chiffre){
         $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}    
-    
     }
-    
+    //dump($tvasurimmobilisation);die();
+    //--------------calcul de credit tva et le tva  a decaisser------------------------------
+   // dump( $tvasurlesventes,$fraisgenerauxetachat,$tvasurimmobilisation);die();
+    $virtualtvasurimmobilisation = $tvasurimmobilisation ;
+        for($i=0;$i<$years;$i++){
+        for($x=0 ; $x<12;$x++){
+        if($tvasurlesventes[$i][$x] < $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
+            $creditTVA[$i][$x] = ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) - $tvasurlesventes[$i][$x]; 
+            $virtualtvasurimmobilisation[$i][$x+1]+= $creditTVA[$i][$x];
+            if($x+1 == 12){
+                $virtualtvasurimmobilisation[$i+1][$x-11]+= $creditTVA[$i][$x];
+            }
+         }
+        else if($tvasurlesventes[$i][$x] > $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
+            $tvaadecaisser[$i][$x] =  $tvasurlesventes[$i][$x] -  ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) ; 
+            
+        }
+        }}
+   
+       
+        //-----------------------formulaire pour le  demande de remboursement TVA-------------------// 
+        if($exsist == true){
+            $form = $this->createForm(TVAFormType::class , $TVAentity[0]);}
+            else{
+         $form = $this->createForm(TVAFormType::class , $TVAentity);
+            }
+        
+            $form->handleRequest($request);
+           if($form->isSubmitted() && $form->isValid()){
+               $compteresultat = $form->getData();
+               if($exsist == false){
+                 $entityManager->merge($TVAentity);
+               }
+               $entityManager->flush();
+           }
+      //dump($virtualtvasurimmobilisation);die();
+     
         return $this->render('tva/index.html.twig', [
             'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,'tvasurimmobilisation'=>$tvasurimmobilisation ,
-        ]);
+            'creditTVA' => $creditTVA , 'tvaadecaisser' => $tvaadecaisser ,'form' => $form->createView() 
+             ]);
     }
 }
