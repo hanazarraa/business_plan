@@ -76,7 +76,9 @@ class CompteresultatController extends AbstractController
         if($depreciation == null){ for($x = 0 ; $x < $years ; $x++){
             $depreciation[$x] = "0.00";
         }}
-
+        if($purchase == null){for($x = 0 ; $x < $years ; $x++){
+            $purchase[$x] = "0.00";
+        } }
         for($x = 0 ; $x < $years ; $x++){
             for($i = 0 ; $i < 12 ; $i++){
               $SumfinalCAperMouth[$x][$i] =  0 ;}}   
@@ -114,7 +116,7 @@ class CompteresultatController extends AbstractController
             $margecommercial[$x] =  ($totalCA[$x] + $RD[$x] )- $purchase[$x]  ;
             $totalproduit[$x] = $totalCA[$x] + $RD[$x] ; 
            }
-         
+        
        //dump($margecommercial);die();
         return $this->render('compteresultat/index.html.twig', ['RD' => $RD, 'creditimpot' => $creditimpot,
             'business' => $businessSession, 'totalCA'=> $totalCA, 'margecommercial' => $margecommercial,

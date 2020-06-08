@@ -29,12 +29,19 @@ class TVAController extends AbstractController
         $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
         $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
         $TVAentity = $entityManager->getRepository(TVA::class)->findBy(['businessplan' => $businessSession , 'year'=> $id]);
-     
+        $newList =[];
+        $newPurchaseList =[]; 
         $exsist = True ;
          if($TVAentity == []){
             $TVAentity = new TVA();
             $TVAentity->setBusinessplan($businessSession);
+            for($i=0; $i<$years;$i++){
+              $TVAentity->setRemboursement([0,0,0,0,0,0,0,0,0,0,0,0]);
+              $TVAentity->setYear($i);
+              $entityManager->merge($TVAentity);
+            }
             $exsist = false ;
+            $entityManager->flush();
         }
         $response = $this->forward('App\Controller\SalesController::test', [
             'request'  => $request,
@@ -90,6 +97,7 @@ class TVAController extends AbstractController
           }
           
         }
+        
         foreach($newList as $key=>$value){
             for($i = 0 ; $i  < $years ; $i++){
                 for($x = 0 ; $x  < 12 ; $x++){
@@ -253,6 +261,7 @@ class TVAController extends AbstractController
            }
       //dump($virtualtvasurimmobilisation);die();
      
+      
         return $this->render('tva/index.html.twig', [
             'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,'tvasurimmobilisation'=>$tvasurimmobilisation ,
             'creditTVA' => $creditTVA , 'tvaadecaisser' => $tvaadecaisser ,'form' => $form->createView() 

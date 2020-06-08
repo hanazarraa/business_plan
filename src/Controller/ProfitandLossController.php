@@ -202,6 +202,11 @@ class ProfitandLossController extends AbstractController
             $this->fraisfinancier[$i] ="0.00";
             }
     }
+    if($this->purchase == null){
+        for ($i=0 ; $i<$years;$i++){
+            $this->purchase[$i] ="0.00";
+            }
+    }
 
         return $this->render('profitand_loss/index.html.twig',['business'=>$businessSession
         ,'totalventes'=> $this->totalCA , 'achat'=> $this->purchase, 'staff' => $this->staffPro,  'staffAdm' => $this->staffAdm ,'staffCom' => $this->staffCom ,'staffRD'=> $this->staffRD,

@@ -18,7 +18,7 @@ class TVAFormType extends AbstractType
         $builder->
         
         add('remboursement',CollectionType::class,[
-
+            'label' => false,
             'entry_type' => NumberType::class
            
            

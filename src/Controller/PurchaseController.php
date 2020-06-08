@@ -19,6 +19,7 @@ class PurchaseController extends AbstractController
     private $Sum;
     private  $Somme; 
     private  $total;
+    private $Sommeavecnom;
     private $businessSession;
     private $products;
     private $list;
@@ -171,6 +172,7 @@ class PurchaseController extends AbstractController
     }}
   }
   self::$purchasedetail = $this->Sum;
+
   self::$purchasedetailwithname = $this->Sommeavecnom ;
   //dump($this->Sommeavecnom);die();
     //dump($this->Somme,$total);die();
