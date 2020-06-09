@@ -172,60 +172,19 @@
 
 			<tr>
 				<td class="soustitre">TVA remboursées</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+                {% for x in 0..11 %}
+				<td class="aright">
+                 {{tvarembourse[id][x]}}
+				</td>
+				{% endfor %}			
 							</tr>
 
 			<tr>
 				<td class="soustitre">TVA décaissée</td>
-
+                {% for i in 0..11 %}
 									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
+						{{tvaadecaisserlieraurembousement[id][i]}}					</td>
+				{%  endfor %}
 							</tr>
 		</table>
 	</div>

@@ -29,6 +29,7 @@ class TVAController extends AbstractController
         $investments = $entityManager->getRepository(Investments::class)->findByBusinessplan($businessSession);
         $investmentsdetail = $entityManager->getRepository(Investmentsdetail::class)->findBy(['Investment' =>$investments] );
         $TVAentity = $entityManager->getRepository(TVA::class)->findBy(['businessplan' => $businessSession , 'year'=> $id]);
+      
         $newList =[];
         $newPurchaseList =[]; 
         $exsist = True ;
@@ -77,6 +78,10 @@ class TVAController extends AbstractController
             
             $creditTVA[$i][$x] = "0.00" ;
             $tvaadecaisser[$i][$x] = "0.00";
+
+            $tvarembourse[$i][$x] ="0.00";
+            $tvaadecaisserlieraurembousement[$i][$x] = "0.00";
+
             }}
         for($i = 0 ; $i  < $years + 1 ; $i++){
         for($x = 0 ; $x  < 13 ; $x++){
@@ -202,13 +207,14 @@ class TVAController extends AbstractController
        }
       }
       //------------------tva sur immobilisation-----------------------------//
-     
+      if($investmentsdetail != null){
       for($i = 0 ; $i<$years ;$i++){
+      
       foreach($investmentsdetail[$i]->getAdministration() as $key=>$value){
         $tva = $investments[0]->getTvalist()[$key][0];
       foreach($value as $position=>$chiffre){
         $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}
-     
+          
       foreach($investmentsdetail[$i]->getProduction() as $key=>$value){
           $tva = $investments[0]->getTvalist()[$key][0];
         foreach($value as $position=>$chiffre){
@@ -224,47 +230,75 @@ class TVAController extends AbstractController
         foreach($value as $position=>$chiffre){
         $tvasurimmobilisation[$i][$position] +=  ($chiffre  *  $tva) / 100 ;}}    
     }
-    //dump($tvasurimmobilisation);die();
+    }
+     //-----------------------formulaire pour le  demande de remboursement TVA-------------------// 
+     if($exsist == true){
+      $form = $this->createForm(TVAFormType::class , $TVAentity[0]);}
+      else{
+   $form = $this->createForm(TVAFormType::class , $TVAentity);
+      }
+  
+      $form->handleRequest($request);
+     if($form->isSubmitted() && $form->isValid()){
+         $compteresultat = $form->getData();
+         if($exsist == false){
+           $entityManager->merge($TVAentity);
+         }
+         $entityManager->flush();
+     }
+    //-----------------------------calcul de TVA remboursé-------------------//
+    $TVAentity = $entityManager->getRepository(TVA::class)->findBy(['businessplan' => $businessSession]);
+   
+    for($i =0 ; $i<$years ; $i++){
+    foreach($TVAentity[$i]->getRemboursement() as $pos=>$chiffre){
+      $tvarembourse[$i][$pos+2] =  $chiffre ;
+      if($pos==10){
+        $tvarembourse[$i+1][0] = $chiffre ;
+      }
+      else if($pos==11){
+        $tvarembourse[$i+1][1] = $chiffre;
+      }
+          }}
+    // dump($tvarembourse);die();
+    
     //--------------calcul de credit tva et le tva  a decaisser------------------------------
-   // dump( $tvasurlesventes,$fraisgenerauxetachat,$tvasurimmobilisation);die();
+ 
     $virtualtvasurimmobilisation = $tvasurimmobilisation ;
+    $virtualtvasurlesventes = $tvasurlesventes ;
         for($i=0;$i<$years;$i++){
         for($x=0 ; $x<12;$x++){
-        if($tvasurlesventes[$i][$x] < $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
-            $creditTVA[$i][$x] = ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) - $tvasurlesventes[$i][$x]; 
+        if($virtualtvasurlesventes[$i][$x] + $tvarembourse[$i][$x] < $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
+            $creditTVA[$i][$x] = ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) - ($virtualtvasurlesventes[$i][$x]+ $tvarembourse[$i][$x]); 
             $virtualtvasurimmobilisation[$i][$x+1]+= $creditTVA[$i][$x];
             if($x+1 == 12){
                 $virtualtvasurimmobilisation[$i+1][$x-11]+= $creditTVA[$i][$x];
             }
          }
-        else if($tvasurlesventes[$i][$x] > $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
-            $tvaadecaisser[$i][$x] =  $tvasurlesventes[$i][$x] -  ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) ; 
+        else if($virtualtvasurlesventes[$i][$x] + $tvarembourse[$i][$x] > $fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]){
+            $tvaadecaisser[$i][$x] =  ($virtualtvasurlesventes[$i][$x]+$tvarembourse[$i][$x]) -  ($fraisgenerauxetachat[$i][$x]+ $virtualtvasurimmobilisation[$i][$x]) ; 
             
         }
         }}
-   
+      //-------------TVA a decaisser lie au raboursement --------------------//
+      
+      foreach($tvaadecaisser  as $year=>$value){
+        for($x=0;$x<12;$x++){
+          $tvaadecaisserlieraurembousement[$year][$x+1] =    $tvaadecaisser[$year][$x];
+          if($x==12){
+            $tvaadecaisserlieraurembousement[$year+1][0] = $tvaadecaisser[$year][$x-1];
+          }
+      
+      }}
+     
+      //dump($tvaadecaisserlieraurembousement);die();
        
-        //-----------------------formulaire pour le  demande de remboursement TVA-------------------// 
-        if($exsist == true){
-            $form = $this->createForm(TVAFormType::class , $TVAentity[0]);}
-            else{
-         $form = $this->createForm(TVAFormType::class , $TVAentity);
-            }
-        
-            $form->handleRequest($request);
-           if($form->isSubmitted() && $form->isValid()){
-               $compteresultat = $form->getData();
-               if($exsist == false){
-                 $entityManager->merge($TVAentity);
-               }
-               $entityManager->flush();
-           }
+       
       //dump($virtualtvasurimmobilisation);die();
      
       
         return $this->render('tva/index.html.twig', [
             'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,'tvasurimmobilisation'=>$tvasurimmobilisation ,
-            'creditTVA' => $creditTVA , 'tvaadecaisser' => $tvaadecaisser ,'form' => $form->createView() 
+            'creditTVA' => $creditTVA , 'tvaadecaisser' => $tvaadecaisser ,'form' => $form->createView() , 'tvarembourse' => $tvarembourse, 'tvaadecaisserlieraurembousement' => $tvaadecaisserlieraurembousement,
              ]);
     }
 }

@@ -16,7 +16,408 @@
 {% endblock %}   
 {% block content %}
 
+ <div class="right_col" role="main">
+                            
+<form class="formulaire" method="post" action="">
+	<div class="entete entete-min">
+		<h1 class="fleft">
+			Plan de financement		</h1>
 
+
+		<div class="call-to-action fright">
+							<div class="fleft">
+					<a href="https://www.montpellier-business-plan.com/mon-business-plan/elements-anterieurs" title="Éléments antérieurs" class="btn btn-md btn-primary">
+						Éléments antérieurs					</a>
+				</div>
+
+					<div class="fleft">
+		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?pf[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
+		</a>
+	</div>
+
+				<div class="fleft">
+					<a href="https://www.montpellier-business-plan.com/espace_client/plan_financement/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
+					</a>
+				</div>
+
+									<div class="fleft">
+						<input type="submit" class="btn btn-md btn-success dont-print" value="Valider" />
+					</div>
+									</div>
+
+		<div class="clearer"></div>
+	</div>
+
+	<div class="x_panel">
+
+					<div class="form-element absolute" id="validation_mouvante">
+				<input type="submit" class="btn btn-lg btn-success dont-print" value="Valider" />
+			</div>
+		
+
+		<table class="tableau navigate">
+			<tr>
+				<th></th>
+								<th>Année 1</th>
+								<th>Année 2</th>
+								<th>Année 3</th>
+								<th>Année 4</th>
+								<th>Année 5</th>
+								<th>Total</th>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Trésorerie initiale</td>
+				<td class="aright">0.00</td>
+									<td class="aright"></td>
+									<td class="aright"></td>
+									<td class="aright"></td>
+									<td class="aright"></td>
+									<td class="aright"></td>
+							</tr>
+
+			<tr>
+				<td class="soustitre">Total investissements</td>
+								<td class="aright">300.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">300.00</td>
+			</tr>
+			<tr>
+				<td class="soustitre">R&D (production immobilisée)</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+
+			<tr>
+				<td class="soustitre">Variation de BFR</td>
+								<td class="aright">164.00</td>
+								<td class="aright">-124.00</td>
+								<td class="aright">120.00</td>
+								<td class="aright">-160.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Remboursement Emprunts</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Autres Remboursements</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="autres_remboursements-0" name="autres_remboursements-0" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="autres_remboursements-1" name="autres_remboursements-1" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="autres_remboursements-2" name="autres_remboursements-2" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="autres_remboursements-3" name="autres_remboursements-3" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="autres_remboursements-4" name="autres_remboursements-4" value="0.00" />				</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="total">Total besoins</td>
+								<td class="aright total">464.00</td>
+								<td class="aright total">-124.00</td>
+								<td class="aright total">120.00</td>
+								<td class="aright total">-160.00</td>
+								<td class="aright total">0.00</td>
+								<td class="aright total">300.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Total capital social</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_capital_social-3" name="total_capital_social-3" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_capital_social-4" name="total_capital_social-4" value="0.00" />				</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Total comptes courants</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_comptes_courants-3" name="total_comptes_courants-3" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_comptes_courants-4" name="total_comptes_courants-4" value="0.00" />				</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Total subventions</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     0.00				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_subventions-3" name="total_subventions-3" value="0.00" />				</td>
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_subventions-4" name="total_subventions-4" value="0.00" />				</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Total avances remboursables</td>
+									<td class="aright">
+					 				     0.00					</td>
+									<td class="aright">
+					 				     0.00					</td>
+									<td class="aright">
+					 				     0.00					</td>
+									<td class="aright">
+					 				     <input type="text" class="type-text" id="total_avances_remboursables-3" name="total_avances_remboursables-3" value="0.00" />					</td>
+									<td class="aright">
+					 				     <input type="text" class="type-text" id="total_avances_remboursables-4" name="total_avances_remboursables-4" value="0.00" />					</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Emprunts</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Marge brute d'autofinancement</td>
+								<td class="aright">180.00</td>
+								<td class="aright">20.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">0.00</td>
+								<td class="aright">200.00</td>
+			</tr>
+
+			<tr>
+				<td class="total">Total ressources</td>
+								<td class="aright total">180.00</td>
+								<td class="aright total">20.00</td>
+								<td class="aright total">0.00</td>
+								<td class="aright total">0.00</td>
+								<td class="aright total">0.00</td>
+								<td class="aright total">200.00</td>
+			</tr>
+
+			<tr>
+				<td class="total">Ressources - Besoins</td>
+								<td class="aright total">-284.00</td>
+								<td class="aright total">144.00</td>
+								<td class="aright total">-120.00</td>
+								<td class="aright total">160.00</td>
+								<td class="aright total">0.00</td>
+								<td class="aright total">-100.00</td>
+			</tr>
+
+			<tr>
+				<td class="total">Cumul &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Il est normal que le cumul entre le plan de financement et le BFR ne soit pas le même
+"></i></td>
+								<td class="aright total">-284.00</td>
+								<td class="aright total">-140.00</td>
+								<td class="aright total">-260.00</td>
+								<td class="aright total">-100.00</td>
+								<td class="aright total">-100.00</td>
+								<td class="aright total">-884.00</td>
+			</tr>
+
+			<tr>
+				<td class="soustitre">Cumul hors autofinancement</td>
+								<td class="aright">-464.00</td>
+								<td class="aright">-160.00</td>
+								<td class="aright">-260.00</td>
+								<td class="aright">-100.00</td>
+								<td class="aright">-100.00</td>
+								<td class="aright">-1 084.00</td>
+			</tr>
+
+
+		</table>
+
+					<div class="margeur-30">
+				<div id="container-pf" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+				
+				<script type="text/javascript">
+
+				$(function () {
+				        $('#container-pf').highcharts({
+
+				            chart: {
+				                type: 'column',
+				                animation: false
+				            },
+
+				            title: {
+				                text: 'Financement'
+				            },
+
+				            xAxis: {
+				                categories: ["Année 1","Année 2","Année 3","Année 4","Année 5"]
+				            },
+
+				            yAxis: {
+				                allowDecimals: false,
+				                min: 0,
+				                title: {
+				                    text: 'Montant'
+				                }
+				            },
+
+				            tooltip: {
+				                formatter: function() {
+				                    return '<b>'+ this.x +'</b><br/>'+
+				                        this.series.name +': '+ Math.round(this.y) +'<br/>'+
+				                        'Total: '+ Math.round(this.point.stackTotal);
+				                }
+				            },
+				            plotOptions: {
+				                column: {
+				                    stacking: 'normal',
+				                    pointWidth: '55',
+				                    dataLabels: {
+				                        enabled: true,
+				                        formatter: function() {
+				                            if (this.y === 0) {
+				                                return null;
+				                            } else {
+				                                return this.y;
+				                            }
+				                        },
+				                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+				                    }
+				                }
+				            },
+
+				            series: [{
+				                name: "Montant du solde",
+				                data: [-284,144,-120,160,0],
+				                stack: 'col1'
+				            }, {
+				                name: "Total investissements",
+				                data: [300,0,0,0,0],
+				                stack: 'col1'
+				            },{
+				                name: "Variation de BFR",
+				                data: [164,-124,120,-160,0],
+				                stack: 'col1'
+				            },{
+				                name: "Remboursement Emprunts",
+				                data: [],
+				                stack: 'col1'
+				            }, {
+				                name: "Emprunts",
+				                data: [0,0,0,0,0],
+				                stack: 'col2'
+				            }, {
+				                name: "Apports",
+				                data: [0,0,0,0,0],
+				                stack: 'col2'
+				            }, {
+				                name: "Marge brute d'autofinancement",
+				                data: [180,20,0,0,0],
+				                stack: 'col2'
+				            }]
+				        });
+				    });
+				</script>
+			</div>
+			</div>
+</form>
+                            <input type="hidden" id="id_tableau" name="id_tableau" value="24" />
+
+<div class="bloc-commentaires margeur-50" id="notes">
+	<h2 class="fleft">Notes</h2>
+
+		<div class="fright">
+		<a href="#" id="hide-notes" class="no_alert_a_sauvegarder" >
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+	<div class="clearer"></div>
+
+	<form action="" method="post" class="formulaire margeur-20">
+		<textarea id="note" name="note" ></textarea>
+
+				<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Sauvegarder la note" />
+		</div>
+			</form>
+	</div>
+
+<div class="bloc-commentaires margeur-50" id="commentaires">
+	<div class="clearer">&nbsp;</div><div class="margeur-10"></div>
+	<h2 class="fleft">Discussion</h2>
+		<div class="fright">
+		<a href="#" id="hide-commentaires" class="no_alert_a_sauvegarder">
+			<i class="fa fa-times-circle-o fs-20"></i>
+		</a>
+	</div>
+		<div class="clearer"></div>
+
+	<div id="commentaires-container">
+			</div>
+
+		<form action="" method="post" class="formulaire margeur-20">
+		<div class="champ">
+			<input type="text" name="redacteur" id="redacteur" placeholder="Votre nom" value="" />
+		</div>
+
+		<div class="champ margeur-5">
+			<textarea id="commentaire" name="commentaire" placeholder="Votre commentaire"></textarea>
+		</div>
+
+		<div class="form-element">
+			<input type="button" class="btn btn-lg btn-success submit-note" value="Envoyer le commentaire" />
+		</div>
+	</form>
+	
+	<div class="margeur-10"></div>
+</div>
+
+	<div class="liens-sociaux">
+		<div id="show-commentaires" class="fleft btn btn-md btn-primary tool-tip" style="margin:0px" title="Discussion">
+			<i class="fa fa-comments fs-18"></i> (<span id="nb-commentaires">0</span>)
+		</div>
+
+		<div id="show-notes" class="btn btn-md btn-primary fleft tool-tip" style="margin:0px 0px 0px 10px;" title="Notes">
+			<i class="fa fa-sticky-note"></i>
+					</div>
+	</div>
+                    </div>
 
 {% endblock %}
 {% block footer %}
