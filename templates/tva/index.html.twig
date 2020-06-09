@@ -26,7 +26,7 @@
 					<div class="fleft margeur-l15">
 					<div class="pagination-periode">
 			{% for i in 0..business.rangeofdetail -1  %}
-					<a href="{{path('tva',{'id': i})}}" class="btn btn-primary btn-md" title="Année 1">
+					<a href="{{path('tva',{'id': i})}}" class="btn btn-primary btn-md" title="Année {{i+1}}">
 				Année {{i +  1}}			</a>
 			{% endfor %}
 		

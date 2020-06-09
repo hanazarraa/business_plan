@@ -18,7 +18,7 @@
 
  <div class="right_col" role="main">
                             
-<form class="formulaire" method="post" action="">
+{{form_start(form)}}
 	<div class="entete entete-min">
 		<h1 class="fleft">
 			IS
@@ -27,16 +27,12 @@
 					<div class="fleft margeur-l15">
 					<div class="pagination-periode">
 		
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-0" class="btn btn-primary btn-md btn-success" title="Année 1">
-				Année 1			</a>
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-1" class="btn btn-primary btn-md " title="Année 2">
-				Année 2			</a>
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-2" class="btn btn-primary btn-md " title="Année 3">
-				Année 3			</a>
+							{% for i in 0..business.rangeofdetail -1  %}
+					<a href="{{path('IS',{'id': i})}}" class="btn btn-primary btn-md" title="Année {{i+1}}">
+				Année {{i +  1}}			</a>
+		   	{% endfor %}
 		
-				<!--<a href="https://www.montpellier-business-plan.com/mon-business-plan/is-annee-1" class="btn btn-md">
-			&raquo;
-		</a>-->
+
 		
 
 	</div>
@@ -44,18 +40,18 @@
 		
 		<div class="call-to-action fright">
 							<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/elements-anterieurs" title="Éléments antérieurs" class="btn btn-md btn-primary">
+					<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
 						Éléments antérieurs					</a>
 				</div>
 
 					<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?is[]=0" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
 
 									<div class="fleft">
-						<input type="submit" class="btn btn-md btn-success dont-print" value="Valider" />
+						{{form_widget (form.submit, {'attr': {'class': 'btn btn-md btn-success dont-print','value':'Valider'}}) }}
 					</div>
 									</div>
 
@@ -89,31 +85,10 @@
 
 			<tr>
 				<td class="total">IS dû en début de mois</td>
-
+        {% for i in 0..11 %}
 									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
-									<td class="total aright">
-						0.00					</td>
+						{{ISdudebut[id][i]}}					</td>
+						{% endfor %}
 							</tr>
 
 			<tr>
@@ -122,60 +97,21 @@
 
 			<tr>
 				<td>Versement d'IS</td>
-
+        {% for i in form.Versement %}
 									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-0" name="is-0" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-1" name="is-1" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-2" name="is-2" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-3" name="is-3" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-4" name="is-4" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-5" name="is-5" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-6" name="is-6" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-7" name="is-7" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-8" name="is-8" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-9" name="is-9" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-10" name="is-10" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="is-11" name="is-11" value="0.00" />					</td>
+										  {{ form_widget (i, {'attr': {'type':'text','class':'type-text ' }}) }}	
+                      </td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td>Remboursement CIR</td>
 
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-0" name="cir-0" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-1" name="cir-1" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-2" name="cir-2" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-3" name="cir-3" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-4" name="cir-4" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-5" name="cir-5" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-6" name="cir-6" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-7" name="cir-7" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-8" name="cir-8" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-9" name="cir-9" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-10" name="cir-10" value="0.00" />					</td>
-									<td class="aright duplicate">
-												<input type="text" class="type-text" id="cir-11" name="cir-11" value="0.00" />					</td>
+        {% for x in form.remboursement %}
+				<td class="aright duplicate">
+				{{ form_widget (x, {'attr': {'type':'text','class':'type-text ' }}) }}
+        </td>
+				{% endfor %}
 							</tr>
 
 			<tr>
@@ -295,165 +231,10 @@
 						0.00					</td>
 							</tr>
 
-			<!--
-			<tr>
-				<td>IS dû</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
-
-			 -->
-
-			<!--
-			<tr>
-				<td>Crédit imôt (Recherche, etc.) </td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
-			 -->
-
-			<!--
-			<tr>
-				<td>Cash Flow</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
-
-			 -->
-
-			<!--
-			<tr>
-				<td>Solde IS dû</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
-			 -->
-
-			<!--
-			<tr>
-				<td>Solde CIR</td>
-
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-									<td class="aright">
-						0.00					</td>
-							</tr>
-			 -->
+			
 		</table>
 	</div>
-</form>
+{{form_end(form)}}
                             <input type="hidden" id="id_tableau" name="id_tableau" value="22" />
 
 <div class="bloc-commentaires margeur-50" id="notes">
