@@ -56,20 +56,38 @@ class ISController extends AbstractController
                }
                $Impotsursociete = $entityManager->getRepository(Impotsursociete::class)->findBy(['businessplan' => $businessSession]);
                //---------------------calcul du de debut ---------------------------------------------//
+               $valeur = 0 ;
+               $valeur2 = 0 ;
                for($i=0;$i<$years;$i++){
                foreach($Impotsursociete[$i]->getVersement() as $key=>$chiffres){
-               
-                $ISdudebut[$i][$key+1] -= $chiffres;
+                $valeur  -=$chiffres;
+                $ISdudebut[$i][$key+1] += $valeur;
+                $ISdufin[$i][$key] += $valeur ;
                if($key+1 == 12 ){
-                $ISdudebut[$i+1][0] -= $chiffres;
-               }
-    }}
+                $ISdudebut[$i+1][0] += $valeur;
+               }}
+                           // dump($ISdudebut);die();
+            }
+          
+            for($x=0 ; $x<$years;$x++){
+                foreach($Impotsursociete[$x]->getRemboursement() as $key=>$chiffres){
+               
+                    $valeur2 +=$chiffres;
+                    $ISdudebut[$x][$key+1] += $valeur2;
+                    $ISdufin[$x][$key] += $valeur2 ;
+                   }
+                   if($key+1 == 12 ){
+                    $ISdudebut[$x+1][0] += $valeur2;
+                   }
+            }
+           
                //--------------------fin---------------------------------------------------------------//
             
                
        
         return $this->render('is/index.html.twig', [
             'business' => $businessSession,'form' => $form->createView(),'ISdudebut' => $ISdudebut,'id'=> $id
+            ,'ISdufin'=> $ISdufin,
         ]);
     }
 }
