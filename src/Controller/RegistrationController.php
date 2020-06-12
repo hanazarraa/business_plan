@@ -13,10 +13,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Services\MailerService;
-
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use App\Security\LoginFormAuthenticator;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 class RegistrationController extends AbstractController
 {
-    
+    private $csrfTokenManager;
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager)
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+        
+    }
     /**
      * @Route("/{_locale}/register", name="app_register")
      */
@@ -63,6 +74,42 @@ class RegistrationController extends AbstractController
         ]);
     
 
+}
+/**
+ *  @Route("/{_locale}/login/{token}/", name="login_token")
+ */
+public function loginwithtoken($token,GuardAuthenticatorHandler $guardHandler,Request $request,LoginFormAuthenticator $authenticator){
+    $em = $this->getDoctrine()->getManager();
+    $user = $em->getRepository(User::class)->findOneBy(['ConfirmationToken' => $token]);
+    $session = new Session(new NativeSessionStorage(), new AttributeBag());
+    if($user != [] ){
+    $session->set('token', $user);
+    return $guardHandler->authenticateUserAndHandleSuccess(
+        $user,          
+        $request,
+        $authenticator, 
+        'main'          
+    );}
+    else{
+     $user = new User();
+     $user->setEmail('ANONYME-'."".strtoupper(bin2hex(openssl_random_pseudo_bytes(32))));
+     $user->setRoles(["ROLE_USER"]);
+     $user->setConfirmationToken($token);
+     $user->setEnabled(true);
+     $user->setPassword(".");
+     $em->persist($user);
+     $em->flush();
+     $session->set('token', $user);
+     return $guardHandler->authenticateUserAndHandleSuccess(
+        $user,          
+        $request,
+        $authenticator, 
+        'main'          
+    );
+        
+    }
+
+ 
 }
  /**
      * @Route("/account/confirm/{token}/{username}", name="confirm_account")
