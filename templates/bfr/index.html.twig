@@ -27,18 +27,18 @@
 
 		<div class="call-to-action fright">
 							<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/elements-anterieurs" title="Éléments antérieurs" class="btn btn-md btn-primary">
+					<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
 						Éléments antérieurs					</a>
 				</div>
 
 					<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?bfr[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
 
 				<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/espace_client/bfr/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+					<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
 						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
 					</a>
 				</div>
@@ -61,33 +61,42 @@
 		<table class="tableau">
 			<tr>
 				<th></th>
-									<th>
-						Année 0											</th>
-									<th>
-						Année 1												<br />
-						<span class="saisie-detaillee-link">
-							<a href="https://www.montpellier-business-plan.com/mon-business-plan/bfr-annee-0" title="Saisie détaillée">
-								Saisie détaillée							</a>
-						</span>
-										</th>
-									<th>
-						Année 2												<br />
-						<span class="saisie-detaillee-link">
-							<a href="https://www.montpellier-business-plan.com/mon-business-plan/bfr-annee-1" title="Saisie détaillée">
-								Saisie détaillée							</a>
-						</span>
-										</th>
-									<th>
-						Année 3												<br />
-						<span class="saisie-detaillee-link">
-							<a href="https://www.montpellier-business-plan.com/mon-business-plan/bfr-annee-2" title="Saisie détaillée">
-								Saisie détaillée							</a>
-						</span>
-										</th>
-									<th>
-						Année 4											</th>
-									<th>
-						Année 5											</th>
+				<th>Année 0</th>
+				{% if business.rangeofdetail >= 1 and business.rangeofdetail < business.numberofyears %}
+						{% for i in 1..business.rangeofdetail  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="#" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
+						{% if business.rangeofdetail < business.numberofyears  %}
+						{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+							<th>
+								Année
+								{{i }}
+								
+							
+
+							</th>
+						{% endfor %}
+                        {% endif %}
+						{% if business.rangeofdetail == business.numberofyears  %}
+                        {% for i in 1..business.numberofyears  %}
+						<th> Année {{i}}
+						<br/>
+								<span class="saisie-detaillee-link">
+									<a href="#" title="Saisie détaillée">
+										Saisie détaillée
+									</a>
+									<br/>
+						 </th>
+						{% endfor %}
+						{% endif %}
 							</tr>
 
 			<tr>
@@ -95,53 +104,47 @@
 								<td class="aright">
 																
 				</td>
+				{% for i in 1..business.rangeofdetail  %}
 								<td class="aright">
 											0.00					
 				</td>
-								<td class="aright">
-											0.00					
-				</td>
-								<td class="aright">
-											0.00					
-				</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
 								<td class="aright">
 					<input type="text" class="type-text" id="total_stocks-3" name="total_stocks-3" value="" />					
 				</td>
-								<td class="aright">
-					<input type="text" class="type-text" id="total_stocks-4" name="total_stocks-4" value="" />					
-				</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Comptes clients</td>
 								<td class="aright">
 											0.00									</td>
+							{% for i in 1..business.rangeofdetail  %}
 								<td class="aright">
-											120.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											120.00									</td>
-								<td class="aright">
-									</td>
+											0.00					
+			                	</td>
+			             	{% endfor %}
+							 {% for i in (business.rangeofdetail +1)..business.numberofyears  %}
 								<td class="aright">
 									</td>
+							   {% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Créances TVA</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											44.00									</td>
-								<td class="aright">
-											40.00									</td>
-								<td class="aright">
-											40.00									</td>
+				<td class="aright">
+				0.00
+				</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">
+				0
+				</td>
+				{% endfor %}
+				 {% for i in (business.rangeofdetail +1)..business.numberofyears  %}		
 								<td class="aright">
 									</td>
-								<td class="aright">
-									</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
@@ -149,177 +152,163 @@
 								<td class="aright">
 											0.00
 									</td>
-								<td class="aright">
-											0.00
-									</td>
-								<td class="aright">
-											0.00
-									</td>
-								<td class="aright">
-											0.00
-									</td>
-								<td class="aright">
-					<input type="text" class="type-text" id="creances_fiscales-3" name="creances_fiscales-3" value="" />									</td>
-								<td class="aright">
-					<input type="text" class="type-text" id="creances_fiscales-4" name="creances_fiscales-4" value="" />									</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">
+				0.00
+				</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+				<td class="aright">
+				<input type="text" class="type-text" id="creances_fiscales-3" name="creances_fiscales-3" value="" />									</td>
+				{% endfor %}
+				
 							</tr>
 
 			<tr>
 				<td class="total">Total Créances</td>
 								<td class="aright total">
 											0.00									</td>
-								<td class="aright total">
-											164.00									</td>
-								<td class="aright total">
-											40.00									</td>
-								<td class="aright total">
-											160.00									</td>
-								<td class="aright total">
-					<input type="text" class="type-text" id="total_creances-3" name="total_creances-3" value="" />									</td>
-								<td class="aright total">
-					<input type="text" class="type-text" id="total_creances-4" name="total_creances-4" value="" />									</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright total">
+				0.00
+				</td>
+                 {% endfor %}
+				 {% for i in (business.rangeofdetail +1)..business.numberofyears  %}      
+				<td class="aright total">
+					<input type="text" class="type-text" id="total_creances-3" name="total_creances-3" value="" />
+					</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Comptes fournisseurs</td>
-								<td class="aright">
-					
+				<td class="aright">	
 						0.00					
 				</td>
-								<td class="aright">
-					
-						0.00					
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright total">
+				0.00
 				</td>
-								<td class="aright">
-					
-						0.00					
-				</td>
-								<td class="aright">
-					
-						0.00					
-				</td>
-								<td class="aright">
-					
-				</td>
-								<td class="aright">
-					
-				</td>
+                 {% endfor %}
+				  {% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
+								<td class="aright"></td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">TVA à payer</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-									</td>
-								<td class="aright">
-									</td>
+				<td class="aright">
+				0.00
+				</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright total">
+				0.00
+				</td>
+                 {% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 				
+				<td class="aright">
+				</td>
+				{% endfor %}				
 							</tr>
 
 			<tr>
 				<td class="soustitre">Dettes fiscales</td>
 								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-									</td>
-								<td class="aright">
-									</td>
+											0.00</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">
+				0.00
+				</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
+				<td class="aright">
+				</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Dettes sociales</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-											0.00									</td>
-								<td class="aright">
-									</td>
-								<td class="aright">
-									</td>
+				<td class="aright">
+				0.00
+				</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">
+				0.00
+				</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
+				<td class="aright">
+				</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="total">Total Dettes</td>
 								<td class="aright total">
-											0.00									</td>
-								<td class="aright total">
-											0.00									</td>
-								<td class="aright total">
-											0.00									</td>
-								<td class="aright total">
-											0.00									</td>
+											0.00</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">
+				0.00
+				</td>
+				{% endfor %}
+			    {% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
 								<td class="aright total">
 					<input type="text" class="type-text" id="total_dettes-3" name="total_dettes-3" value="" />									</td>
-								<td class="aright total">
-					<input type="text" class="type-text" id="total_dettes-4" name="total_dettes-4" value="" />									</td>
+				{% endfor %}			
+							
 							</tr>
 
 			<tr>
 				<td class="total">BFR</td>
 								<td class="aright">0.00</td>
-								<td class="aright">164.00</td>
-								<td class="aright">40.00</td>
-								<td class="aright">160.00</td>
+			       {% for i in 1..business.rangeofdetail  %}
 								<td class="aright">0.00</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
 								<td class="aright">0.00</td>
+                {% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Variation de BFR</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">164.00</td>
-								<td class="aright total">-124.00</td>
-								<td class="aright total">120.00</td>
-								<td class="aright total">-160.00</td>
-								<td class="aright total">0.00</td>
+				<td class="aright total">0.00</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright">0.00</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 			
+				<td class="aright total">0.00</td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">CA</td>
 								<td class="aright">
 								</td>
+					{% for i in 1..business.rangeofdetail  %}
 								<td class="aright">
-									1 400.00								</td>
-								<td class="aright">
-									100.00								</td>
-								<td class="aright">
-									0.00								</td>
-								<td class="aright">
-									0.00								</td>
-								<td class="aright">
-									0.00								</td>
+									1 400.00</td>
+					{% endfor %}
+					{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
+					<td class="aright">
+					0.00
+					</td>
+					{% endfor %}			
 							</tr>
 
 			<tr>
 				<td class="soustitre">BFR en nb jours de CA</td>
 									<td class="aright total">
 											</td>
-									<td class="aright total">
-													42.76											</td>
-									<td class="aright total">
-													146.00											</td>
-									<td class="aright total">
-													0.00											</td>
-									<td class="aright total">
-													0.00											</td>
-									<td class="aright total">
-													0.00											</td>
+				{% for i in 1..business.rangeofdetail  %}
+				<td class="aright total">
+				42.76
+				</td>
+				{% endfor %}
+				{% for i in (business.rangeofdetail +1)..business.numberofyears  %}			
+				<td class="aright total">
+				0.00
+				</td>
+				{% endfor %}	
 							</tr>
 
 		</table>

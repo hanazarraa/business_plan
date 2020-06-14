@@ -480,7 +480,13 @@ else{
         $startlist = [0,1,2,3,4];
         $TVAfinal=[];
         $products=$productRepository->findBybusinessplan($businessSession);
-        
+        foreach($products as $product){
+        for($i = 0 ; $i < 25 ; $i++){
+          $resultwithname[$product->getName()][$i] = "0.00";
+        }
+        }
+
+
         foreach($products as $product){
             foreach ($listofCA as $key => $value) {
                 if($key == $product->getName()){
@@ -505,26 +511,27 @@ else{
                           if(($o-$c) ==0){
                             ${'result0'}[$o] = floatval($result0[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             ${'TVAfinal0'}[0][$o] = ${'TVAfinal0'}[0][$o] +  (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ; 
-                        }
+                            $resultwithname[$product->getName()][$o] += ${'result0'}[$o] ; 
+                          }
                           else if(($o-$c) ==1){
                             ${'result1'}[$o] = floatval($result1[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             ${'TVAfinal1'}[0][$o] =  ${'TVAfinal1'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-                           
+                            $resultwithname[$product->getName()][$o] += ${'result1'}[$o] ; 
                           }
                           else if(($o-$c) ==2){
                             ${'result2'}[$o] = floatval($result2[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             ${'TVAfinal2'}[0][$o] =  ${'TVAfinal2'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                            $resultwithname[$product->getName()][$o] += ${'result2'}[$o] ; 
                           }
                           else if(($o-$c) ==3){
                             ${'result3'}[$o] = floatval($result3[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             ${'TVAfinal3'}[0][$o] =  ${'TVAfinal3'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                            $resultwithname[$product->getName()][$o] += ${'result3'}[$o] ;
                           }
                           else if(($o-$c) ==4){
                             ${'result4'}[$o] = floatval($result4[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             ${'TVAfinal4'}[0][$o] =  ${'TVAfinal4'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                            $resultwithname[$product->getName()][$o] += ${'result4'}[$o] ;
                           }
                           $total[$o] = floatval($total[$o]) +(  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                             $dontTVA[$o] = (((($D*$TVA)/100)*$TVA)/100);
@@ -566,26 +573,27 @@ else{
                        if(($o-$c) ==0){
                          ${'result0'}[$o] = floatval($result0[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                          ${'TVAfinal0'}[0][$o] = ${'TVAfinal0'}[0][$o] +  (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ; 
-                     }
+                         $resultwithname[$product->getName()][$o] += ${'result0'}[$o] ;
+                        }
                        else if(($o-$c) ==1){
                          ${'result1'}[$o] = floatval($result1[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                          ${'TVAfinal1'}[0][$o] =  ${'TVAfinal1'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-                        
+                         $resultwithname[$product->getName()][$o] += ${'result1'}[$o] ;
                        }
                        else if(($o-$c) ==2){
                          ${'result2'}[$o] = floatval($result2[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                          ${'TVAfinal2'}[0][$o] =  ${'TVAfinal2'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                         $resultwithname[$product->getName()][$o] += ${'result2'}[$o] ;
                        }
                        else if(($o-$c) ==3){
                          ${'result3'}[$o] = floatval($result3[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                          ${'TVAfinal3'}[0][$o] =  ${'TVAfinal3'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                         $resultwithname[$product->getName()][$o] += ${'result3'}[$o] ;
                        }
                        else if(($o-$c) ==4){
                          ${'result4'}[$o] = floatval($result4[$o]) + (  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                          ${'TVAfinal4'}[0][$o] =  ${'TVAfinal4'}[0][$o] + (  (((($D*$TVA)/100))) * (((($loi0[$o-$c])/100)))  ) ;
-
+                         $resultwithname[$product->getName()][$o] += ${'result4'}[$o] ;
                        }
                        $total[$o] = floatval($total[$o]) +(  (((($D*$TVA)/100)+$D)) * (((($loi0[$o-$c])/100)))  ) ;
                        $dontTVA[$o] = (((($D*$TVA)/100)*$TVA)/100);
@@ -737,12 +745,26 @@ else{
         ${'TVAfinal'}[$t] = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'] ;// cette variavle va stocker la somme de TVAfinal precedent pour afficher dans la ligne DontTVA
       }
     }
-  
+    $products=$productRepository->findBybusinessplan($businessSession);
+    // ce variabe est destiné pour la partie BFR
+    foreach($products as $product){
+    for($t=0 ; $t<$years+1 ; $t++ ){
+      for($s =0 ; $s < 5; $s++){
+        ${'resultwithname'.$s.'-'.$t}[$product->getName()]= ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'];
+        ${'finalwithname'.$s}[$product->getName()][$t] =['0','0','0','0','0','0','0','0','0','0','0','0'];
+      }
+    }}
         $TVA = 0;
         $dontTVA=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'];   
         
-        $products=$productRepository->findBybusinessplan($businessSession);
+        
+       foreach($products as $product){
+       for($i=0 ; $i < $years ; $i++){
+       for($x=0 ; $x < 30 ; $x++){
+        $resultwithname[$product->getName()][$i][$x]  = "0.00" ; }}
+       }
        
+
         foreach($products as $product){
           for($i=0 ; $i<$years ; $i++){
           foreach (${'listofCA'.$i} as $key => $value) {
@@ -770,26 +792,36 @@ else{
                           ${'result0-'.$i}[$o] = floatval(${'result0-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           ${'TVAfinal0'}[$i][$o] = ${'TVAfinal0'}[$i][$o] +  (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ; 
                           
+                          ${'resultwithname0-'.$i}[$product->getName()][$o] = floatval(${'resultwithname0-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname0-'.$i}[$product->getName()][$o];
                         }
                         else if(($o-$c) ==1){
                           ${'result1-'.$i}[$o] = floatval(${'result1-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           ${'TVAfinal1'}[$i][$o] =  ${'TVAfinal1'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           
+                          ${'resultwithname1-'.$i}[$product->getName()][$o] = floatval(${'resultwithname1-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname1-'.$i}[$product->getName()][$o];
                         }
                         else if(($o-$c) ==2){
                           ${'result2-'.$i}[$o] = floatval(${'result2-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           ${'TVAfinal2'}[$i][$o] =  ${'TVAfinal2'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-                        
+                          
+                          ${'resultwithname2-'.$i}[$product->getName()][$o] = floatval(${'resultwithname2-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname2-'.$i}[$product->getName()][$o];
                         }
                         else if(($o-$c) ==3){
                           ${'result3-'.$i}[$o] = floatval(${'result3-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           ${'TVAfinal3'}[$i][$o] =  ${'TVAfinal3'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           
+                          ${'resultwithname3-'.$i}[$product->getName()][$o] = floatval(${'resultwithname3-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname3-'.$i}[$product->getName()][$o];
                         }
                         else if(($o-$c) ==4){
                           ${'result4-'.$i}[$o] = floatval(${'result4-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           ${'TVAfinal4'}[$i][$o] =  ${'TVAfinal4'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-                         
+                          
+                          ${'resultwithname4-'.$i}[$product->getName()][$o] = floatval(${'resultwithname4-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname4-'.$i}[$product->getName()][$o];
                         }
                         ${'total'.$i}[$o] = floatval(${'total'.$i}[$o]) +(  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                           $dontTVA[$o] = (((($D*$TVA)/100)*$TVA)/100);
@@ -815,33 +847,47 @@ else{
                     // la boucle ci dessous permet de calculer la valeur inclus TVA suivant la loi d'encaissement 
                     foreach($value as $c=>$D){
                       //${'result'.$s}[$o]=($value[$o]*$TVA/100)+$value[$o];
-                     
+                      
                      for($o = $c ; $o<5+$c ; $o++){
                        //  ${'result'}[$o] =${'result'}[$o]+ 120 ;
                         //
                        if(($o-$c) ==0){
+                       
                          ${'result0-'.$i}[$o] = floatval(${'result0-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'TVAfinal0'}[$i][$o] = ${'TVAfinal0'}[$i][$o] +  (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ; 
-                     }
+                        
+                         ${'resultwithname0-'.$i}[$product->getName()][$o] = floatval(${'resultwithname0-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname0-'.$i}[$product->getName()][$o];
+                        }
                        else if(($o-$c) ==1){
+                       
                          ${'result1-'.$i}[$o] = floatval(${'result1-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'TVAfinal1'}[$i][$o] =  ${'TVAfinal1'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-                        
+                         
+                         ${'resultwithname1-'.$i}[$product->getName()][$o] = floatval(${'resultwithname1-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname1-'.$i}[$product->getName()][$o];
+                         
                        }
                        else if(($o-$c) ==2){
                          ${'result2-'.$i}[$o] = floatval(${'result2-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'TVAfinal2'}[$i][$o] =  ${'TVAfinal2'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-
+                         
+                         ${'resultwithname2-'.$i}[$product->getName()][$o] = floatval(${'resultwithname2-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname2-'.$i}[$product->getName()][$o];
                        }
                        else if(($o-$c) ==3){
                          ${'result3-'.$i}[$o] = floatval(${'result3-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'TVAfinal3'}[$i][$o] =  ${'TVAfinal3'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-
+                        
+                         ${'resultwithname3-'.$i}[$product->getName()][$o] = floatval(${'resultwithname3-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname3-'.$i}[$product->getName()][$o];
                        }
                        else if(($o-$c) ==4){
                          ${'result4-'.$i}[$o] = floatval(${'result4-'.$i}[$o]) + (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'TVAfinal4'}[$i][$o] =  ${'TVAfinal4'}[$i][$o] + (  (((($D*$TVA)/100))) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
-
+                         
+                         ${'resultwithname4-'.$i}[$product->getName()][$o] = floatval(${'resultwithname4-'.$i}[$product->getName()][$o]) +  (  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  )  ;
+                          $resultwithname[$product->getName()][$i][$o] += ${'resultwithname4-'.$i}[$product->getName()][$o];
                        }
                        ${'total'.$i}[$o] = floatval(${'total'.$i}[$o]) +(  (((($D*$TVA)/100)+$D)) * ((((${'loi'.$i}[$o-$c])/100)))  ) ;
                          ${'dontTVA'.$i}[$o] = (((($D*$TVA)/100)*$TVA)/100);
@@ -849,7 +895,7 @@ else{
                      }
                  
                     }
-                  
+                    
 
 
 
@@ -861,6 +907,7 @@ else{
         }
       
       }
+   
       //cette boucle consiste les produits type recurrente
       foreach($products as $product){
      foreach($recurentlist as $name =>$valeurrecurent){
@@ -877,6 +924,7 @@ else{
 //cette boucle permet de mettre les valeur qui depasse le 12 eme mois dans la nouvelle années
       $p=0;
       $M = 11*$years;
+     
       for($p=0 ; $p<$years  ; $p++){
       for($i=0 ; $i<20  ; $i++){
        if($i>=0 && $i<12){
@@ -885,6 +933,7 @@ else{
       $final2[$p][$i] = $final2[$p][$i] + ${'result2-'.$p}[$i];
       $final3[$p][$i] = $final3[$p][$i] + ${'result3-'.$p}[$i];
       $final4[$p][$i] = $final4[$p][$i] + ${'result4-'.$p}[$i];
+    //  $resultwithname[$product->getName()][$p][$i] = $final0[$p][$i] + $final1[$p][$i]+   $final2[$p][$i] +$final3[$p][$i] + $final4[$p][$i];
       $TVAfinal[$p][$i] = $TVAfinal0[$p][$i]+$TVAfinal1[$p][$i] + $TVAfinal2[$p][$i] + $TVAfinal3[$p][$i] + $TVAfinal4[$p][$i] + $TVAreccurente[$p][$i];
       $Sum[$p][$i]=$Sum[$p][$i] +${'total'.$p}[$i] + $Revenue[$p][$i];
      }
@@ -899,6 +948,7 @@ else{
        $final2[$p+1][$i-12] =$final2[$p+1][$i-12] + ${'result2-'.$p}[$i];
        $final3[$p+1][$i-12] =$final3[$p+1][$i-12] + ${'result3-'.$p}[$i];
        $final4[$p+1][$i-12] =$final4[$p+1][$i-12] + ${'result4-'.$p}[$i];
+      // $resultwithname[$product->getName()][$p+1][$i-12] = $final0[$p+1][$i-12] + $final1[$p+1][$i-12]+   $final2[$p+1][$i-12] +$final3[$p+1][$i-12] + $final4[$p+1][$i-12];
        $TVAfinal0[$p+1][$i-12]=$TVAfinal0[$p+1][$i-12] + $TVAfinal0[$p][$i];
        $TVAfinal1[$p+1][$i-12]=$TVAfinal1[$p+1][$i-12] + $TVAfinal1[$p][$i];
        $TVAfinal2[$p+1][$i-12]=$TVAfinal2[$p+1][$i-12] + $TVAfinal2[$p][$i];
@@ -911,12 +961,39 @@ else{
      }
     
     }
-
    }
+  
+   foreach($products as $product){
+   for($p=0 ; $p<$years  ; $p++){
+    for($i=0 ; $i<20  ; $i++){
+     if($i>=0 && $i<12){
+      $finalwithname0[$product->getName()][$p][$i]  = $finalwithname0[$product->getName()][$p][$i] +${'resultwithname0-'.$p}[$product->getName()][$i]   ;
+      $finalwithname1[$product->getName()][$p][$i]  = $finalwithname1[$product->getName()][$p][$i] +${'resultwithname1-'.$p}[$product->getName()][$i] ;
+      $finalwithname2[$product->getName()][$p][$i]  = $finalwithname2[$product->getName()][$p][$i] +${'resultwithname2-'.$p}[$product->getName()][$i] ;
+      $finalwithname3[$product->getName()][$p][$i]  = $finalwithname3[$product->getName()][$p][$i] +${'resultwithname3-'.$p}[$product->getName()][$i] ;
+      $finalwithname4[$product->getName()][$p][$i]  = $finalwithname4[$product->getName()][$p][$i] +${'resultwithname4-'.$p}[$product->getName()][$i] ;
+      
+      $totalfinalwithname[$product->getName()][$p][$i] =  $finalwithname0[$product->getName()][$p][$i] + $finalwithname1[$product->getName()][$p][$i] +$finalwithname2[$product->getName()][$p][$i] + $finalwithname3[$product->getName()][$p][$i]+ $finalwithname4[$product->getName()][$p][$i];
+    }
+    else{
+      
+      $finalwithname0[$product->getName()][$p+1][$i-12] =$finalwithname0[$product->getName()][$p+1][$i-12] + ${'resultwithname0-'.$p}[$product->getName()][$i] ;
+      $finalwithname1[$product->getName()][$p+1][$i-12] =$finalwithname1[$product->getName()][$p+1][$i-12] + ${'resultwithname1-'.$p}[$product->getName()][$i] ;
+      $finalwithname2[$product->getName()][$p+1][$i-12] =$finalwithname2[$product->getName()][$p+1][$i-12] + ${'resultwithname2-'.$p}[$product->getName()][$i] ;
+      $finalwithname3[$product->getName()][$p+1][$i-12] =$finalwithname3[$product->getName()][$p+1][$i-12] + ${'resultwithname3-'.$p}[$product->getName()][$i] ;
+      $finalwithname4[$product->getName()][$p+1][$i-12] =$finalwithname4[$product->getName()][$p+1][$i-12] + ${'resultwithname4-'.$p}[$product->getName()][$i] ;
+  
+      $totalfinalwithname[$product->getName()][$p+1][$i-12] = $finalwithname0[$product->getName()][$p+1][$i-12] + $finalwithname1[$product->getName()][$p+1][$i-12] + $finalwithname2[$product->getName()][$p+1][$i-12] + $finalwithname3[$product->getName()][$p+1][$i-12] + $finalwithname4[$product->getName()][$p+1][$i-12];
+    }
+  
+  }}}
+
+
+ //dump($resultwithname);die();
  //dump($final2,$final3,$final4);die();
    for($q=0 ; $q<$years  ; $q++){
    for($r=0 ; $r<12  ; $r++){
-    $SumofTVA[$q][$r] = $TVAfinal[$q][$r];
+     $SumofTVA[$q][$r] = $TVAfinal[$q][$r];
    }
   }
   //finalement on mettre toute les resultat dans un tableau final pour l'afficher

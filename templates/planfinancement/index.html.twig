@@ -26,18 +26,18 @@
 
 		<div class="call-to-action fright">
 							<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/mon-business-plan/elements-anterieurs" title="Éléments antérieurs" class="btn btn-md btn-primary">
+					<a href="#" title="Éléments antérieurs" class="btn btn-md btn-primary">
 						Éléments antérieurs					</a>
 				</div>
 
 					<div class="fleft">
-		<a href="https://www.montpellier-business-plan.com/espace_client/bp/process_imprimer_bp?pf[]=globale" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
+		<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter au format PDF">
 			<i class="fa fa-file-pdf-o"></i> &nbsp;Exporter
 		</a>
 	</div>
 
 				<div class="fleft">
-					<a href="https://www.montpellier-business-plan.com/espace_client/plan_financement/exportExcel" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
+					<a href="#" id="export-imprimer" target="_blank" class="btn btn-primary btn-md tool-tip" title="Exporter sous Excel">
 						<i class="fa fa-file-excel-o"></i> &nbsp;Exporter
 					</a>
 				</div>
@@ -60,208 +60,168 @@
 		<table class="tableau navigate">
 			<tr>
 				<th></th>
-								<th>Année 1</th>
-								<th>Année 2</th>
-								<th>Année 3</th>
-								<th>Année 4</th>
-								<th>Année 5</th>
+				{% for i in 0..business.numberofyears - 1 %}
+								<th>Année {{i+1}}</th>
+				{% endfor %}
 								<th>Total</th>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Trésorerie initiale</td>
 				<td class="aright">0.00</td>
+				{% for i in 0..business.numberofyears - 1 %}
 									<td class="aright"></td>
-									<td class="aright"></td>
-									<td class="aright"></td>
-									<td class="aright"></td>
-									<td class="aright"></td>
+				{% endfor %}
 							</tr>
 
 			<tr>
 				<td class="soustitre">Total investissements</td>
-								<td class="aright">300.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">300.00</td>
+				{% for i in 0..business.numberofyears - 1 %}
+				<td class="aright">0.00</td>
+				{% endfor %}
+				<td class="aright">0.00</td>
 			</tr>
 			<tr>
 				<td class="soustitre">R&D (production immobilisée)</td>
+				{% for i in 0..business.numberofyears - 1 %}
 								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% endfor %}
+				<td class="aright">0.00</td>
 			</tr>
 
 
 			<tr>
 				<td class="soustitre">Variation de BFR</td>
-								<td class="aright">164.00</td>
-								<td class="aright">-124.00</td>
-								<td class="aright">120.00</td>
-								<td class="aright">-160.00</td>
+				{% for i in 0..business.numberofyears - 1 %}
 								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% endfor %}
+				<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Remboursement Emprunts</td>
+				{% for i in 0..business.numberofyears - 1 %}
 								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% endfor %}
+				<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Autres Remboursements</td>
-								<td class="aright">
+					{% for i in 0..business.numberofyears - 1 %}
+						<td class="aright">
 				 			     <input type="text" class="type-text" id="autres_remboursements-0" name="autres_remboursements-0" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="autres_remboursements-1" name="autres_remboursements-1" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="autres_remboursements-2" name="autres_remboursements-2" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="autres_remboursements-3" name="autres_remboursements-3" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="autres_remboursements-4" name="autres_remboursements-4" value="0.00" />				</td>
-								<td class="aright">0.00</td>
+						{% endfor %}
+				 			    <td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="total">Total besoins</td>
-								<td class="aright total">464.00</td>
-								<td class="aright total">-124.00</td>
-								<td class="aright total">120.00</td>
-								<td class="aright total">-160.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright">0.00</td>
+				{% endfor %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">300.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Total capital social</td>
+				{% for i in 0..business.rangeofdetail - 1 %}
 								<td class="aright">
 				 			     0.00				</td>
-								<td class="aright">
-				 			     0.00				</td>
-								<td class="aright">
-				 			     0.00				</td>
+				{% endfor %}
+				{% for i in business.rangeofdetail..business.numberofyears - 1 %}
 								<td class="aright">
 				 			     <input type="text" class="type-text" id="total_capital_social-3" name="total_capital_social-3" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="total_capital_social-4" name="total_capital_social-4" value="0.00" />				</td>
+				{% endfor %}				
 								<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Total comptes courants</td>
+					{% for i in 0..business.rangeofdetail - 1 %}
 								<td class="aright">
 				 			     0.00				</td>
+				{% endfor %}
+				{% for i in business.rangeofdetail..business.numberofyears - 1 %}
 								<td class="aright">
-				 			     0.00				</td>
-								<td class="aright">
-				 			     0.00				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="total_comptes_courants-3" name="total_comptes_courants-3" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="total_comptes_courants-4" name="total_comptes_courants-4" value="0.00" />				</td>
+				 			     <input type="text" class="type-text" id="total_capital_social-3" name="total_capital_social-3" value="0.00" />				</td>
+				{% endfor %}				
 								<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Total subventions</td>
+				{% for i in 0..business.rangeofdetail - 1 %}
 								<td class="aright">
 				 			     0.00				</td>
+				{% endfor %}
+				{% for i in business.rangeofdetail..business.numberofyears - 1 %}
 								<td class="aright">
-				 			     0.00				</td>
-								<td class="aright">
-				 			     0.00				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="total_subventions-3" name="total_subventions-3" value="0.00" />				</td>
-								<td class="aright">
-				 			     <input type="text" class="type-text" id="total_subventions-4" name="total_subventions-4" value="0.00" />				</td>
+				 			     <input type="text" class="type-text" id="total_capital_social-3" name="total_capital_social-3" value="0.00" />				</td>
+				{% endfor %}				
 								<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Total avances remboursables</td>
-									<td class="aright">
-					 				     0.00					</td>
-									<td class="aright">
-					 				     0.00					</td>
-									<td class="aright">
-					 				     0.00					</td>
-									<td class="aright">
-					 				     <input type="text" class="type-text" id="total_avances_remboursables-3" name="total_avances_remboursables-3" value="0.00" />					</td>
-									<td class="aright">
-					 				     <input type="text" class="type-text" id="total_avances_remboursables-4" name="total_avances_remboursables-4" value="0.00" />					</td>
+					{% for i in 0..business.rangeofdetail - 1 %}
+								<td class="aright">
+				 			     0.00				</td>
+				{% endfor %}
+				{% for i in business.rangeofdetail..business.numberofyears - 1 %}
+								<td class="aright">
+				 			     <input type="text" class="type-text" id="total_capital_social-3" name="total_capital_social-3" value="0.00" />				</td>
+				{% endfor %}				
 								<td class="aright">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Emprunts</td>
+					{% for i in 0..business.numberofyears - 1 %}
 								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
+				{% endfor %}
+								<td class="aright total">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Marge brute d'autofinancement</td>
-								<td class="aright">180.00</td>
-								<td class="aright">20.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
 								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">0.00</td>
-								<td class="aright">200.00</td>
+				{% endfor %}
+								<td class="aright total">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="total">Total ressources</td>
-								<td class="aright total">180.00</td>
-								<td class="aright total">20.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright">0.00</td>
+				{% endfor %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">0.00</td>
-								<td class="aright total">200.00</td>
 			</tr>
 
 			<tr>
 				<td class="total">Ressources - Besoins</td>
-								<td class="aright total">-284.00</td>
-								<td class="aright total">144.00</td>
-								<td class="aright total">-120.00</td>
-								<td class="aright total">160.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright">0.00</td>
+				{% endfor %}
 								<td class="aright total">0.00</td>
-								<td class="aright total">-100.00</td>
 			</tr>
 
 			<tr>
 				<td class="total">Cumul &nbsp;<i class="fs-18 fa fa-question-circle tool-tip cpointer" title="Il est normal que le cumul entre le plan de financement et le BFR ne soit pas le même
 "></i></td>
-								<td class="aright total">-284.00</td>
-								<td class="aright total">-140.00</td>
-								<td class="aright total">-260.00</td>
-								<td class="aright total">-100.00</td>
-								<td class="aright total">-100.00</td>
-								<td class="aright total">-884.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright">0.00</td>
+				{% endfor %}
+								<td class="aright total">0.00</td>
 			</tr>
 
 			<tr>
 				<td class="soustitre">Cumul hors autofinancement</td>
-								<td class="aright">-464.00</td>
-								<td class="aright">-160.00</td>
-								<td class="aright">-260.00</td>
-								<td class="aright">-100.00</td>
-								<td class="aright">-100.00</td>
-								<td class="aright">-1 084.00</td>
+					{% for i in 0..business.numberofyears - 1 %}
+								<td class="aright">0.00</td>
+				{% endfor %}
+								<td class="aright total">0.00</td>
 			</tr>
 
 
