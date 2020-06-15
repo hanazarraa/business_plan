@@ -18,7 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 class SalesController extends AbstractController
 {
   private $var;
+  private $totalfinalwithname ;
   static $listCAforexport;
+  static $FINALWITHNAME  ;
     /**
      * @Route("/", name="sales")
      */
@@ -706,7 +708,7 @@ else{
       $this->test($request,$id,$productRepository);
       $recurentlist=array_diff_key($this->finalCA,$this->intersect);
       
-      
+    
       //dump($salesdetailled);die();
      // $TVAfinal0  =['0' => ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'] ];
       $loidencaissement = [] ;
@@ -761,7 +763,9 @@ else{
        foreach($products as $product){
        for($i=0 ; $i < $years ; $i++){
        for($x=0 ; $x < 30 ; $x++){
-        $resultwithname[$product->getName()][$i][$x]  = "0.00" ; }}
+        $resultwithname[$product->getName()][$i][$x]  = "0.00" ;
+        $this->totalfinalwithname[$product->getName()][$i][$x] = "0.00";
+      }}
        }
        
 
@@ -973,7 +977,7 @@ else{
       $finalwithname3[$product->getName()][$p][$i]  = $finalwithname3[$product->getName()][$p][$i] +${'resultwithname3-'.$p}[$product->getName()][$i] ;
       $finalwithname4[$product->getName()][$p][$i]  = $finalwithname4[$product->getName()][$p][$i] +${'resultwithname4-'.$p}[$product->getName()][$i] ;
       
-      $totalfinalwithname[$product->getName()][$p][$i] =  $finalwithname0[$product->getName()][$p][$i] + $finalwithname1[$product->getName()][$p][$i] +$finalwithname2[$product->getName()][$p][$i] + $finalwithname3[$product->getName()][$p][$i]+ $finalwithname4[$product->getName()][$p][$i];
+      $this->totalfinalwithname[$product->getName()][$p][$i] =  $finalwithname0[$product->getName()][$p][$i] + $finalwithname1[$product->getName()][$p][$i] +$finalwithname2[$product->getName()][$p][$i] + $finalwithname3[$product->getName()][$p][$i]+ $finalwithname4[$product->getName()][$p][$i];
     }
     else{
       
@@ -983,12 +987,13 @@ else{
       $finalwithname3[$product->getName()][$p+1][$i-12] =$finalwithname3[$product->getName()][$p+1][$i-12] + ${'resultwithname3-'.$p}[$product->getName()][$i] ;
       $finalwithname4[$product->getName()][$p+1][$i-12] =$finalwithname4[$product->getName()][$p+1][$i-12] + ${'resultwithname4-'.$p}[$product->getName()][$i] ;
   
-      $totalfinalwithname[$product->getName()][$p+1][$i-12] = $finalwithname0[$product->getName()][$p+1][$i-12] + $finalwithname1[$product->getName()][$p+1][$i-12] + $finalwithname2[$product->getName()][$p+1][$i-12] + $finalwithname3[$product->getName()][$p+1][$i-12] + $finalwithname4[$product->getName()][$p+1][$i-12];
+      $this->totalfinalwithname[$product->getName()][$p+1][$i-12] = $finalwithname0[$product->getName()][$p+1][$i-12] + $finalwithname1[$product->getName()][$p+1][$i-12] + $finalwithname2[$product->getName()][$p+1][$i-12] + $finalwithname3[$product->getName()][$p+1][$i-12] + $finalwithname4[$product->getName()][$p+1][$i-12];
     }
   
   }}}
 
-
+  self::$FINALWITHNAME = $this->totalfinalwithname ;
+  
  //dump($resultwithname);die();
  //dump($final2,$final3,$final4);die();
    for($q=0 ; $q<$years  ; $q++){
@@ -1009,9 +1014,14 @@ else{
    for($n=0 ;$n<$years ;$n++ ){
     $this->receipt[$n] =  array_sum($Sum[$n]) ;
    }
-    
+   
    //dump(array_sum($Sum[0]));die();
       return $this->render('sales/salesreceiptyear.html.twig',['id' => $id ,'total' => $Sum,"business" => $businessSession , "Cash" => $Cash , "After30" => $After30 ,"After60" => $After60
       , "After90" => $After90 , "After120" => $After120,"TVA"=>$SumofTVA , "finalrevenue" => $finalrevenue]);
     }
+   
+
+  public function getTotalwithname(){
+    return self::$FINALWITHNAME;
+  }
 }
