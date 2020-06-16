@@ -15,6 +15,8 @@ use App\Entity\TVA;
 use App\Form\TVAFormType;
 class TVAController extends AbstractController
 {
+  static $staticcreditTVA ; 
+  static $TVAaDecaisser ;
     /**
      * @Route("/{_locale}/dashboard/my-business-plan/tva-year-{id}", name="tva")
      */
@@ -289,7 +291,8 @@ class TVAController extends AbstractController
           }
       
       }}
-     
+      self::$staticcreditTVA = $creditTVA ;
+      self::$TVAaDecaisser = $tvaadecaisser ;
       //dump($tvaadecaisserlieraurembousement);die();
        
        
@@ -300,5 +303,11 @@ class TVAController extends AbstractController
             'business' => $businessSession ,'tvasurventes' => $tvasurlesventes, 'id' => $id , 'fraisgenerauxetachat' => $fraisgenerauxetachat,'tvasurimmobilisation'=>$tvasurimmobilisation ,
             'creditTVA' => $creditTVA , 'tvaadecaisser' => $tvaadecaisser ,'form' => $form->createView() , 'tvarembourse' => $tvarembourse, 'tvaadecaisserlieraurembousement' => $tvaadecaisserlieraurembousement,
              ]);
+    }
+    public function getcreditTVA(){
+      return self::$staticcreditTVA;
+    }
+    public function getTvadecaisser(){
+      return self::$TVAaDecaisser ;
     }
 }

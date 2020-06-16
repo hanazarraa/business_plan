@@ -158,86 +158,26 @@
 
 		<tr>
 			<td class="soustitre">Créances TVA</td>
+			{% for i in tvacredit %}
 						<td class="aright">
-				16.00			</td>
-						<td class="aright">
-				16.00			</td>
-						<td class="aright">
-				16.00			</td>
-						<td class="aright">
-				12.00			</td>
-						<td class="aright">
-				12.00			</td>
-						<td class="aright">
-				12.00			</td>
-						<td class="aright">
-				12.00			</td>
-						<td class="aright">
-				12.00			</td>
-						<td class="aright">
-				72.00			</td>
-						<td class="aright">
-				72.00			</td>
-						<td class="aright">
-				72.00			</td>
-						<td class="aright">
-				68.00			</td>
+				{{i}}			</td>
+			{% endfor %}
 					</tr>
 
 		<tr>
 			<td class="soustitre">Créances Fiscales</td>
+			{% for i in 0..11 %}
 						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
+				{{creancefiscale[i]}}			</td>
+			{% endfor %}
 					</tr>
 
 		<tr>
 			<td class="total">Variations créances</td>
-						<td class="aright total">
-				136.00			</td>
-						<td class="aright total">
-				-48.00			</td>
-						<td class="aright total">
-				-72.00			</td>
-						<td class="aright total">
-				116.00			</td>
-						<td class="aright total">
-				-48.00			</td>
-						<td class="aright total">
-				-72.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				60.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				116.00			</td>
+					{% for i in 0..11 %}
+				<td class="aright total">
+				{{tvacredit[i] + creancefiscale[i] }}		</td>
+				{% endfor %}	
 					</tr>
 
 		<tr>
@@ -270,86 +210,27 @@
 
 		<tr>
 			<td class="soustitre">TVA à payer</td>
+		    {%  for i in 0..11 %}
 						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
+				{{tvaapayer[i]}}			</td>
+		    {% endfor %}
 					</tr>
 
 		<tr>
 			<td class="soustitre">Dettes fiscales</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
-						<td class="aright">
-				100.00			</td>
+			 {%  for i in 0..11 %}
+			<td class="aright">
+			{{DettesFiscales[i]}}
+			</td>
+			{% endfor %}
 					</tr>
 
 		<tr>
 			<td class="soustitre">Dettes sociales</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
-						<td class="aright">
-				0.00			</td>
+			{% for i in 0..11 %}
+			<td class="aright">
+				{{DettesSociale[i]}}			</td>
+			{% endfor %}
 					</tr>
 
 		<tr>

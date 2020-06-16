@@ -50,6 +50,15 @@ class BFRController extends AbstractController
         $FinalCompteclientwithname[$product->getName()][$i][$x] ="0.00";
         }
         }}
+        for($i=0;$i<$years;$i++){
+            for($x=0;$x<12;$x++){
+        $creanceFiscales[$i][$x] = "0.00";
+        $DettesFiscales[$i][$x] = "0.00";
+        $variationcreances[$i][$x] = "0.00";
+        $DettesSociale[$i][$x] = "0.00";    
+            }
+        }   
+
         //-----------------------------End---------------------------------------------------------------------------------//
 
         $response = $this->forward('App\Controller\SalesController::receiptyears', [
@@ -64,9 +73,39 @@ class BFRController extends AbstractController
             'productRepository' => $productRepository,
             'SalesRepository' => $SalesRepository,
         ]);  
+        $response = $this->forward('App\Controller\TVAController::index', [
+            'id' => $id,
+            'request'  => $request,
+            'ProductRepository' => $productRepository,
+            'SalesdetailledRepository' => $SalesdetailledRepository,    
+            'SalesRepository' => $SalesRepository,
+            ]); 
+        
+        $response = $this->forward('App\Controller\ISController::index', [
+            'id' => $id,
+            'request'  => $request,
+                ]);
+        $response = $this->forward('App\Controller\ISController::index', [
+                    'id' => $id,
+                    'request'  => $request,
+                        ]);
+        $response = $this->forward('App\Controller\StaffController::detail', [
+                            'Request'  => $request,
+                            'id' => $id,
+                            'ProductRepository' => $productRepository,
+                            'SalesRepository' => $SalesRepository,
+                                
+                        ]);    
         $this->totalwithname = SalesController::getTotalwithname();
         $finalCA = SalesController::getfinalca(); 
-
+        $tvacredit = TVAController::getcreditTVA();
+        $tvaadecaisser =  TVAController::getTvadecaisser();
+        $isdufin = ISController::getISdufin();
+        $DecaissementAdm = StaffController::getDecaissementchargesAdm();
+        $DecaissementPro = StaffController::getDecaissementchargesPro();
+        $DecaissementCom = StaffController::getDecaissementchargesCom();
+        $DecaissementRec = StaffController::getDecaissementchargesRec();
+      
         //--------------------------debut de calcul-----------------------------------------//
         //--------------------------Compte client-------------------------------------------//
        foreach($products as $product){
@@ -91,13 +130,49 @@ class BFRController extends AbstractController
            }
        }}}}
         //--------------------------Fin Compte client---------------------------------------//
-          
+        //--------------------------Creance TVA --------------------------------------------//
+     
+        //--------------------------Fin-----------------------------------------------------//
 
+        //----------------------------Creance Fiscale---------------------------------------//
+        for($i=0;$i<$years;$i++){
+        for($x=0;$x<12;$x++){
+            if($isdufin[$i][$x] < 0){
+            $creanceFiscales[$i][$x] = abs($isdufin[$i][$x]);// metter  en valeur absolue
+            }
+            else {
+            $DettesFiscales[$i][$x]  = $isdufin[$i][$x] ;
+            }
+        }
+        }
+       
+        //----------------------------Fin---------------------------------------------------//
+        //----------------------------Dettes Sociale ---------------------------------------//
+        for($i=0;$i<$years;$i++){
+          for($x=0;$x<11;$x++){
+            
+            $DettesSociale[$i][$x] += $DecaissementAdm[$i][$x+1];
+            $DettesSociale[$i][$x] += $DecaissementPro[$i][$x+1];
+            $DettesSociale[$i][$x] += $DecaissementCom[$i][$x+1];
+            $DettesSociale[$i][$x] += $DecaissementRec[$i][$x+1];
+            
+        if( $x == 10){
+            $DettesSociale[$i][11] += $DecaissementAdm[$i+1][0];
+            $DettesSociale[$i][11] += $DecaissementPro[$i+1][0];
+            $DettesSociale[$i][11] += $DecaissementCom[$i+1][0];
+            $DettesSociale[$i][11] += $DecaissementRec[$i+1][0];
+        }
+
+        }
+        }
+     
+        //----------------------------Fin---------------------------------------------------//
         //-------------------------End------------------------------------------------------//
+      
         
-  //dump($finalCA);die();
         return $this->render('bfr/detail.html.twig', [
-            'business' => $businessSession,
-        ]);
+            'business' => $businessSession, 'tvacredit' => $tvacredit[$id], 'creancefiscale' => $creanceFiscales[$id]
+            , 'DettesFiscales' =>  $DettesFiscales[$id] , 'tvaapayer' =>  $tvacredit[$id], 'DettesSociale' => $DettesSociale[$id]
+            ]);
     }
 }

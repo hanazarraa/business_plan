@@ -52,6 +52,12 @@ class StaffController extends AbstractController
     static $staticlistCom ;
     static $staticlistRD ;
     static $staticlistAdm ;
+
+    static $DecaissementAdm ;
+    static $DecaissementPro ;
+    static $DecaissementCom ;
+    static $DecaissementRec ;
+
     /**
      * @Route("/", name="staff")
      */
@@ -1252,6 +1258,7 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
        else{
         $form = $this->createForm(CollectionFormType::class);
        }
+       
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
      
@@ -1266,7 +1273,12 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
         self::$commissionPro = $commisionPro;
         self::$commissionCom = $commisionCom;
         self::$commissionRD = $commisionRec;
-        
+        //ces variable utile pour la partie BFR
+        self::$DecaissementAdm = $lastDecchargesAdm;
+        self::$DecaissementPro = $lastDecchargesPro;
+        self::$DecaissementCom = $lastDecchargesCom;
+        self::$DecaissementRec = $lastDecchargesRec;
+       
            //dump($couttotalpersonemAdm);die();
         return $this->render('staff/detail.html.twig',[
             'business'=> $businessSession , 'keyadmin' => $keyadmin,'keypro'=>$keypro ,'keycom'=>$keycom,'keyrec'=>$keyrec,'form'=>$form->createView()
@@ -1306,6 +1318,21 @@ $commisionAdm[$i][$position]+= ($finalCA[$nomproduit][$i][$position] * $valuepro
     public function getcommissionRD(){
       return self::$commissionRD;
     }
+
+    public function getDecaissementchargesAdm(){
+      return self::$DecaissementAdm;
+    }
+
+    public function getDecaissementchargesPro(){
+      return self::$DecaissementPro;
+    }
+    public function getDecaissementchargesCom(){
+      return self::$DecaissementCom;
+    }
+    public function getDecaissementchargesRec(){
+      return self::$DecaissementRec;
+    }
+  
     /**
      * @Route("/position", name="staffposition")
      */

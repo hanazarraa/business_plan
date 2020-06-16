@@ -9,6 +9,7 @@ use App\Form\ISFormType;
 use Symfony\Component\HttpFoundation\Request;
 class ISController extends AbstractController
 {
+    static $ISDUFIN ;
     /**
      * @Route("/{_locale}/dashboard/my-business-plan/is-year-{id}", name="IS")
      */
@@ -83,11 +84,14 @@ class ISController extends AbstractController
            
                //--------------------fin---------------------------------------------------------------//
             
-               
-       
+              
+        self::$ISDUFIN =  $ISdufin ;
         return $this->render('is/index.html.twig', [
             'business' => $businessSession,'form' => $form->createView(),'ISdudebut' => $ISdudebut,'id'=> $id
             ,'ISdufin'=> $ISdufin,
         ]);
+    }
+    public function getISdufin(){
+        return self::$ISDUFIN ;
     }
 }
