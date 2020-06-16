@@ -55,10 +55,13 @@ class BFRController extends AbstractController
         $creanceFiscales[$i][$x] = "0.00";
         $DettesFiscales[$i][$x] = "0.00";
         $variationcreances[$i][$x] = "0.00";
-        $DettesSociale[$i][$x] = "0.00";    
+        $DettesSociale[$i][$x] = "0.00";
+         
             }
         }   
-
+        for($i=0;$i<$years + 1;$i++){
+            for($x=0;$x<12;$x++){
+                $VariationDettes[$i][$x] = "0.00";     }}
         //-----------------------------End---------------------------------------------------------------------------------//
 
         $response = $this->forward('App\Controller\SalesController::receiptyears', [
@@ -152,12 +155,14 @@ class BFRController extends AbstractController
           for($x=0;$x<11;$x++){
             
             $DettesSociale[$i][$x] += $DecaissementAdm[$i][$x+1];
+            $VariationDettes[$i][$x+1] -= $DecaissementAdm[$i][$x+1];
             $DettesSociale[$i][$x] += $DecaissementPro[$i][$x+1];
             $DettesSociale[$i][$x] += $DecaissementCom[$i][$x+1];
             $DettesSociale[$i][$x] += $DecaissementRec[$i][$x+1];
             
         if( $x == 10){
             $DettesSociale[$i][11] += $DecaissementAdm[$i+1][0];
+            $VariationDettes[$i+1][0] -= $DettesSociale[$i][11];
             $DettesSociale[$i][11] += $DecaissementPro[$i+1][0];
             $DettesSociale[$i][11] += $DecaissementCom[$i+1][0];
             $DettesSociale[$i][11] += $DecaissementRec[$i+1][0];
@@ -165,7 +170,7 @@ class BFRController extends AbstractController
 
         }
         }
-     
+      
         //----------------------------Fin---------------------------------------------------//
         //-------------------------End------------------------------------------------------//
       
@@ -173,6 +178,7 @@ class BFRController extends AbstractController
         return $this->render('bfr/detail.html.twig', [
             'business' => $businessSession, 'tvacredit' => $tvacredit[$id], 'creancefiscale' => $creanceFiscales[$id]
             , 'DettesFiscales' =>  $DettesFiscales[$id] , 'tvaapayer' =>  $tvacredit[$id], 'DettesSociale' => $DettesSociale[$id]
+            ,'VariationDettes'=> $VariationDettes[$id],
             ]);
     }
 }

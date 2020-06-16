@@ -235,31 +235,11 @@
 
 		<tr>
 			<td class="total">Variation Dettes</td>
+			{% for i in 0..11 %}
 						<td class="aright total">
-				100.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-						<td class="aright total">
-				0.00			</td>
-					</tr>
+				{{VariationDettes[i]}}			</td>
+			{% endfor %}
+				</tr>
 
 		<tr>
 			<td class="soustitre">Variation de BFR</td>
