@@ -29,7 +29,7 @@ class BFRController extends AbstractController
             'SalesRepository' => $SalesRepository,
         ]);  
         $this->totalwithname = SalesController::getTotalwithname();
-        
+        //DEV
        
         return $this->render('bfr/index.html.twig', [
             'business' => $businessSession,
