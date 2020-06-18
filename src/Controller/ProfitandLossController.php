@@ -231,7 +231,7 @@ class ProfitandLossController extends AbstractController
     ]);
   
     $generalexpenselistPro = GeneralexpensesController::getlistPro();
-    dump($this->depreciationlistPro[0]);die();
+    
     return $this->render('profitand_loss/detail.html.twig',['id'=>$id,'business' => $businessSession , 'totalventes' => $this->totalCA[$id] , 'SumfinalCAperMouth' => $this->SumfinalCAperMouth[$id]  
     ,'achat' => $this->purchase[$id] ,'achatdetaill' => $this->purchasestatic[$id] , 'staff' => $this->staffPro[$id] , 'staffAdm' => $this->staffAdm[$id] ,'staffCom' => $this->staffCom[$id] ,'staffRD'=> $this->staffRD[$id],
     'generalexpense'=> $this->fraisPro[$id] , 'generalexpenseAdm' => $this->fraisAdm[$id] , 'generalexpenseCom' => $this->fraisCom[$id] , 'generalexpenseRD' => $this->fraisRD[$id] ,

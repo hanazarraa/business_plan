@@ -138,7 +138,7 @@
 				</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright">
-				0
+				{{tvacredit[i-1][11]}}
 				</td>
 				{% endfor %}
 				 {% for i in (business.rangeofdetail +1)..business.numberofyears  %}		
@@ -154,7 +154,7 @@
 									</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright">
-				0.00
+				{{creancefiscale[i - 1][11]}}	
 				</td>
 				{% endfor %}
 				{% for i in (business.rangeofdetail +1)..business.numberofyears  %}
@@ -170,7 +170,7 @@
 											0.00									</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright total">
-				0.00
+				{{tvacredit[i-1][11] + creancefiscale[i-1][11] }}
 				</td>
                  {% endfor %}
 				 {% for i in (business.rangeofdetail +1)..business.numberofyears  %}      
@@ -202,7 +202,7 @@
 				</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright total">
-				0.00
+				{{tvaapayer[i-1][11]}}	
 				</td>
                  {% endfor %}
 				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 				
@@ -217,7 +217,7 @@
 											0.00</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright">
-				0.00
+				{{DettesFiscales[i-1][11]}}
 				</td>
 				{% endfor %}
 				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
@@ -233,7 +233,7 @@
 				</td>
 				{% for i in 1..business.rangeofdetail  %}
 				<td class="aright">
-				0.00
+				{{DettesSociale[i-1][11]}}
 				</td>
 				{% endfor %}
 				{% for i in (business.rangeofdetail +1)..business.numberofyears  %} 
