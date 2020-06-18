@@ -42,6 +42,7 @@ class Businessplan
     private $currency;
 
     /**
+     * @Assert\Positive
      * @ORM\Column(type="integer")
      */
     private $startyear;
